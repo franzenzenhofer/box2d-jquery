@@ -220,7 +220,7 @@ createDOMObjects = (jquery_selector, shape = default_shape, static_ = default_st
       body = createBox(x, y, width, height, static_, make_density, make_restitution, make_friction )
     else
       r = (if width > height then width else height)
-      #console.log('radius '+r)
+      console.log('radius '+r)
       body = createCircle(x, y, r, static_, make_density, make_restitution, make_friction )
     body.m_userData = {
       domObj: domObj
@@ -235,6 +235,7 @@ createDOMObjects = (jquery_selector, shape = default_shape, static_ = default_st
     return true
 
 createBox = (x, y, width, height, static_ = default_static, density = default_density, restitution = default_restitution, friction=default_friction ) ->
+  console.log('in create box')
   bodyDef = new b2BodyDef
   bodyDef.type = (if static_ then b2Body.b2_staticBody else b2Body.b2_dynamicBody)
   bodyDef.position.x = x / SCALE
@@ -255,7 +256,7 @@ createBox = (x, y, width, height, static_ = default_static, density = default_de
   return world.CreateBody(bodyDef).CreateFixture fixDef
 
 createCircle = (x, y, r, static_ = default_static, density = default_density, restitution = default_restitution, friction=default_friction ) ->
-  #console.log('in create CIRCLE')
+  console.log('in create CIRCLE')
   bodyDef = new b2BodyDef
   bodyDef.type = (if static_ then b2Body.b2_staticBody else b2Body.b2_dynamicBody)
   bodyDef.position.x = x / SCALE

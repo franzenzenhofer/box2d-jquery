@@ -461,8 +461,8 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
                         left: element.offset().left,
                         width: element.width(),
                         height: element.height(),
-                        margin:0,
-                        padding: 0
+                        margin:0
+                        //padding: 0
                         });
                     rA.push(clone);
                     $('body').append(clone);
@@ -784,6 +784,7 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
         body = createBox(x, y, width, height, static_, make_density, make_restitution, make_friction);
       } else {
         r = (width > height ? width : height);
+        console.log('radius ' + r);
         body = createCircle(x, y, r, static_, make_density, make_restitution, make_friction);
       }
       body.m_userData = {
@@ -813,6 +814,7 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
     if (friction == null) {
       friction = default_friction;
     }
+    console.log('in create box');
     bodyDef = new b2BodyDef;
     bodyDef.type = (static_ ? b2Body.b2_staticBody : b2Body.b2_dynamicBody);
     bodyDef.position.x = x / SCALE;
@@ -840,6 +842,7 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
     if (friction == null) {
       friction = default_friction;
     }
+    console.log('in create CIRCLE');
     bodyDef = new b2BodyDef;
     bodyDef.type = (static_ ? b2Body.b2_staticBody : b2Body.b2_dynamicBody);
     bodyDef.position.x = x / SCALE;

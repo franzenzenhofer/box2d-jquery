@@ -15,8 +15,8 @@
                         left: element.offset().left,
                         width: element.width(),
                         height: element.height(),
-                        margin:0,
-                        padding: 0
+                        margin:0
+                        //padding: 0
                         });
                     rA.push(clone);
                     $('body').append(clone);

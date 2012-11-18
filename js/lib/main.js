@@ -276,6 +276,7 @@
         body = createBox(x, y, width, height, static_, make_density, make_restitution, make_friction);
       } else {
         r = (width > height ? width : height);
+        console.log('radius ' + r);
         body = createCircle(x, y, r, static_, make_density, make_restitution, make_friction);
       }
       body.m_userData = {
@@ -305,6 +306,7 @@
     if (friction == null) {
       friction = default_friction;
     }
+    console.log('in create box');
     bodyDef = new b2BodyDef;
     bodyDef.type = (static_ ? b2Body.b2_staticBody : b2Body.b2_dynamicBody);
     bodyDef.position.x = x / SCALE;
@@ -332,6 +334,7 @@
     if (friction == null) {
       friction = default_friction;
     }
+    console.log('in create CIRCLE');
     bodyDef = new b2BodyDef;
     bodyDef.type = (static_ ? b2Body.b2_staticBody : b2Body.b2_dynamicBody);
     bodyDef.position.x = x / SCALE;
