@@ -19,10 +19,10 @@
 		</style>
 	</head>
 	<body>
-		<h1>This is a Test</h1><br><br>
-		<h2>a very simple test</h2>
-		<div>very</div>
-		<span style="width:150px;height:50px;">hiho</span>
+		<h1>This is a Test H1</h1><br><br>
+		<h2>a very simple test H2</h2>
+		<div>a tiny DIV</div>
+		<span style="width:150px;height:50px;">SPAN me!</span>
 		<h1 style='width:250px'>an H1 with width</h1>
 	  <img src="./img/f19n.png">
 		<img src="./img/f19n.png">
@@ -57,7 +57,7 @@
 		$(document).ready(function() {
 			$("img").each(function(index){s=$(this).attr('src');$(this).attr('src','').attr('src',s+'?'+Math.floor(Math.random()*100000000000));})
 
-			$("h1, h2, img, video, div, span").physics({'x-velocity':0,'friction':null, 'density':null,'restitution':null, 'debug':true}).each(function(index){
+			$("h1, h2, img, video, div, span").box2d({'x-velocity':0,'friction':null, 'density':null,'restitution':null, 'debug':true}).each(function(index){
 					$(this).css('border','0px solid black');
 				});
 

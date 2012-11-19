@@ -79,7 +79,7 @@
 		<script>
 		$(document).ready(function() {
 			$("img").each(function(index){s=$(this).attr('src');$(this).attr('src','').attr('src',s+'?'+Math.floor(Math.random()*100000000000));})
-			$("h1, h2, img, video, div, span").physics({'x-velocity':0,'friction':null, 'density':null,'restitution':null}).each(function(index){
+			$("h1, h2, img, video, div, span").box2d({'x-velocity':0,'friction':null, 'density':null,'restitution':null}).each(function(index){
 					$(this).css('border','1px solid black');
 				});
 

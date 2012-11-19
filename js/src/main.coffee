@@ -193,6 +193,7 @@ createDOMObjects = (jquery_selector, shape = default_shape, static_ = default_st
       #console.log('attching event handler to an elment that isnt quite ready yet')
       #console.log(domObj)
       #console.log(shape)
+      console?.log('WARNING: an element with a src="" but without width and height, not good, from a jquery.box2d.js kinda view!')
       domObj.on('load', ()->createDOMObjects(@, shape, static_, density, restitution, friction))
       return true
 
@@ -214,11 +215,11 @@ createDOMObjects = (jquery_selector, shape = default_shape, static_ = default_st
     #  make_shape = shape
     make_shape = (if domObj.attr('box2d-shape') then domObj.attr('box2d-shape') else shape)
     #TODO TEST
-    make_density = (if domObj.attr('box2d-density') then domObj.attr('box2d-density') else density)
+    make_density = parseFloat((if domObj.attr('box2d-density') then domObj.attr('box2d-density') else density))
     #TODO TEST
-    make_restitution = (if domObj.attr('box2d-restitution') then domObj.attr('box2d-restitution') else restitution)
+    make_restitution = parseFloat((if domObj.attr('box2d-restitution') then domObj.attr('box2d-restitution') else restitution))
     #TODO TEST
-    make_friction = (if domObj.attr('box2d-friction') then domObj.attr('box2d-friction') else friction)
+    make_friction = parseFloat((if domObj.attr('box2d-friction') then domObj.attr('box2d-friction') else friction))
     #TODO TEST
     if domObj.attr('box2d-static') is "true" 
       make_static = true 
@@ -398,8 +399,8 @@ init = (jquery_selector, density = default_density, restitution = default_restit
 #canvasPosition = getElementPosition(document.getElementById("canvas"))
 
 $.fn.extend
-  physics: (options) ->
-    self = $.fn.physics
+  box2d: (options) ->
+    self = $.fn.box2d
     opts = $.extend {}, self.default_options, options
     x_velocity = opts['x-velocity']
     y_velocity = opts['y-velocity']

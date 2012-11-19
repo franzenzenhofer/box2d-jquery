@@ -768,6 +768,9 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
       full_width = domObj.width();
       full_height = domObj.height();
       if ((!full_width || !full_height) && (b[0] && (b[0].src !== ''))) {
+        if (typeof console !== "undefined" && console !== null) {
+          console.log('WARNING: an element with a src="" but without width and height, not good, from a jquery.box2d.js kinda view!');
+        }
         domObj.on('load', function() {
           return createDOMObjects(this, shape, static_, density, restitution, friction);
         });
@@ -779,9 +782,9 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
       x = domPos.left + width;
       y = domPos.top + height;
       make_shape = (domObj.attr('box2d-shape') ? domObj.attr('box2d-shape') : shape);
-      make_density = (domObj.attr('box2d-density') ? domObj.attr('box2d-density') : density);
-      make_restitution = (domObj.attr('box2d-restitution') ? domObj.attr('box2d-restitution') : restitution);
-      make_friction = (domObj.attr('box2d-friction') ? domObj.attr('box2d-friction') : friction);
+      make_density = parseFloat((domObj.attr('box2d-density') ? domObj.attr('box2d-density') : density));
+      make_restitution = parseFloat((domObj.attr('box2d-restitution') ? domObj.attr('box2d-restitution') : restitution));
+      make_friction = parseFloat((domObj.attr('box2d-friction') ? domObj.attr('box2d-friction') : friction));
       if (domObj.attr('box2d-static') === "true") {
         make_static = true;
       } else if (domObj.attr('box2d-static') === "false") {
@@ -966,9 +969,9 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
   };
 
   $.fn.extend({
-    physics: function(options) {
+    box2d: function(options) {
       var absolute_elements, debug, density, friction, opts, restitution, self, shape, static_;
-      self = $.fn.physics;
+      self = $.fn.box2d;
       opts = $.extend({}, self.default_options, options);
       x_velocity = opts['x-velocity'];
       y_velocity = opts['y-velocity'];
