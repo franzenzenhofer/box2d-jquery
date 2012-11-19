@@ -29,7 +29,7 @@ thx to
 ##how to use jquery.box2d.js
 
 well, the [hello-world.html](http://www.fullstackoptimization.com/box2d-jquery/hello-world.html) knows best
-  ```html5
+  ```html
     <!doctype html><!-- it's HTML5 time -->
 
     <html>
@@ -142,7 +142,7 @@ box2d-jquery will complain on the console that it found an image without width a
 
 ## look ma HTML attributes!!!
 
-  ```html5
+  ```html
     <div box2d-static='true' style="widht:200px; height:200px;"></div>
     <div box2d-shape='circle' style="widht:200px; height:200px;"></div>
     <div box2d-density="1.5" box2d-restitution="0.4" box2d-friction="0.3" style="widht:200px; height:200px;"></div>
