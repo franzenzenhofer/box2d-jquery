@@ -22,6 +22,7 @@ hw = {
 }
 
 S_T_A_R_T_E_D = false
+D_E_B_U_G = false
 world = {}
 x_velocity = 0
 y_velocity = 0
@@ -43,6 +44,8 @@ mousePVec = undefined
 isMouseDown = false
 selectedBody = undefined
 mouseJoint = undefined
+
+
 
 #mouse-and-touch-stuff
 MouseAndTouch = (dom, down, up, move) ->
@@ -179,6 +182,7 @@ updateMouseDrag = ->
 createDOMObjects = (jquery_selector, shape = default_shape, static_ = default_static, density = default_density, restitution = default_restitution, friction=default_friction) ->
   #iterate all div elements and create them in the Box2D system
   #$("#container div").each (a, b) ->
+  #console.log(jquery_selector)
   $(jquery_selector).each (a, b) -> 
     #console.log(a)
     #console.log(b)
@@ -187,6 +191,7 @@ createDOMObjects = (jquery_selector, shape = default_shape, static_ = default_st
     full_height = domObj.height()
     if (not full_width or not full_height) and (b[0] and (b[0].src isnt ''))  
       #console.log('attching event handler to an elment that isnt quite ready yet')
+      #console.log(domObj)
       #console.log(shape)
       domObj.on('load', ()->createDOMObjects(@, shape, static_, density, restitution, friction))
       return true
@@ -230,12 +235,22 @@ createDOMObjects = (jquery_selector, shape = default_shape, static_ = default_st
 
     #Reset DOM object position for use with CSS3 positioning
     #domObj.absolutize()#.css({left: "0px",top: "0px"})
-    domObj.css({left: "0px",top: "0px"})
+    
+    origin_values = '50% 50% 0'
+    domObj.css(
+      "left": "0px"
+      "top": "0px"
+      "-webkit-transform-origin": origin_values
+      "-moz-transform-origin": origin_values 
+      "-ms-transform-origin": origin_values 
+      "-o-transform-origin": origin_values 
+      "transform-origin": origin_values 
+      )  
 
     return true
 
 createBox = (x, y, width, height, static_ = default_static, density = default_density, restitution = default_restitution, friction=default_friction ) ->
-  console.log('in create box')
+  #console.log('in create box')
   bodyDef = new b2BodyDef
   bodyDef.type = (if static_ then b2Body.b2_staticBody else b2Body.b2_dynamicBody)
   bodyDef.position.x = x / SCALE
@@ -256,7 +271,7 @@ createBox = (x, y, width, height, static_ = default_static, density = default_de
   return world.CreateBody(bodyDef).CreateFixture fixDef
 
 createCircle = (x, y, r, static_ = default_static, density = default_density, restitution = default_restitution, friction=default_friction ) ->
-  console.log('in create CIRCLE')
+  #console.log('in create CIRCLE')
   bodyDef = new b2BodyDef
   bodyDef.type = (if static_ then b2Body.b2_staticBody else b2Body.b2_dynamicBody)
   bodyDef.position.x = x / SCALE
@@ -303,13 +318,13 @@ drawDOMObjects = ->
         
         #CSS3 transform does not like negative values or infitate decimals
         r = Math.round(((f.m_body.m_sweep.a + PI2) % PI2) * R2D * 100) / 100
-        css =
-          "-webkit-transform": "translate(" + x + "px," + y + "px) rotate(" + r + "deg)"
-          "-moz-transform": "translate(" + x + "px," + y + "px) rotate(" + r + "deg)"
-          "-ms-transform": "translate(" + x + "px," + y + "px) rotate(" + r + "deg)"
-          "-o-transform": "translate(" + x + "px," + y + "px) rotate(" + r + "deg)"
-          transform: "translate(" + x + "px," + y + "px) rotate(" + r + "deg)"
-
+        translate_values = "translate(" + x + "px," + y + "px) rotate(" + r + "deg)"
+        css = 
+          "-webkit-transform": translate_values 
+          "-moz-transform": translate_values 
+          "-ms-transform": translate_values 
+          "-o-transform": translate_values 
+          "transform": translate_values    
         f.m_userData.domObj.css css
       f = f.m_next
     b = b.m_next
@@ -321,6 +336,8 @@ update = ->
   #velocity iterations
   world.Step 1 / 60, 10, 10 #position iterations
   drawDOMObjects()
+  if D_E_B_U_G
+    world.DrawDebugData()
   world.ClearForces()
   #update()
   requestAnimationFrame(update);
@@ -347,6 +364,24 @@ init = (jquery_selector, density = default_density, restitution = default_restit
   createBox(0, $(window.document).height()+1, $(window).width(), 1, true, density, restitution, friction);
   mouse = MouseAndTouch(document, downHandler, upHandler, moveHandler)
 
+  #debug
+  if D_E_B_U_G
+    debugDraw = new b2DebugDraw();
+    canvas = $('<canvas></canvas>')
+    debugDraw.SetSprite(canvas[0].getContext("2d"));
+    debugDraw.SetDrawScale(SCALE);
+    debugDraw.SetFillAlpha(0.3);
+    debugDraw.SetLineThickness(1.0);
+    debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit);
+    canvas.css('position','absolute')
+    canvas.css('top',0)
+    canvas.css('left',0)
+    canvas.css('border','1px solid green')
+    canvas.attr('width', $(window).width());
+    canvas.attr('height', $(document).height());
+    world.SetDebugDraw(debugDraw);
+    $('body').append(canvas)
+
   #trigger hardware acclearation
   #$('body').css(hw);
   
@@ -367,8 +402,10 @@ $.fn.extend
     friction= opts['friction']
     shape = opts['shape']
     static_ = opts['static']
+    debug = opts['debug']
     #console.log(opts)
     if S_T_A_R_T_E_D is false
+      if debug is true then D_E_B_U_G = true
       init(@selector, density, restitution, friction)
     absolute_elements = $(@selector).bodysnatch()
     createDOMObjects(absolute_elements, shape, static_, density, restitution, friction)
@@ -386,6 +423,7 @@ $.extend $.fn.physics,
     'friction': default_friction 
     'static': default_static
     'shape': default_shape
+    'debug': D_E_B_U_G
     
 
 
