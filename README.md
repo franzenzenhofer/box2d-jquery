@@ -85,6 +85,7 @@ with this simpel jquery function call, you
 
   `.box2d()` takes a few options
 
+  ```javascript
     {
     'y-velocity': 10, /* everything falls down, default 0 */
     'x-velocity': 10, /* everything falls right, default 0 */
@@ -95,6 +96,7 @@ with this simpel jquery function call, you
     'friction': 0.3, /* think: slideiness, from 0 to 1, default 0.3 */
     'shape': 'box' /* default "box", but could also be a "circle", it it's not a "circle", it's a "box"*/
     }
+  ```
 
 if you want to be more specific about density, restitution and friction i recommend the great <a href="http://www.box2d.org/manual.html">box2d</a> manual.
 
