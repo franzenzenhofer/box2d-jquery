@@ -763,7 +763,7 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
       friction = default_friction;
     }
     return $(jquery_selector).each(function(a, b) {
-      var body, domObj, domPos, full_height, full_width, height, make_density, make_friction, make_restitution, make_shape, origin_values, r, width, x, y;
+      var body, domObj, domPos, full_height, full_width, height, make_density, make_friction, make_restitution, make_shape, make_static, origin_values, r, width, x, y;
       domObj = $(b);
       full_width = domObj.width();
       full_height = domObj.height();
@@ -781,13 +781,20 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
       make_shape = (domObj.attr('box2d-shape') ? domObj.attr('box2d-shape') : shape);
       make_density = (domObj.attr('box2d-density') ? domObj.attr('box2d-density') : density);
       make_restitution = (domObj.attr('box2d-restitution') ? domObj.attr('box2d-restitution') : restitution);
-      make_friction = (domObj.attr('box2d-friction ') ? domObj.attr('box2d-friction') : friction);
+      make_friction = (domObj.attr('box2d-friction') ? domObj.attr('box2d-friction') : friction);
+      if (domObj.attr('box2d-static') === "true") {
+        make_static = true;
+      } else if (domObj.attr('box2d-static') === "false") {
+        make_static = false;
+      } else {
+        make_static = static_;
+      }
       if (make_shape && make_shape !== 'circle') {
-        body = createBox(x, y, width, height, static_, make_density, make_restitution, make_friction);
+        body = createBox(x, y, width, height, make_static, make_density, make_restitution, make_friction);
       } else {
         r = (width > height ? width : height);
         console.log('radius ' + r);
-        body = createCircle(x, y, r, static_, make_density, make_restitution, make_friction);
+        body = createCircle(x, y, r, make_static, make_density, make_restitution, make_friction);
       }
       body.m_userData = {
         domObj: domObj,

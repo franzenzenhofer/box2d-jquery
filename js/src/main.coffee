@@ -218,15 +218,21 @@ createDOMObjects = (jquery_selector, shape = default_shape, static_ = default_st
     #TODO TEST
     make_restitution = (if domObj.attr('box2d-restitution') then domObj.attr('box2d-restitution') else restitution)
     #TODO TEST
-    make_friction = (if domObj.attr('box2d-friction ') then domObj.attr('box2d-friction') else friction)
-
+    make_friction = (if domObj.attr('box2d-friction') then domObj.attr('box2d-friction') else friction)
+    #TODO TEST
+    if domObj.attr('box2d-static') is "true" 
+      make_static = true 
+    else if domObj.attr('box2d-static') is "false"
+      make_static = false
+    else 
+      make_static = static_ 
 
     if make_shape and make_shape isnt 'circle'
-      body = createBox(x, y, width, height, static_, make_density, make_restitution, make_friction )
+      body = createBox(x, y, width, height, make_static, make_density, make_restitution, make_friction )
     else
       r = (if width > height then width else height)
       console.log('radius '+r)
-      body = createCircle(x, y, r, static_, make_density, make_restitution, make_friction )
+      body = createCircle(x, y, r, make_static, make_density, make_restitution, make_friction )
     body.m_userData = {
       domObj: domObj
       width: width
