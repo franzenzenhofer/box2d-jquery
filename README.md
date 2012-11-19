@@ -29,7 +29,7 @@ thx to
 ##how to use jquery.box2d.js
 
 well, the [hello-world.html](http://www.fullstackoptimization.com/box2d-jquery/hello-world.html) knows best
-
+  ```html5
     <!doctype html><!-- it's HTML5 time -->
 
     <html>
@@ -69,10 +69,13 @@ well, the [hello-world.html](http://www.fullstackoptimization.com/box2d-jquery/h
 
     </body>
     </html>
+  ```
 
 so well, yes, after you have a DOM ready and included all the necessary dependencies (jquery and jquery.box2d.js) all you have to do it
 
+  ```javascript
     $("#some_element").box2d({'y-velocity':10});
+  ```
 
 with this simpel jquery function call, you
 
@@ -139,9 +142,11 @@ box2d-jquery will complain on the console that it found an image without width a
 
 ## look ma HTML attributes!!!
 
+  ```html5
     <div box2d-static='true' style="widht:200px; height:200px;"></div>
     <div box2d-shape='circle' style="widht:200px; height:200px;"></div>
     <div box2d-density="1.5" box2d-restitution="0.4" box2d-friction="0.3" style="widht:200px; height:200px;"></div>
+  ```
 
 HTML attributes > jquery options assignment, nuff said!
 
