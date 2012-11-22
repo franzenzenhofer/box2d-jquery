@@ -259,13 +259,15 @@
       domObj = $(b);
       full_width = domObj.width();
       full_height = domObj.height();
-      if ((!full_width || !full_height) && (b[0] && (b[0].src !== ''))) {
-        if (typeof console !== "undefined" && console !== null) {
-          console.log('WARNING: an element with a src="" but without width and height, not good, from a jquery.box2d.js kinda view!');
+      if (!(full_width && full_height)) {
+        if (domObj.attr('src')) {
+          if (typeof console !== "undefined" && console !== null) {
+            console.log('box2d-jquery ERROR: an element withour width or height, will lead to strangeness!');
+          }
+          domObj.on('load', function() {
+            return createDOMObjects(this, shape, static_, density, restitution, friction);
+          });
         }
-        domObj.on('load', function() {
-          return createDOMObjects(this, shape, static_, density, restitution, friction);
-        });
         return true;
       }
       domPos = $(b).position();
@@ -288,7 +290,6 @@
         body = createBox(x, y, width, height, make_static, make_density, make_restitution, make_friction);
       } else {
         r = (width > height ? width : height);
-        console.log('radius ' + r);
         body = createCircle(x, y, r, make_static, make_density, make_restitution, make_friction);
       }
       body.m_userData = {

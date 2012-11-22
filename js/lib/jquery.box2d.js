@@ -450,8 +450,10 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
             };
             
             $.fn.bodysnatch = function() {
-                rA = [];
-                this.each(function() {
+                //rA = [];
+                var collection = this;
+                //console.log(collection)
+                return collection.each(function(a,b) {
                     var element = $(this);
                     var clone = element.clone();
                     clone.attr('style', window.getComputedStyle(element[0]).cssText);
@@ -464,7 +466,6 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
                         margin:0,
                         //padding: 0
                         });
-                    rA.push(clone);
                     $('body').append(clone);
                     if(element[0].id) {
                         element[0].id=element[0].id+'_snatched';
@@ -478,8 +479,9 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
                         element[0].pause();
                         element[0].src='';
                     }
+                    collection[a]=clone[0]
                 });
-                return $(rA);
+                //return $(rA);
             };
         })(jQuery);
 (function() {
@@ -796,7 +798,6 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
         body = createBox(x, y, width, height, make_static, make_density, make_restitution, make_friction);
       } else {
         r = (width > height ? width : height);
-        console.log('radius ' + r);
         body = createCircle(x, y, r, make_static, make_density, make_restitution, make_friction);
       }
       body.m_userData = {

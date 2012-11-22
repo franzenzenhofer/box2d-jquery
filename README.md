@@ -154,6 +154,7 @@ ok, that's bascally it. any question? bugs? other stuff? please use the issue tr
 
 ## TODOs
 
+ * chaining is broken or seems to hang the browser
  * debug touch on andorid devices
  * performance profiling
  * collision detection 

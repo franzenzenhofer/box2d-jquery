@@ -189,13 +189,22 @@ createDOMObjects = (jquery_selector, shape = default_shape, static_ = default_st
     domObj = $(b)
     full_width = domObj.width()
     full_height = domObj.height()
-    if (not full_width or not full_height) and (b[0] and (b[0].src isnt ''))  
-      #console.log('attching event handler to an elment that isnt quite ready yet')
-      #console.log(domObj)
-      #console.log(shape)
-      console?.log('WARNING: an element with a src="" but without width and height, not good, from a jquery.box2d.js kinda view!')
-      domObj.on('load', ()->createDOMObjects(@, shape, static_, density, restitution, friction))
+    if not (full_width and full_height)
+      if domObj.attr('src')
+        console?.log('box2d-jquery ERROR: an element withour width or height, will lead to strangeness!')
+        domObj.on('load', ()->createDOMObjects(@, shape, static_, density, restitution, friction))
+        #temp_src= domObj.attr('src')
+        #domObj.attr('src', '');
+        #domObj.attr('src', temp_src);
       return true
+    #console.log('no load')
+    #if (not full_width or not full_height) and (b[0] and (b[0].src isnt ''))  
+    #  #console.log('attching event handler to an elment that isnt quite ready yet')
+    #  #console.log(domObj)
+    #  #console.log(shape)
+    #  console?.log('WARNING: an element with a src="" but without width and height, not good, from a jquery.box2d.js kinda view!')
+    #  #domObj.on('load', ()->createDOMObjects(@, shape, static_, density, restitution, friction))
+    #  return true
 
     #console.log('in create DOM objects')
     #console.log(a)
@@ -232,7 +241,7 @@ createDOMObjects = (jquery_selector, shape = default_shape, static_ = default_st
       body = createBox(x, y, width, height, make_static, make_density, make_restitution, make_friction )
     else
       r = (if width > height then width else height)
-      console.log('radius '+r)
+      #console.log('radius '+r)
       body = createCircle(x, y, r, make_static, make_density, make_restitution, make_friction )
     body.m_userData = {
       domObj: domObj
@@ -416,7 +425,12 @@ $.fn.extend
       init(@selector, density, restitution, friction)
     absolute_elements = $(@selector).bodysnatch()
     createDOMObjects(absolute_elements, shape, static_, density, restitution, friction)
+    #console.log(@)
+    #console.log(absolute_elements)
     return $(absolute_elements)
+    #@each (i, el) =>
+    #  $el = $(el)
+    #@
     #$(this).each (i, el) ->
     #  self.init el, opts
     #  self.log el if opts.log

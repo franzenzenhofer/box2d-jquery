@@ -1,6 +1,6 @@
 <!doctype html>
 <html>
-<head><title>101 bouncing balls - box2d-jquery example</title></head>
+<head><title>101 random balls - box2d-jquery example</title></head>
 <style>
       body {overflow:hidden;}
       h1 {width: 200px; background-color: yellow; border: 2px solid black;}
@@ -15,7 +15,14 @@
       }
 </style>
 <body>
-<h1>101 bouncing balls</h1>
+<h1>101 random balls</h1>
+<div id='intro' >each and everyone of these balls, has different
+<ul>
+<li>density (between 0.1 and 2)</li>
+<li>restitution (between 0 and 1)</li>
+<li>friction (between 0 and 1)</li>
+</ul>
+values</div>
 
 <script src="./js/vendor/jquery.min.js"></script>
 <script src="./js/lib/jquery.box2d.min.js"></script>
@@ -25,20 +32,29 @@
 
   }
 
-
+  randomBetween = function(a,b)
+  {
+    return Math.random() * b + a;
+  }
+  
   function makeBalls()
   {
     var s = '';
     for (var i = 0; i < 101; i++) {
-    s = s + '<div class="circle" style="background-color:'+randomColor()+';"></div>';
+    s = s + '<div class="circle" style="background-color:'+randomColor()+';" box2d-density="'+randomBetween(0.1,2)+'" box2d-restitution="'+randomBetween(0,1)+'" box2d-friction="'+randomBetween(0,1)+'"></div>';
     }
-    $('body').append($(s))
+    $('body').append($(s));
   }
 
   $(document).ready(function() {  
-    $("h1, div").box2d({'y-velocity':10, 'density':2});
+    $("h1, div").box2d({'y-velocity':10});
     makeBalls();
-    $(".circle").box2d({'shape':'circle','density':0.1, 'restitution':0.8, 'friction':0.2});
+    balls=$(".circle").box2d({'shape':'circle','density':0.1, 'restitution':0.8}).hide().fadeIn(5000);
+    console.log(balls)
+   /* balls.each(function(index){
+      ball = this;
+      $(ball).fadeIn();
+    })*/
   });
 </script>
 </body>

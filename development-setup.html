@@ -36,7 +36,7 @@
 		<img src="./img/f19n.png">
 		<img src="./img/f19n.png">
 		<img src="./img/f19n.png">
-		<img src="./img/f19n.png">
+		<img src="./img/f19n.png" width="200px" height="200px">
 		<img src="http://www.fullstackoptimization.com/img/fullstackoptimization-logo-114.png">
  
 		<img src="http://chris.smith.name/assets/github.png" width="200px" height="200px" box2d-restitution="0" box2d-friction="0" box2d-shape="circle">
@@ -48,18 +48,17 @@
 <source src="http://www.barbafan.de/wp-content/ipad-ausmalbilder/tron.ogv" type='video/ogg; codecs="theora, vorbis"'></video>
 
 		<script src="./js/vendor/box2dweb/Box2dWeb-2.1.a.3.min.js"></script>
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<script src="./js/vendor/jquery.min.js"></script><!-- 1.8.3 -->
 		<script src="./js/vendor/jquery.bodysnatch.js"></script>
 		<script src="./js/vendor/RequestAnimationFrame.js"></script>
 		<script src="./js/lib/main.js"></script>
 		<!--<script src="./js/lib/jquery.box2d.min.js"></script>-->
 		<script>
 		$(document).ready(function() {
-			$("img").each(function(index){s=$(this).attr('src');$(this).attr('src','').attr('src',s+'?'+Math.floor(Math.random()*100000000000));})
+			//$("img").each(function(index){s=$(this).attr('src');$(this).attr('src','').attr('src',s+'?'+Math.floor(Math.random()*100000000000));})
 
-			$("h1, h2, img, video, div, span").box2d({'x-velocity':0,'friction':null, 'density':null,'restitution':null, 'debug':true}).each(function(index){
-					$(this).css('border','0px solid black');
-				});
+			$("h1, h2, img, video, div, span").css('border-color','lightyellow').box2d({'x-velocity':0,'friction':null, 'density':null,'restitution':null, 'debug':true}).css('border','1px solid blue');
+		
 
 		});
 		</script>

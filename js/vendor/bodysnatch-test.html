@@ -1,0 +1,14 @@
+<html>
+<body>
+  <div class="test">test 1</div>
+  <div class="test">test 2</div>
+  <div class="controll">controll 1</div>
+  <div class="controll">controll 2</div>
+  <script src="jquery.min.js"></script>
+  <script src="jquery.bodysnatch.js"></script>
+  <script>
+    $('.controll').css('background-color','red').css('background-color','blue').text('OK');
+    $('.test').css('background-color','red').bodysnatch().css('background-color','blue').text('OK');
+  </script>
+</body>
+</html>
