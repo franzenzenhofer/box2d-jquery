@@ -136,19 +136,24 @@ ok, you say no big deal, but well. take the simple a simpel H1 or even a simple 
 the H1 goes all the way, the whole width of it's parent. that's because it's a block element. these things do stuff like this, but normaly you don't see it (and you don't see the box aroun the block element). so the H1 will float strangely to the not-DOM-box-model experienced user. give it a width and everything is fine.
 
 also **IMAGES**
-if you don't give image a widht or height, either via attributes or css-styles, they do not have any height or widht - until they are fully loaded. this can take a while, and can lead to strange effects. sometimes everything will work fine, othertimes everything is slightly screwed up, and sometimes box2d will just hang your browser window. give your images an explicit width and height and everthing will be fine (and faster, too).
+if you don't give image a widht or height, either via attributes or css-styles, they do not have any height or widht - until they are fully loaded. this can take a while, and can lead to strange effects. sometimes everything will work fine, othertimes everything is slightly screwed up. give your images an explicit width and height and everthing will be fine (and faster, too).
 
-box2d-jquery will complain on the console that it found an image without width and height.
+box2d-jquery will complain on the console that it found anything without width and height.
 
 ## look ma HTML attributes!!!
+
+yip, they are back! you can define static, shape, density, restitution and friction for each dom element.
+
 
   ```html
     <div box2d-static='true' style="widht:200px; height:200px;"></div>
     <div box2d-shape='circle' style="widht:200px; height:200px;"></div>
     <div box2d-density="1.5" box2d-restitution="0.4" box2d-friction="0.3" style="widht:200px; height:200px;"></div>
   ```
+note: these are just inital box2d object creation values, changing these attribute later (i.e. via jquery) has (currently) no effect.
 
 HTML attributes > jquery options assignment, nuff said!
+
 
 ok, that's bascally it. any question? bugs? other stuff? please use the issue tracker. 
 
@@ -161,6 +166,7 @@ ok, that's bascally it. any question? bugs? other stuff? please use the issue tr
  * colliosn dection events
  * make y/x-volocity changeable after world initialization
  * change world boundaries with window resize
+ * changes in the box2d HTML attributes should change the objects
 
 ##license
   Copyright (C) 2012 - 305678 Franz Enzenhofer
