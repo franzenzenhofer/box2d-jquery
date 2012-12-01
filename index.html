@@ -24,6 +24,11 @@
         line-height: 24px;
         margin-top: 24px;
       }
+      div, a, img, h2, h1, hr, span, code {
+        max-width: 320px;
+        margin: 0 auto;
+        border: none;
+      }
       .normal {
         font-weight: 300;
         text-transform: uppercase;
@@ -31,9 +36,17 @@
         font-size: 22px;
         line-height: 12px;
       }
+      .github {
+        width: 64px;
+        border-radius: 50%;
+        position:absolute;
+        top:100px;
+        right:40px;
+      }
     </style>
   </head>
   <body>
+    <img class="github" src="./img/github-logo.png" alt="github logo">
     <div>Hey ...</div>
     <a href="http://www.fullstackoptimization.com">
       <img src="img/fullstackoptimization-logo-114.png" alt="full stack optimization logo">
@@ -44,20 +57,19 @@
     <div>europe 2013 in</div>
     <iframe width="320" height="320" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=de&amp;geocode=&amp;q=F%C3%BCrstengasse+1+&amp;aq=&amp;sll=48.220685,16.38006&amp;sspn=0.292334,0.718918&amp;ie=UTF8&amp;hq=&amp;hnear=F%C3%BCrstengasse+1,+Alsergrund+1090+Wien,+%C3%96sterreich&amp;t=m&amp;ll=48.222443,16.359673&amp;spn=0.018299,0.02738&amp;z=14&amp;iwloc=A&amp;output=embed"></iframe>
     <div>vienna, austria!</div>
-    <hr>
+    
     <div>that's why we coded</div>
     <h1>box2d-jquery</h1>
     <code>$('div').box2d({'x-velocity':10});</code>
     <div>a jquery plugin to transfer your dom</div>
     <div>into 2d-physical objects.</div>
-    <div>enjoy and fork on githug</div>
-    <img src="" alt="github logo">
-    <img src="" alt="fullstackoptimization logo">
+    <div>enjoy and fork on github</div>
+    
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <script src="./js/lib/jquery.box2d.min.js"></script>
     <script> 
       $(document).ready(function() {  
-        $("h1, div, img").box2d({'y-velocity':5});
+        $("h1, div, img, iframe, h2, code").box2d({'y-velocity':5});
       });
     </script>
   </body>
