@@ -58,16 +58,18 @@ MouseAndTouch = (dom, down, up, move) ->
   startY = undefined
   isDown = false
   #When drawing the "road" get mouse or touch positions
+  #we need fixed to make this better on touch devices
   mouseMoveHandler = (e) ->
     updateFromEvent e
     move mouseX, mouseY
   updateFromEvent = (e) ->
+    #now we can click things, but well, throwing stuff around is'nt so cool anymore
     #e.preventDefault()
     touch = e.originalEvent
     if touch and touch.touches and touch.touches.length is 1
       
       #Prevent the default action for the touch event; scrolling
-      #touch.preventDefault()
+      touch.preventDefault()
       mouseX = touch.touches[0].pageX
       mouseY = touch.touches[0].pageY
     else
