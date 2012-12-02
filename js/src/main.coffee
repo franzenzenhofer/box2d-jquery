@@ -62,7 +62,7 @@ MouseAndTouch = (dom, down, up, move) ->
     updateFromEvent e
     move mouseX, mouseY
   updateFromEvent = (e) ->
-    e.preventDefault()
+    #e.preventDefault()
     touch = e.originalEvent
     if touch and touch.touches and touch.touches.length is 1
       
