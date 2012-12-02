@@ -623,7 +623,6 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
       e.preventDefault();
       touch = e.originalEvent;
       if (touch && touch.touches && touch.touches.length === 1) {
-        touch.preventDefault();
         mouseX = touch.touches[0].pageX;
         return mouseY = touch.touches[0].pageY;
       } else {
