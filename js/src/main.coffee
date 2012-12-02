@@ -48,6 +48,7 @@ mouseJoint = undefined
 
 
 #mouse-and-touch-stuff
+
 MouseAndTouch = (dom, down, up, move) ->
   #console.log(dom)
   #shitty naming
@@ -62,6 +63,7 @@ MouseAndTouch = (dom, down, up, move) ->
   mouseMoveHandler = (e) ->
     updateFromEvent e
     move mouseX, mouseY
+  #TODO: bind this to the elements, not the document, so that default actions on touch can still work
   updateFromEvent = (e) ->
     #now we can click things, but well, throwing stuff around is'nt so cool anymore
     e.preventDefault()
