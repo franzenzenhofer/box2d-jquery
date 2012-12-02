@@ -49,7 +49,14 @@ mouseJoint = undefined
 
 #mouse-and-touch-stuff
 MouseAndTouch = (dom, down, up, move) ->
-  
+  #console.log(dom)
+  #shitty naming
+  canvas = dom
+  mouseX = undefined
+  mouseY = undefined
+  startX = undefined
+  startY = undefined
+  isDown = false
   #When drawing the "road" get mouse or touch positions
   mouseMoveHandler = (e) ->
     updateFromEvent e
@@ -67,6 +74,7 @@ MouseAndTouch = (dom, down, up, move) ->
       mouseX = e.pageX
       mouseY = e.pageY
   mouseUpHandler = (e) ->
+    #console.log(canvas)
     canvas.addEventListener "mousedown", mouseDownHandler, true
     canvas.removeEventListener "mousemove", mouseMoveHandler, true
     isDown = false
@@ -92,12 +100,6 @@ MouseAndTouch = (dom, down, up, move) ->
     isDown = true
     updateFromEvent e
     down mouseX, mouseY
-  canvas = dom
-  mouseX = undefined
-  mouseY = undefined
-  startX = undefined
-  startY = undefined
-  isDown = false
   canvas.addEventListener "mousedown", mouseDownHandler, true
   canvas.addEventListener "touchstart", touchDownHandler, true
   ret = {}
@@ -118,8 +120,8 @@ downHandler = (x, y) ->
   moveHandler x, y
 upHandler = (x, y) ->
   isMouseDown = false
-  mouseX = `undefined`
-  mouseY = `undefined`
+  mouseX = null
+  mouseY = null
 moveHandler = (x, y) ->
   #console.log(canvasPosition.x)
   #console.log(canvasPosition.y)

@@ -81,6 +81,12 @@
 
   MouseAndTouch = function(dom, down, up, move) {
     var canvas, isDown, mouseDownHandler, mouseMoveHandler, mouseUpHandler, ret, startX, startY, touchDownHandler, touchUpHandler, updateFromEvent;
+    canvas = dom;
+    mouseX = void 0;
+    mouseY = void 0;
+    startX = void 0;
+    startY = void 0;
+    isDown = false;
     mouseMoveHandler = function(e) {
       updateFromEvent(e);
       return move(mouseX, mouseY);
@@ -99,7 +105,6 @@
       }
     };
     mouseUpHandler = function(e) {
-      var isDown;
       canvas.addEventListener("mousedown", mouseDownHandler, true);
       canvas.removeEventListener("mousemove", mouseMoveHandler, true);
       isDown = false;
@@ -107,7 +112,6 @@
       return up(mouseX, mouseY);
     };
     touchUpHandler = function(e) {
-      var isDown;
       canvas.addEventListener("touchstart", touchDownHandler, true);
       canvas.removeEventListener("touchmove", mouseMoveHandler, true);
       isDown = false;
@@ -115,7 +119,6 @@
       return up(mouseX, mouseY);
     };
     mouseDownHandler = function(e) {
-      var isDown;
       canvas.removeEventListener("mousedown", mouseDownHandler, true);
       canvas.addEventListener("mouseup", mouseUpHandler, true);
       canvas.addEventListener("mousemove", mouseMoveHandler, true);
@@ -124,7 +127,6 @@
       return down(mouseX, mouseY);
     };
     touchDownHandler = function(e) {
-      var isDown;
       canvas.removeEventListener("touchstart", touchDownHandler, true);
       canvas.addEventListener("touchend", touchUpHandler, true);
       canvas.addEventListener("touchmove", mouseMoveHandler, true);
@@ -132,12 +134,6 @@
       updateFromEvent(e);
       return down(mouseX, mouseY);
     };
-    canvas = dom;
-    mouseX = void 0;
-    mouseY = void 0;
-    startX = void 0;
-    startY = void 0;
-    isDown = false;
     canvas.addEventListener("mousedown", mouseDownHandler, true);
     canvas.addEventListener("touchstart", touchDownHandler, true);
     ret = {};
@@ -160,8 +156,8 @@
 
   upHandler = function(x, y) {
     isMouseDown = false;
-    mouseX = undefined;
-    return mouseY = undefined;
+    mouseX = null;
+    return mouseY = null;
   };
 
   moveHandler = function(x, y) {

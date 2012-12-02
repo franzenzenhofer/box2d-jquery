@@ -456,16 +456,33 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
                 return collection.each(function(a,b) {
                     var element = $(this);
                     var clone = element.clone();
-                    clone.attr('style', window.getComputedStyle(element[0]).cssText);
-                    clone.css({
-                        position: 'absolute',
-                        top: element.offset().top,
-                        left: element.offset().left,
-                        width: element.width(),
-                        height: element.height(),
-                        margin:0,
-                        //padding: 0
-                        });
+                    
+                    w = element.width()
+                    h = element.height()
+                    //otherwise not loaded image will be stuck with zero width/height
+                    if ( w && h)
+                    {
+                        clone.attr('style', window.getComputedStyle(element[0]).cssText);
+                        clone.css({
+                            position: 'absolute',
+                            top: element.offset().top,
+                            left: element.offset().left,
+                            width: element.width(),
+                            height: element.height(),
+                            margin:0,
+                            //padding: 0
+                            });
+                    }
+                    else //probably images without a width and height yet
+                    {
+                        clone.css({
+                            position: 'absolute',
+                            top: element.offset().top,
+                            left: element.offset().left,
+                            margin:0,
+                            //padding: 0
+                            });  
+                    }
                     $('body').append(clone);
                     if(element[0].id) {
                         element[0].id=element[0].id+'_snatched';
@@ -591,6 +608,12 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
 
   MouseAndTouch = function(dom, down, up, move) {
     var canvas, isDown, mouseDownHandler, mouseMoveHandler, mouseUpHandler, ret, startX, startY, touchDownHandler, touchUpHandler, updateFromEvent;
+    canvas = dom;
+    mouseX = void 0;
+    mouseY = void 0;
+    startX = void 0;
+    startY = void 0;
+    isDown = false;
     mouseMoveHandler = function(e) {
       updateFromEvent(e);
       return move(mouseX, mouseY);
@@ -609,7 +632,6 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
       }
     };
     mouseUpHandler = function(e) {
-      var isDown;
       canvas.addEventListener("mousedown", mouseDownHandler, true);
       canvas.removeEventListener("mousemove", mouseMoveHandler, true);
       isDown = false;
@@ -617,7 +639,6 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
       return up(mouseX, mouseY);
     };
     touchUpHandler = function(e) {
-      var isDown;
       canvas.addEventListener("touchstart", touchDownHandler, true);
       canvas.removeEventListener("touchmove", mouseMoveHandler, true);
       isDown = false;
@@ -625,7 +646,6 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
       return up(mouseX, mouseY);
     };
     mouseDownHandler = function(e) {
-      var isDown;
       canvas.removeEventListener("mousedown", mouseDownHandler, true);
       canvas.addEventListener("mouseup", mouseUpHandler, true);
       canvas.addEventListener("mousemove", mouseMoveHandler, true);
@@ -634,7 +654,6 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
       return down(mouseX, mouseY);
     };
     touchDownHandler = function(e) {
-      var isDown;
       canvas.removeEventListener("touchstart", touchDownHandler, true);
       canvas.addEventListener("touchend", touchUpHandler, true);
       canvas.addEventListener("touchmove", mouseMoveHandler, true);
@@ -642,12 +661,6 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
       updateFromEvent(e);
       return down(mouseX, mouseY);
     };
-    canvas = dom;
-    mouseX = void 0;
-    mouseY = void 0;
-    startX = void 0;
-    startY = void 0;
-    isDown = false;
     canvas.addEventListener("mousedown", mouseDownHandler, true);
     canvas.addEventListener("touchstart", touchDownHandler, true);
     ret = {};
@@ -670,8 +683,8 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
 
   upHandler = function(x, y) {
     isMouseDown = false;
-    mouseX = undefined;
-    return mouseY = undefined;
+    mouseX = null;
+    return mouseY = null;
   };
 
   moveHandler = function(x, y) {
@@ -769,13 +782,15 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
       domObj = $(b);
       full_width = domObj.width();
       full_height = domObj.height();
-      if ((!full_width || !full_height) && (b[0] && (b[0].src !== ''))) {
-        if (typeof console !== "undefined" && console !== null) {
-          console.log('WARNING: an element with a src="" but without width and height, not good, from a jquery.box2d.js kinda view!');
+      if (!(full_width && full_height)) {
+        if (domObj.attr('src')) {
+          if (typeof console !== "undefined" && console !== null) {
+            console.log('box2d-jquery ERROR: an element withour width or height, will lead to strangeness!');
+          }
+          domObj.on('load', function() {
+            return createDOMObjects(this, shape, static_, density, restitution, friction);
+          });
         }
-        domObj.on('load', function() {
-          return createDOMObjects(this, shape, static_, density, restitution, friction);
-        });
         return true;
       }
       domPos = $(b).position();

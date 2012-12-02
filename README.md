@@ -138,6 +138,9 @@ the H1 goes all the way, the whole width of it's parent. that's because it's a b
 also **IMAGES**
 if you don't give image a widht or height, either via attributes or css-styles, they do not have any height or widht - until they are fully loaded. this can take a while, and can lead to strange effects. sometimes everything will work fine, othertimes everything is slightly screwed up. give your images an explicit width and height and everthing will be fine (and faster, too).
 
+**in general**
+it works best on not deeply nested HTML, sometimes there are strange behaviours and/or performance issues when selecting nestes HTML elements. this must be solved in future version.
+
 box2d-jquery will complain on the console that it found anything without width and height.
 
 ## look ma HTML attributes!!!
