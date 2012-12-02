@@ -1,7 +1,9 @@
 <!doctype html>
 <html>
   <head>
-    <title>box2d-jquery</title>
+    <title>box2d-jquery - fullstackoptimization.com</title>
+    <link href='http://fonts.googleapis.com/css?family=Rokkitt' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:200,300' rel='stylesheet' type='text/css'>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="description" content="">
     <link rel="canonical" href="http://www.fullstackoptimization.com/box2d">
@@ -10,7 +12,8 @@
       @import url(http://fonts.googleapis.com/css?family=Open+Sans:300);
       @import url(http://fonts.googleapis.com/css?family=Open+Sans:400);
       @import url(http://fonts.googleapis.com/css?family=Open+Sans:700);
-      body, a{
+      body {border: 0px solid red;}
+      body{
         background:#323232;
         color:#859900;
         text-decoration:none;
@@ -18,13 +21,27 @@
         font-family: "Open Sans";
         font.size:16px;
       }
+
+      a {
+        color:#859900;
+        text-decoration:underline;
+      }
+      a:hover, a:visited, a:active{
+        color:#859900;
+        text-decoration:underline;
+
+      }
+      [onclick] {        color:#859900; text-decoration:underline; }
       h2 {
         font-size: 44px;
         font-weight: 700;
         line-height: 24px;
         margin-top: 24px;
+        width: 220px;
+        text-decoration:none !important;
       }
-      div, a, img, h2, h1, hr, span, code {
+      h2 a { text-decoration:none !important; }
+      div, img, h2, h1, hr, span, code {
         max-width: 320px;
         margin: 0 auto;
         border: none;
@@ -35,41 +52,59 @@
         letter-spacing: 4px;
         font-size: 22px;
         line-height: 12px;
+        text-decoration:none !important;
       }
+
+      #europe { font-size: 42px; font-family: 'RokkittLight','Rokkitt',sans-serif;}
       .github {
         width: 64px;
         border-radius: 50%;
         position:absolute;
         top:100px;
         right:40px;
+        border-radius: 50%;
+        border:2px solid #859900 !important;
       }
+      .box2d, h1, code {cursor: hand; cursor: pointer; }
+      code { font-family: 'Source Code Pro', sans-serif; font-size: 15px; }
     </style>
   </head>
   <body>
-    <img class="github" src="./img/github-logo.png" alt="github logo">
-    <div>Hey ...</div>
-    <a href="http://www.fullstackoptimization.com">
-      <img src="img/fullstackoptimization-logo-114.png" alt="full stack optimization logo">
-      <h2>full stack<br><span class="normal">optimization</span></h2>
-    </a>
-    <div>is sponsoring</div>
-    <img src="img/jquery-logo.png" alt="jquery logo">
-    <div>europe 2013 in</div>
-    <iframe width="320" height="320" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=de&amp;geocode=&amp;q=F%C3%BCrstengasse+1+&amp;aq=&amp;sll=48.220685,16.38006&amp;sspn=0.292334,0.718918&amp;ie=UTF8&amp;hq=&amp;hnear=F%C3%BCrstengasse+1,+Alsergrund+1090+Wien,+%C3%96sterreich&amp;t=m&amp;ll=48.222443,16.359673&amp;spn=0.018299,0.02738&amp;z=14&amp;iwloc=A&amp;output=embed"></iframe>
-    <div>vienna, austria!</div>
+    <a href="https://github.com/franzenzenhofer/box2d-jquery" class="box2d github" box2d-restitution="1" box2d-shape="circle" target="_blank"><img src="./img/github-logo.png" alt="box2d jquery fork on github" title="fork on github" width="64px" height="64px"></a>
+    <span class="box2d" >Hey</span> <span class="box2d" >...</span><br>
+
+      <img class="box2d"  src="img/fullstackoptimization-logo-114.png" height="114px" width="114px" alt="full stack optimization logo" box2d-restitution="0.9" box2d-friction="0.8" onClick="document.location='http://www.fullstackoptimization.com/';">
+      <h2 class="box2d" ><a href="http://www.fullstackoptimization.com/">full stack<br><span class="normal" onClick="document.location='http://www.fullstackoptimization.com/'">optimization</span></a></h2>
+    <span class="box2d">is sponsoring</span><br>
+    <img class="box2d"  src="img/jquery-logo.png" width="320px" height="78px" alt="jquery logo" onClick="document.location='http://events.jquery.org/2013/eu/">
+    <br><span class="box2d"  onClick="document.location='http://events.jquery.org/2013/eu/';" id="europe">Europe 2013</span><br>
+    <img class="box2d"  src="http://maps.google.com/maps/api/staticmap?center=48.220784,16.380615&zoom=12&markers=color:blue|48.222452,16.359666&size=320x220&sensor=true" width="320px" height="220px" onDoubleClick="document.location='https://maps.google.com/maps?q=palais+liechtenstein+vienna+austria&hl=en&ll=48.223929,16.359673&spn=0.031507,0.059481&sll=47.73132,12.978299&sspn=4.071454,7.613525&hq=palais+liechtenstein+vienna+austria&t=m&z=14&iwloc=A';">
+    <br><a href="https://maps.google.com/maps?q=palais+liechtenstein+vienna+austria&hl=en&ll=48.223929,16.359673&spn=0.031507,0.059481&sll=47.73132,12.978299&sspn=4.071454,7.613525&hq=palais+liechtenstein+vienna+austria&t=m&z=14&iwloc=A" class="box2d" >Palais Liechtenstein, Vienna</a><br>
+    <span class="box2d" >Austria</span><br>
+    <span class="box2d" >22nd/23rd February 2013</span><br>
+
     
-    <div>that's why we coded</div>
-    <h1>box2d-jquery</h1>
-    <code>$('div').box2d({'x-velocity':10});</code>
-    <div>a jquery plugin to transfer your dom</div>
-    <div>into 2d-physical objects.</div>
-    <div>enjoy and fork on github</div>
+    <span  class="box2d" >that's why we coded</span><br>
+    <h1 style="width:240px;"  onClick="document.location='https://github.com/franzenzenhofer/box2d-jquery';">box2d-jquery</h1><br>
+    <code>$('div').box2d({'x-velocity':10});</code><br>
+    <span  class="box2d" >a jquery plugin to transfer your dom</span><br>
+    <span  class="box2d" >into 2d-physical objects.</span><br>
+    <span  class="box2d" >enjoy and <a href="https://github.com/franzenzenhofer/box2d-jquery">f&#x2661;rk on github</a></span><br>
+    <br>
+    <br>
+    <div><img src="./img/f19n.png" width="54px" height="52px" class="box2d"  box2d-shape="circle"></div>
+    <br>
+    <br>
+
+   
     
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <script src="./js/lib/jquery.box2d.min.js"></script>
     <script> 
-      $(document).ready(function() {  
-        $("h1, div, img, iframe, h2, code").box2d({'y-velocity':5});
+      $('document').ready(function(){
+        window.setTimeout(function(){
+       $("h1, code, .box2d").box2d({'y-velocity':5, 'x-velocity':-0.05, 'debug':false});
+       },500);
       });
     </script>
   </body>

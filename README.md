@@ -159,8 +159,9 @@ ok, that's bascally it. any question? bugs? other stuff? please use the issue tr
 
 ## TODOs
 
- * chaining is broken or seems to hang the browser
+ * better bodysnatch of nested HTML elements
  * debug touch on andorid devices
+ * get touch handing out of core
  * performance profiling
  * collision detection 
  * colliosn dection events
