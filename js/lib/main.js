@@ -93,6 +93,7 @@
     };
     updateFromEvent = function(e) {
       var touch;
+      e.preventDefault();
       touch = e.originalEvent;
       if (touch && touch.touches && touch.touches.length === 1) {
         touch.preventDefault();

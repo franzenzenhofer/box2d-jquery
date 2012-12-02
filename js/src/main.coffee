@@ -64,7 +64,7 @@ MouseAndTouch = (dom, down, up, move) ->
     move mouseX, mouseY
   updateFromEvent = (e) ->
     #now we can click things, but well, throwing stuff around is'nt so cool anymore
-    #e.preventDefault()
+    e.preventDefault()
     touch = e.originalEvent
     if touch and touch.touches and touch.touches.length is 1
       
