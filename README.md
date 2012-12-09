@@ -7,7 +7,7 @@ hi, in a moment of madness [i](http://www.fullstackoptimization.com/) become an 
 
 `jquery.box2d.js` is a simple jquery plugin that transforms DOM elements into actual physical objects. well, physical in a flat 2d-browser-world that is. just go to
 
- * **[jquery europe 2013 box2d demo with voucher code](http://www.fullstackoptimization.com/box2d-jquery/)**
+ * **[jquery europe 2013 box2d-jquery demo](http://www.fullstackoptimization.com/box2d-jquery/)**
  * [hello world](http://www.fullstackoptimization.com/box2d-jquery/hello-world.html)
  * [101 bouncing balls](http://www.fullstackoptimization.com/box2d-jquery/101-bouncing-balls.html)
  * [101 random balls](http://www.fullstackoptimization.com/box2d-jquery/101-random-balls.html)
