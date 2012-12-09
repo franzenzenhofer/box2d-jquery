@@ -445,6 +445,35 @@ this._color(w.color,this.m_fillAlpha);A.arc(p,B,K*U,0,Math.PI*2,true);A.moveTo(p
 K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale*G.R.col1.x)*y,(G.position.y+this.m_xformScale*G.R.col1.y)*y);K.strokeStyle=this._color(65280,this.m_alpha);K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale*G.R.col2.x)*y,(G.position.y+this.m_xformScale*G.R.col2.y)*y);K.closePath();K.stroke()}})();var i;for(i=0;i<Box2D.postDefs.length;++i)Box2D.postDefs[i]();delete Box2D.postDefs;
 
          (function($){
+    $.fn.getStyleObject = function(){
+        var dom = this.get(0);
+        var style;
+        var returns = {};
+        if(window.getComputedStyle){
+            var camelize = function(a,b){
+                return b.toUpperCase();
+            }
+            style = window.getComputedStyle(dom, null);
+            for(var i=0;i<style.length;i++){
+                var prop = style[i];
+                var camel = prop.replace(/\-([a-z])/g, camelize);
+                var val = style.getPropertyValue(prop);
+                returns[camel] = val;
+            }
+            return returns;
+        }
+        if(dom.currentStyle){
+            style = dom.currentStyle;
+            for(var prop in style){
+                returns[prop] = style[prop];
+            }
+            return returns;
+        }
+        return this.css();
+    }
+})(jQuery);
+
+         (function($){
             isString = function (obj) {
             return toString.call(obj) == '[object String]';
             };
@@ -462,9 +491,15 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
                     //otherwise not loaded image will be stuck with zero width/height
                     if ( w && h)
                     {
-                        clone.attr('style', window.getComputedStyle(element[0]).cssText);
+                        //cssText returns "" on FF!!!
+                        //clone.attr('style', window.getComputedStyle(element[0]).cssText);
+                        clone.css(element.getStyleObject());
                         clone.css({
                             position: 'absolute',
+                            //hot fix for the 101 balls samplein FF and opera
+                            //due to idiotic behaviour of 
+                            //https://developer.mozilla.org/de/docs/DOM/window.getComputedStyle
+                            //'background-color': element.css('background-color'),
                             top: element.offset().top,
                             left: element.offset().left,
                             width: element.width(),
@@ -472,6 +507,7 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
                             margin:0,
                             //padding: 0
                             });
+                        clone.addClass('perfect');
                     }
                     else //probably images without a width and height yet
                     {
@@ -481,7 +517,8 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
                             left: element.offset().left,
                             margin:0,
                             //padding: 0
-                            });  
+                            }); 
+                        clone.addClass('imperfect');
                     }
                     $('body').append(clone);
                     if(element[0].id) {
