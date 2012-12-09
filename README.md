@@ -5,7 +5,7 @@
 
 hi, in a moment of madness [i](http://www.fullstackoptimization.com/) become an offical sponsor of the **[jQuery Europe 2013 conference in Vienna](http://events.jquery.org/2013/eu/)**, well that was the moment i decided to code a jquery plugin i wish existed but strangly didn't - until now
 
-`jquery.box2d.js` is a simple jquery plugin that transforms DOM elements into actual physical objects. well, physical in a 2d-world that is. just go to
+`jquery.box2d.js` is a simple jquery plugin that transforms DOM elements into actual physical objects. well, physical in a flat 2d-browser-world that is. just go to
 
  * **[jquery europe 2013 box2d demo with voucher code](http://www.fullstackoptimization.com/box2d-jquery/)**
  * [hello world](http://www.fullstackoptimization.com/box2d-jquery/hello-world.html)
@@ -23,8 +23,6 @@ thx to box2dweb [http://code.google.com/p/box2dweb/](http://code.google.com/p/bo
 
 thx to 
 [Pål Smitt-Amundsen](https://twitter.com/PaalSA) i based this project heavily on the stuff i found in [his blog (and lab experiments)](http://paal.org/blog/) and thx for giving me [permission to reuse his stuff open source style](https://twitter.com/PaalSA/status/266630391971057664).
-
-
 
 ##how to use jquery.box2d.js
 
@@ -85,9 +83,9 @@ with this simpel jquery function call, you
   * where everything falls down, with about 10px per step
   * and you made the element with the id 'some_element' part of that cruel world
 
-  it is important to note, that every first call to `.box2d()` initalized the world. every other, follow up call only adds stuff to this world (well, we have to create a world sometime)
+it is important to note, that every first call to `.box2d()` initalized the world. every other, follow up call only adds stuff to this world (well, we have to create a world sometime)
 
-  `.box2d()` takes a few options
+`.box2d()` takes a few options
 
   ```javascript
     {
@@ -158,8 +156,13 @@ note: these are just inital box2d object creation values, changing these attribu
 
 HTML attributes > jquery options assignment, nuff said!
 
+ok, that's bascally it. any question? bugs (there are some, especially on non-newest-stuff browsers (i.e.: ipad 1))? other stuff? please use the issue tracker, i'm collectiong bugs right now.
 
-ok, that's bascally it. any question? bugs? other stuff? please use the issue tracker. 
+##in a nutshell, how does it work?
+ok, you want the itty-gritty technical details well, look at the [source](https://github.com/franzenzenhofer/box2d-jquery/blob/master/js/src/main.coffee), that's the only real way. but in short
+ * we clone the selected DOM elements into absolute possitioned ... well ... clones.
+ * we animate them via dynamically (javascript styly) set CSS3 transforms / translate / rotate combos
+ * the values for this CSS/javascript mambo-jumbo are calculted via box2d-web
 
 ## TODOs
 
