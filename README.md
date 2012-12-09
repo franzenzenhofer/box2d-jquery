@@ -163,9 +163,10 @@ ok, that's bascally it. any question? bugs? other stuff? please use the issue tr
 
 ## TODOs
 
+ * better touch handling (currently scroll and links are not useable on touch devices)
+ * better android support
+ * get touch handling out of core
  * better bodysnatch of nested HTML elements
- * debug touch on andorid devices
- * get touch handing out of core
  * performance profiling
  * collision detection 
  * colliosn dection events
