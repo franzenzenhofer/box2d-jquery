@@ -1,17 +1,17 @@
 #box2d-jQuery
 
-##note: not yet ready for prime time
-##links not yet working
-## v0.8
+
+`v0.7 - 09.12.2012`
 
 hi, as [i](http://www.fullstackoptimization.com/) - in a moment of madness - decided to become an offical sponsor of the **[jQuery Europe 2013 conference in Vienna](http://events.jquery.org/2013/eu/)** i decided to code a jquery plugin i wish existed but strangly didn't - until now
 
 `jquery.box2d.js` is a simple jquery plugin that transforms DOM elements into actual physical objects. well, physical in a 2d-world that is. just go to
 
- * [countdown to jquery europe 2013](http://www.fullstackoptimization.com/box2d-jquery/index.html)
+ * **[countdown to jquery europe 2013](http://www.fullstackoptimization.com/box2d-jquery/)**
+ * [hello world](http://www.fullstackoptimization.com/box2d-jquery/hello-world.html)
  * [101 bouncing balls](http://www.fullstackoptimization.com/box2d-jquery/101-bouncing-balls.html)
- * 2 videos (to come)
- * you, yourself and i (to come)
+ * [101 random balls](http://www.fullstackoptimization.com/box2d-jquery/101-random-balls.html)
+ * [test stuff](http://www.fullstackoptimization.com/box2d-jquery/development-setup.html) note: debug enabled & some deliberate edge cases
 
  and start to **KICK STUFF AROUND** (with your mouse/touchpad pointer - or using your fingers on modern iOS devices.)
 
