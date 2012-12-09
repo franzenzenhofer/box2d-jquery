@@ -46,8 +46,14 @@
                     if ( w && h)
                     {
                         //cssText returns "" on FF!!!
-                        //clone.attr('style', window.getComputedStyle(element[0]).cssText);
-                        clone.css(element.getStyleObject());
+                        if ( window.getComputedStyle && window.getComputedStyle.cssText )
+                        {
+                            clone.attr('style', window.getComputedStyle(element[0]).cssText);
+                        }
+                        else
+                        {
+                            clone.css(element.getStyleObject());
+                        }
                         clone.css({
                             position: 'absolute',
                             //hot fix for the 101 balls samplein FF and opera

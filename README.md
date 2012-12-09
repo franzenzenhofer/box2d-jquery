@@ -58,9 +58,9 @@ i.e.: `$("h1, div, img").box2d({'y-velocity':5});` or if you want more details j
 
     <!-- your script starts here -->
     <script> 
-      <!-- wait until the DOM is ready, otherwise strange things might happen -->
+      //wait until the DOM is ready, otherwise strange things might happen 
       $(document).ready(function() { 
-        <!-- select DOM nodes and make them fall down with a speed of 5px per step --> 
+        //select DOM nodes and make them fall down with a speed of 5px per step 
         $("h1, div, img").box2d({'y-velocity':5});
       });
     </script>
@@ -93,7 +93,7 @@ it is important to note, that every first call to `.box2d()` initalized the worl
     'x-velocity': 10, /* everything falls right, default 0 */
     'debug': false, /* fancy debug modus using canvas, default false */
     'static': false, /* true ... it stays | false ... it moves, default false */
-    'density': 1.2 ,/* thik weight (relational to its size) between 0 and n, default 1.5 */
+    'density': 1.2 ,/* think weight (relational to its size) between 0 and n, default 1.5 */
     'restitution': 0.4,/* think: bounciness, from 0 to 1, default 0.4 */
     'friction': 0.3, /* think: slideiness, from 0 to 1, default 0.3 */
     'shape': 'box' /* default "box", but could also be a "circle", it it's not a "circle", it's a "box"*/
