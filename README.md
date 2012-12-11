@@ -25,6 +25,8 @@ thx to box2dweb [http://code.google.com/p/box2dweb/](http://code.google.com/p/bo
 thx to 
 [Pål Smitt-Amundsen](https://twitter.com/PaalSA) i based this project heavily on the stuff i found in [his blog (and lab experiments)](http://paal.org/blog/) and thx for giving me [permission to reuse his stuff open source style](https://twitter.com/PaalSA/status/266630391971057664).
 
+if you have questions, bug-reports and/or feature requests, please use the github-issue tracker and/or ping me at twitter ([@enzenhofer](https://twitter.com/enzenhofer))
+
 ##how to use jquery.box2d.js
 
 i.e.: `$("h1, div, img").box2d({'y-velocity':5});` or if you want more details just look at the source of [hello-world.html](http://www.fullstackoptimization.com/box2d-jquery/hello-world.html)
