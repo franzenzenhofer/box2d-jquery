@@ -9,6 +9,7 @@ hi, in a moment of madness [i](http://www.fullstackoptimization.com/) become an 
 
  * **[jquery europe 2013 box2d-jquery demo](http://www.fullstackoptimization.com/box2d-jquery/)**
  * [hello world](http://www.fullstackoptimization.com/box2d-jquery/hello-world.html)
+ * [2 html5 videos sample](http://www.fullstackoptimization.com/box2d-jquery/box2d-video.html)
  * [101 bouncing balls](http://www.fullstackoptimization.com/box2d-jquery/101-bouncing-balls.html)
  * [101 random balls](http://www.fullstackoptimization.com/box2d-jquery/101-random-balls.html)
  * [dev setup](http://www.fullstackoptimization.com/box2d-jquery/development-setup.html) note: debug enabled & some deliberate edge cases

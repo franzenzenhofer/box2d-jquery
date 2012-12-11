@@ -80,7 +80,9 @@
                             }); 
                         clone.addClass('imperfect');
                     }
-                    $('body').append(clone);
+                    //clone.hide();
+                    //$('body').append(clone);
+                    //clone.show();
                     if(element[0].id) {
                         element[0].id=element[0].id+'_snatched';
                     }
@@ -94,6 +96,10 @@
                         element[0].src='';
                     }
                     collection[a]=clone[0]
+                    $('body').append(clone);
+                    //experiments for better rendering
+                    //window.setTimeout(function(){element.css('visibility','hidden');},0);
+                    //windiw.setTimeout(function(){element.css('visibility','hidden');}, 0);
                 });
                 //return $(rA);
             };

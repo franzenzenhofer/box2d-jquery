@@ -526,20 +526,25 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
                             }); 
                         clone.addClass('imperfect');
                     }
-                    $('body').append(clone);
+                    //clone.hide();
+                    //$('body').append(clone);
+                    //clone.show();
                     if(element[0].id) {
                         element[0].id=element[0].id+'_snatched';
                     }
                     element.addClass('snatched');
                     clone.addClass('bodysnatcher');
                     //stop audio and videos
-                    element.css('visibility','hidden');
+                    //element.css('visibility','hidden');
                     if(element[0].pause){
                         //console.log('video or audio')
                         element[0].pause();
                         element[0].src='';
                     }
                     collection[a]=clone[0]
+                    $('body').append(clone);
+                    window.setTimeout(function(){element.css('visibility','hidden');},0);
+                    //windiw.setTimeout(function(){element.css('visibility','hidden');}, 0);
                 });
                 //return $(rA);
             };

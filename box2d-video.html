@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+<head><title>box2d-video</title></head>
+<style>
+html, body
+{
+    height: 100%;
+    overflow:hidden;
+}
+  h1 {background-color: lightyellow; width: 500px;}
+  
+</style>
+<body>
+
+    <video  controls="controls" style="" autobuffer width=320 height=138 autoplay="autoplay"  muted="muted">
+<source src="http://www.barbafan.de/wp-content/ipad-ausmalbilder/tron.webm" type='video/webm; codecs="vp8, vorbis"'>
+<source src="http://www.barbafan.de/wp-content/ipad-ausmalbilder/tron.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+
+<source src="http://www.barbafan.de/wp-content/ipad-ausmalbilder/tron.ogv" type='video/ogg; codecs="theora, vorbis"'></video>
+
+  <video  controls="controls" style="" autobuffer width=320 height=180 autoplay="autoplay"   muted="muted">
+<source src="http://www.barbafan.de/wp-content/ipad-ausmalbilder/oldspice.webm" type='video/webm; codecs="vp8, vorbis"'>
+<source src="http://www.barbafan.de/wp-content/ipad-ausmalbilder/oldspice.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+
+<source src="http://www.barbafan.de/wp-content/ipad-ausmalbilder/oldspice.ogv" type='video/ogg; codecs="theora, vorbis"'></video>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script src="./js/lib/jquery.box2d.min.js"></script>
+<script> 
+  $(document).ready(function() {  
+    $("video").box2d({'y-velocity':5});
+  });
+</script>
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-34880400-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+</body>
+</html>
