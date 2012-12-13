@@ -234,7 +234,7 @@
     }
   };
 
-  createDOMObjects = function(jquery_selector, shape, static_, density, restitution, friction) {
+  createDOMObjects = function($dom, shape, static_, density, restitution, friction) {
     if (shape == null) {
       shape = default_shape;
     }
@@ -250,7 +250,7 @@
     if (friction == null) {
       friction = default_friction;
     }
-    return $(jquery_selector).each(function(a, b) {
+    return $dom.each(function(a, b) {
       var body, domObj, domPos, full_height, full_width, height, make_density, make_friction, make_restitution, make_shape, make_static, origin_values, r, width, x, y;
       domObj = $(b);
       full_width = domObj.width();
@@ -417,7 +417,7 @@
     return requestAnimationFrame(update);
   };
 
-  init = function(jquery_selector, density, restitution, friction) {
+  init = function($dom, density, restitution, friction) {
     var canvas, debugDraw, h, mouse, w;
     if (density == null) {
       density = default_density;
@@ -474,9 +474,9 @@
         if (debug === true) {
           D_E_B_U_G = true;
         }
-        init(this.selector, density, restitution, friction);
+        init(this, density, restitution, friction);
       }
-      absolute_elements = $(this.selector).bodysnatch();
+      absolute_elements = $(this).bodysnatch();
       createDOMObjects(absolute_elements, shape, static_, density, restitution, friction);
       return $(absolute_elements);
     }
