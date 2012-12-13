@@ -431,8 +431,8 @@ $.fn.extend
     #console.log(opts)
     if S_T_A_R_T_E_D is false
       if debug is true then D_E_B_U_G = true
-      init(@selector, density, restitution, friction)
-    absolute_elements = $(@selector).bodysnatch()
+      init(@, density, restitution, friction)
+    absolute_elements = @bodysnatch()
     createDOMObjects(absolute_elements, shape, static_, density, restitution, friction)
     #console.log(@)
     #console.log(absolute_elements)

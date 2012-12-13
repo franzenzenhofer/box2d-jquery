@@ -474,9 +474,9 @@
         if (debug === true) {
           D_E_B_U_G = true;
         }
-        init(this.selector, density, restitution, friction);
+        init(this, density, restitution, friction);
       }
-      absolute_elements = $(this.selector).bodysnatch();
+      absolute_elements = this.bodysnatch();
       createDOMObjects(absolute_elements, shape, static_, density, restitution, friction);
       return $(absolute_elements);
     }
