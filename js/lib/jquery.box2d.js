@@ -535,7 +535,7 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
                     element.addClass('snatched');
                     clone.addClass('bodysnatcher');
                     //stop audio and videos
-                    //element.css('visibility','hidden');
+                    element.css('visibility','hidden');
                     if(element[0].pause){
                         //console.log('video or audio')
                         element[0].pause();
@@ -543,7 +543,8 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
                     }
                     collection[a]=clone[0]
                     $('body').append(clone);
-                    window.setTimeout(function(){element.css('visibility','hidden');},0);
+                    //experiments for better rendering
+                    //window.setTimeout(function(){element.css('visibility','hidden');},0);
                     //windiw.setTimeout(function(){element.css('visibility','hidden');}, 0);
                 });
                 //return $(rA);
@@ -870,8 +871,6 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
       };
       origin_values = '50% 50% 0';
       domObj.css({
-        "left": "0px",
-        "top": "0px",
         "-webkit-transform-origin": origin_values,
         "-moz-transform-origin": origin_values,
         "-ms-transform-origin": origin_values,
@@ -964,13 +963,15 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
           x = Math.floor((f.m_body.m_xf.position.x * SCALE) - f.m_userData.width);
           y = Math.floor((f.m_body.m_xf.position.y * SCALE) - f.m_userData.height);
           r = Math.round(((f.m_body.m_sweep.a + PI2) % PI2) * R2D * 100) / 100;
-          translate_values = "translate(" + x + "px," + y + "px) rotate(" + r + "deg)";
+          translate_values = "rotate(" + r + "deg)";
           css = {
             "-webkit-transform": translate_values,
             "-moz-transform": translate_values,
             "-ms-transform": translate_values,
             "-o-transform": translate_values,
-            "transform": translate_values
+            "transform": translate_values,
+            "left": x + "px",
+            "top": y + "px"
           };
           f.m_userData.domObj.css(css);
         }

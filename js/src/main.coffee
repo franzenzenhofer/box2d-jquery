@@ -260,8 +260,8 @@ createDOMObjects = (jquery_selector, shape = default_shape, static_ = default_st
     
     origin_values = '50% 50% 0'
     domObj.css(
-      "left": "0px"
-      "top": "0px"
+      #"left": "0px"
+      #"top": "0px"
       "-webkit-transform-origin": origin_values
       "-moz-transform-origin": origin_values 
       "-ms-transform-origin": origin_values 
@@ -340,13 +340,16 @@ drawDOMObjects = ->
         
         #CSS3 transform does not like negative values or infitate decimals
         r = Math.round(((f.m_body.m_sweep.a + PI2) % PI2) * R2D * 100) / 100
-        translate_values = "translate(" + x + "px," + y + "px) rotate(" + r + "deg)"
+        #translate_values = "translate(" + x + "px," + y + "px) rotate(" + r + "deg)"
+        translate_values = "rotate(" + r + "deg)"
         css = 
           "-webkit-transform": translate_values 
           "-moz-transform": translate_values 
           "-ms-transform": translate_values 
           "-o-transform": translate_values 
-          "transform": translate_values    
+          "transform": translate_values  
+          "left": x+"px"
+          "top": y+"px"  
         f.m_userData.domObj.css css
       f = f.m_next
     b = b.m_next
