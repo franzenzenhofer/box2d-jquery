@@ -359,13 +359,15 @@ update = ->
   updateMouseDrag()
   #frame-rate
   #velocity iterations
-  world.Step 1 / 60, 10, 10 #position iterations
+  #world.Step 1 / 60, 10, 10 #position iterations
+  world.Step 2 / 60, 8, 3 
   drawDOMObjects()
   if D_E_B_U_G
     world.DrawDebugData()
   world.ClearForces()
   #update()
-  requestAnimationFrame(update);
+  #requestAnimationFrame(update);
+  window.setTimeout(update, 1000 / 30)
 
 
 init = (jquery_selector, density = default_density, restitution = default_restitution, friction=default_friction) ->

@@ -408,13 +408,13 @@
 
   update = function() {
     updateMouseDrag();
-    world.Step(1 / 60, 10, 10);
+    world.Step(2 / 60, 8, 3);
     drawDOMObjects();
     if (D_E_B_U_G) {
       world.DrawDebugData();
     }
     world.ClearForces();
-    return requestAnimationFrame(update);
+    return window.setTimeout(update, 1000 / 30);
   };
 
   init = function(jquery_selector, density, restitution, friction) {
