@@ -1,0 +1,53 @@
+{
+  "name": "box2d-jquery",
+  "version": "0.7.2",
+  "description": "box2d physics engine for your DOM with a nice jquery wrapper",
+  "homepage":"https://github.com/franzenzenhofer/box2d-jquery",
+  "buildto": "js/lib/jquery.box2d.js",
+  "main": "js/lib/jquery.box2d.min.js",
+  "dependencies": {
+    "grunt": "~0.4.0rc8"
+  },
+  "devDependencies": {
+    "grunt": "0.4.0rc8",
+    "coffee-script": "1.4.0",
+    "grunt-contrib-uglify": "0.1.1rc6",
+    "grunt-contrib-concat": "0.1.2rc6",
+    "grunt-contrib-watch": "0.2.0rc7",
+    "grunt-contrib-coffee": "0.4.0rc7",
+    "grunt-contrib-jshint": "0.1.1rc6"
+    },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/franzenzenhofer/box2d-jquery.git"
+  },
+  "keywords": [
+    "box2d",
+    "dom",
+    "physics",
+    "engine",
+    "game",
+    "gamedev",
+    "html",
+    "jquery"
+  ],
+  "buildfiles": [
+    "js/vendor/box2dweb/Box2dWeb-2.1.a.3.min.js",
+    "js/vendor/jquery.bodysnatch.js",
+    "js/vendor/RequestAnimationFrame.js",
+    "js/temp/main.js"]
+  ,
+  "coffeesrc":[
+    "js/src/init.coffee", "js/src/app.coffee"
+  ]
+  ,
+  "coffetemp":"js/temp/main.coffee",
+  "temp":"js/temp",
+  "coffeedest":"js/temp/main.js",
+  "author": "franz enzenhofer",
+  "license": "zlib",
+  "readmeFilename": "README.md"
+}
