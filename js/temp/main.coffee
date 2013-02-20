@@ -1,4 +1,4 @@
-# /*! box2d-jquery - v0.7.2 - last build: 2013-02-14 22:44:31 */
+# /*! box2d-jquery - v0.7.2 - last build: 2013-02-20 09:15:40 */
 b2Vec2 = Box2D.Common.Math.b2Vec2
 b2AABB = Box2D.Collision.b2AABB
 b2BodyDef = Box2D.Dynamics.b2BodyDef
