@@ -1,5 +1,7 @@
 #HOW TO BUILD box2d-jquery
 
+##BUILD
+
 box2d-jquery is written mostly in coffee-script, with some dependencies in javas-script.
 
 the build system is based on grunt@0.4.0rc8. grunt v4 is cutting edge, please follow these install instructions carefully. 
@@ -49,7 +51,37 @@ if you want to add files to the build process, please add the files to the
   * buildfiles
   * coffeesrc
 
-section of [package.json]<package.json> 
+section of [package.json](package.json)
+
+------------------------------
+
+##VIEW
+
+to view your local version of box2d-jquery do something like this
+
+    python -m SimpleHTTPServer 3000
+
+then visit 
+
+ * [http://localhost:3000/](http://localhost:3000/)
+ * [http://localhost:3000/development-setup.html](http://localhost:3000/development-setup.html)
+
+
+------------------------------
+
+##CODE
+
+the important files are
+
+
+
+### [js/vendor/jquery.bodysnatch.js](js/vendor/jquery.bodysnatch.js)
+
+
+
+### [js/vendor/box2dweb/Box2dWeb-2.1.a.3.min.js](js/vendor/box2dweb/Box2dWeb-2.1.a.3.min.js)
+
+if it can be prevented, don't touch it, it's a direct 1:1 clone of -i don't want to get into the business of mantaining my own for of box2d. but if it can't prevented, just do it.
 
 
 
