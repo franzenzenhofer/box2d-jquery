@@ -76,12 +76,32 @@ the important files are
 
 
 ### [js/vendor/jquery.bodysnatch.js](js/vendor/jquery.bodysnatch.js)
+jquery plugin that replaces elements with absolute positioned clones of themselves, while hiding & silencing the originals.
+
+
+### [js/src/init.coffee](js/src/init.coffee)
+basically some box2d-jquery shared variables, whenever you encounter a variable you do not recogice, look there
+
+### [js/src/mouse-touch.coffee](js/src/mouse-touch.coffee)
+mouse and touch handling stuff (needs a major rewrite, by the way)
+
+
+### [js/src/create.coffee](js/src/create.coffee)
+creates the box2d objects (based on the DOM)
+
+
+### [js/src/app.coffee](js/src/app.coffee)
+the startWorld, draw and update cycle
+
+### [js/src/jquerywrapper.coffee](js/src/jquerywrapper.coffee)
+the jquery wrapper and some default options
 
 
 
 ### [js/vendor/box2dweb/Box2dWeb-2.1.a.3.min.js](js/vendor/box2dweb/Box2dWeb-2.1.a.3.min.js)
+the box2d physics engine via <http://code.google.com/p/box2dweb/>
 
-if it can be prevented, don't touch it, it's a direct 1:1 clone of -i don't want to get into the business of mantaining my own for of box2d. but if it can't prevented, just do it.
+if it can be prevented, don't touch it, it's a direct 1:1 untouched version of box2dweb, i don't want to get into the business of mantaining my own for of box2dweb fork. but if it can't prevented, just do it.
 
 
 

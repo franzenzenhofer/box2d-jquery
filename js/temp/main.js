@@ -1,5 +1,5 @@
 (function() {
-  var $, D2R, D_E_B_U_G, MouseAndTouch, PI2, R2D, SCALE, S_T_A_R_T_E_D, b2AABB, b2Body, b2BodyDef, b2CircleShape, b2DebugDraw, b2Fixture, b2FixtureDef, b2MassData, b2MouseJointDef, b2PolygonShape, b2RevoluteJointDef, b2Vec2, b2World, createBox, createCircle, createDOMObjects, default_density, default_friction, default_restitution, default_shape, default_static, downHandler, drawDOMObjects, getBodyAtMouse, getBodyCB, getElementPosition, hw, init, interval, isMouseDown, mouseJoint, mousePVec, mouseX, mouseY, moveHandler, selectedBody, upHandler, update, updateMouseDrag, world, x_velocity, y_velocity;
+  var $, D2R, D_E_B_U_G, MouseAndTouch, PI2, R2D, SCALE, S_T_A_R_T_E_D, b2AABB, b2Body, b2BodyDef, b2CircleShape, b2DebugDraw, b2Fixture, b2FixtureDef, b2MassData, b2MouseJointDef, b2PolygonShape, b2RevoluteJointDef, b2Vec2, b2World, createBox, createCircle, createDOMObjects, default_density, default_friction, default_restitution, default_shape, default_static, downHandler, drawDOMObjects, getBodyAtMouse, getBodyCB, getElementPosition, hw, interval, isMouseDown, mouseJoint, mousePVec, mouseX, mouseY, moveHandler, selectedBody, startWorld, upHandler, update, updateMouseDrag, world, x_velocity, y_velocity;
 
   b2Vec2 = Box2D.Common.Math.b2Vec2;
 
@@ -257,7 +257,7 @@
       if (!(full_width && full_height)) {
         if (domObj.attr('src')) {
           if (typeof console !== "undefined" && console !== null) {
-            console.log('box2d-jquery ERROR: an element withour width or height, will lead to strangeness!');
+            console.log(' - box2d-jquery ERROR: an element withour width or height, will lead to strangeness!');
           }
           domObj.on('load', function() {
             return createDOMObjects(this, shape, static_, density, restitution, friction);
@@ -416,7 +416,7 @@
     return window.setTimeout(update, 1000 / 30);
   };
 
-  init = function(jquery_selector, density, restitution, friction) {
+  startWorld = function(jquery_selector, density, restitution, friction) {
     var canvas, debugDraw, h, mouse, w;
     if (density == null) {
       density = default_density;
@@ -473,7 +473,7 @@
         if (debug === true) {
           D_E_B_U_G = true;
         }
-        init(this, density, restitution, friction);
+        startWorld(this, density, restitution, friction);
       }
       absolute_elements = this.bodysnatch();
       createDOMObjects(absolute_elements, shape, static_, density, restitution, friction);

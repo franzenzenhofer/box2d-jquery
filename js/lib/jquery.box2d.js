@@ -1,4 +1,4 @@
-/*! box2d-jquery - v0.7.2 - last build: 2013-02-20 09:42:29 */
+/*! box2d-jquery - v0.7.2 - last build: 2013-02-20 18:13:59 */
 var Box2D={};
 (function(F,G){function K(){}if(!(Object.prototype.defineProperty instanceof Function)&&Object.prototype.__defineGetter__ instanceof Function&&Object.prototype.__defineSetter__ instanceof Function)Object.defineProperty=function(y,w,A){A.get instanceof Function&&y.__defineGetter__(w,A.get);A.set instanceof Function&&y.__defineSetter__(w,A.set)};F.inherit=function(y,w){K.prototype=w.prototype;y.prototype=new K;y.prototype.constructor=y};F.generateCallback=function(y,w){return function(){w.apply(y,arguments)}};
 F.NVector=function(y){if(y===G)y=0;for(var w=Array(y||0),A=0;A<y;++A)w[A]=0;return w};F.is=function(y,w){if(y===null)return false;if(w instanceof Function&&y instanceof w)return true;if(y.constructor.__implements!=G&&y.constructor.__implements[w])return true;return false};F.parseUInt=function(y){return Math.abs(parseInt(y))}})(Box2D);var Vector=Array,Vector_a2j_Number=Box2D.NVector;if(typeof Box2D==="undefined")Box2D={};if(typeof Box2D.Collision==="undefined")Box2D.Collision={};
@@ -576,7 +576,7 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
         };
 }());
 (function() {
-  var $, D2R, D_E_B_U_G, MouseAndTouch, PI2, R2D, SCALE, S_T_A_R_T_E_D, b2AABB, b2Body, b2BodyDef, b2CircleShape, b2DebugDraw, b2Fixture, b2FixtureDef, b2MassData, b2MouseJointDef, b2PolygonShape, b2RevoluteJointDef, b2Vec2, b2World, createBox, createCircle, createDOMObjects, default_density, default_friction, default_restitution, default_shape, default_static, downHandler, drawDOMObjects, getBodyAtMouse, getBodyCB, getElementPosition, hw, init, interval, isMouseDown, mouseJoint, mousePVec, mouseX, mouseY, moveHandler, selectedBody, upHandler, update, updateMouseDrag, world, x_velocity, y_velocity;
+  var $, D2R, D_E_B_U_G, MouseAndTouch, PI2, R2D, SCALE, S_T_A_R_T_E_D, b2AABB, b2Body, b2BodyDef, b2CircleShape, b2DebugDraw, b2Fixture, b2FixtureDef, b2MassData, b2MouseJointDef, b2PolygonShape, b2RevoluteJointDef, b2Vec2, b2World, createBox, createCircle, createDOMObjects, default_density, default_friction, default_restitution, default_shape, default_static, downHandler, drawDOMObjects, getBodyAtMouse, getBodyCB, getElementPosition, hw, interval, isMouseDown, mouseJoint, mousePVec, mouseX, mouseY, moveHandler, selectedBody, startWorld, upHandler, update, updateMouseDrag, world, x_velocity, y_velocity;
 
   b2Vec2 = Box2D.Common.Math.b2Vec2;
 
@@ -834,7 +834,7 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
       if (!(full_width && full_height)) {
         if (domObj.attr('src')) {
           if (typeof console !== "undefined" && console !== null) {
-            console.log('box2d-jquery ERROR: an element withour width or height, will lead to strangeness!');
+            console.log(' - box2d-jquery ERROR: an element withour width or height, will lead to strangeness!');
           }
           domObj.on('load', function() {
             return createDOMObjects(this, shape, static_, density, restitution, friction);
@@ -993,7 +993,7 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
     return window.setTimeout(update, 1000 / 30);
   };
 
-  init = function(jquery_selector, density, restitution, friction) {
+  startWorld = function(jquery_selector, density, restitution, friction) {
     var canvas, debugDraw, h, mouse, w;
     if (density == null) {
       density = default_density;
@@ -1050,7 +1050,7 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
         if (debug === true) {
           D_E_B_U_G = true;
         }
-        init(this, density, restitution, friction);
+        startWorld(this, density, restitution, friction);
       }
       absolute_elements = this.bodysnatch();
       createDOMObjects(absolute_elements, shape, static_, density, restitution, friction);

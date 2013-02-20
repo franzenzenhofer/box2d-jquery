@@ -1,4 +1,4 @@
-# /*! box2d-jquery - v0.7.2 - last build: 2013-02-20 09:42:29 */
+# /*! box2d-jquery - v0.7.2 - last build: 2013-02-20 18:13:59 */
 b2Vec2 = Box2D.Common.Math.b2Vec2
 b2AABB = Box2D.Collision.b2AABB
 b2BodyDef = Box2D.Dynamics.b2BodyDef
@@ -180,9 +180,6 @@ updateMouseDrag = ->
       world.DestroyJoint mouseJoint
       mouseJoint = null
 
-
-
-  
 createDOMObjects = (jquery_selector, shape = default_shape, static_ = default_static, density = default_density, restitution = default_restitution, friction=default_friction) ->
   #iterate all div elements and create them in the Box2D system
   #$("#container div").each (a, b) ->
@@ -195,7 +192,7 @@ createDOMObjects = (jquery_selector, shape = default_shape, static_ = default_st
     full_height = domObj.height()
     if not (full_width and full_height)
       if domObj.attr('src')
-        console?.log('box2d-jquery ERROR: an element withour width or height, will lead to strangeness!')
+        console?.log(' - box2d-jquery ERROR: an element withour width or height, will lead to strangeness!')
         domObj.on('load', ()->createDOMObjects(@, shape, static_, density, restitution, friction))
         #temp_src= domObj.attr('src')
         #domObj.attr('src', '');
@@ -321,7 +318,6 @@ fixDef = new b2FixtureDef;
       world.CreateBody(bodyDef).CreateFixture(fixDef);
 
 ###
-
 drawDOMObjects = ->
   i = 0
   b = world.m_bodyList
@@ -368,7 +364,7 @@ update = ->
   window.setTimeout(update, 1000 / 30)
 
 
-init = (jquery_selector, density = default_density, restitution = default_restitution, friction=default_friction) ->
+startWorld = (jquery_selector, density = default_density, restitution = default_restitution, friction=default_friction) ->
   S_T_A_R_T_E_D = true
   world = new b2World(
     new b2Vec2(x_velocity,y_velocity),
@@ -412,9 +408,14 @@ init = (jquery_selector, density = default_density, restitution = default_restit
   
   update();
   
-#init("#container div, img")
-#init("h1")
+#startWorld("#container div, img")
+#startWorld("h1")
 #canvasPosition = getElementPosition(document.getElementById("canvas"))
+
+
+
+ 
+
 
 $.fn.extend
   box2d: (options) ->
@@ -431,7 +432,7 @@ $.fn.extend
     #console.log(opts)
     if S_T_A_R_T_E_D is false
       if debug is true then D_E_B_U_G = true
-      init(@, density, restitution, friction)
+      startWorld(@, density, restitution, friction)
     absolute_elements = @bodysnatch()
     createDOMObjects(absolute_elements, shape, static_, density, restitution, friction)
     #console.log(@)
@@ -441,7 +442,7 @@ $.fn.extend
     #  $el = $(el)
     #@
     #$(this).each (i, el) ->
-    #  self.init el, opts
+    #  self.startWorld el, opts
     #  self.log el if opts.log
 
 $.extend $.fn.physics,
@@ -455,7 +456,3 @@ $.extend $.fn.physics,
     'shape': default_shape
     'debug': D_E_B_U_G
     
-
-
- 
-

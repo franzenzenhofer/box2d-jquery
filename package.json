@@ -41,7 +41,11 @@
     "js/temp/main.js"]
   ,
   "coffeesrc":[
-    "js/src/init.coffee", "js/src/app.coffee"
+    "js/src/init.coffee",
+    "js/src/mouse-touch.coffee",
+    "js/src/create.coffee",
+    "js/src/app.coffee",
+    "js/src/jquerywrapper.coffee"
   ]
   ,
   "coffetemp":"js/temp/main.coffee",
