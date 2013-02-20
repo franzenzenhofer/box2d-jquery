@@ -29,26 +29,27 @@ will
 
   * build a new version of box2d-jquery
   * watch
-    * <js/src/init.coffee>
-    * <js/src/app.coffee>
-    * <js/vendor/box2dweb/Box2dWeb-2.1.a.3.min.js>
-    * <js/vendor/jquery.bodysnatch.js>
-    * <js/vendor/RequestAnimationFrame.js>
+    * [js/src/init.coffee](js/src/init.coffee)
+    * [js/src/app.coffee](js/src/app.coffee)
+    * [js/vendor/box2dweb/Box2dWeb-2.1.a.3.min.js](js/vendor/box2dweb/Box2dWeb-2.1.a.3.min.js)
+    * [js/vendor/jquery.bodysnatch.js](js/vendor/jquery.bodysnatch.js)
+    * [js/vendor/RequestAnimationFrame.js](js/vendor/RequestAnimationFrame.js)
   * for changes
   * if one of these files changes, a new version of
-    * <js/lib/jquery.box2d.js>
-    * <js/lib/jquery.box2d.min.js>
+    * [js/lib/jquery.box2d.js](js/lib/jquery.box2d.js)
+    * [js/lib/jquery.box2d.min.js](js/lib/jquery.box2d.min.js)
   * will be build
   * yes, i'm not very subtil in my build process
+  * please see [Gruntfile.js](Gruntfile.js)
 
-for debugging reasons, in between build steps can be found in the <js/temp/> folder.
+for debugging reasons, in between build steps can be found in the [js/temp/](js/temp/) folder.
 
 if you want to add files to the build process, please add the files to the
  
   * buildfiles
   * coffeesrc
 
-section of <package.json> 
+section of [package.json]<package.json> 
 
 
 
