@@ -38,6 +38,8 @@ you can open a ticket in githug and ["call dibs"](http://en.wikipedia.org/wiki/D
 ##but i have another idea?
 contribute, talk to me, if it's the awesomeness of awesomeness and i still have 
 
+##i wanted to contribute, but hey man your code makes my eyes bleed
 
+live with it, i'm a recreational coder. but i invite you to improve my code, the lib, my life, everything. 
 
 
