@@ -1,6 +1,6 @@
 {
   "name": "box2d-jquery",
-  "version": "0.7.2",
+  "version": "0.8",
   "description": "box2d physics engine for your DOM with a nice jquery wrapper",
   "homepage":"https://github.com/franzenzenhofer/box2d-jquery",
   "buildto": "js/lib/jquery.box2d.js",

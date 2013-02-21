@@ -1,7 +1,7 @@
 #box2d-jQuery
 
 
-`v0.7 - 09.12.2012`
+`v0.8`
 
 hi, in a moment of madness [i](http://www.fullstackoptimization.com/) become an offical sponsor of the **[jQuery Europe 2013 conference in Vienna](http://events.jquery.org/2013/eu/)**, well that was the moment i decided to code a jquery plugin i wish existed but strangly didn't - until now
 
@@ -27,7 +27,15 @@ thx to
 
 if you have questions, bug-reports and/or feature requests, please use the github-issue tracker and/or ping me at twitter ([@enzenhofer](https://twitter.com/enzenhofer))
 
+##how to contribute to box2d-jquery
+
+please see [BUILD.md](BUILD.md)
+
+also there is currently a [RaspberryPi4PullRequests Challenge](CHALLENGE.md)
+
 ##how to use jquery.box2d.js
+
+that's simple
 
 i.e.: `$("h1, div, img").box2d({'y-velocity':5});` or if you want more details just look at the source of [hello-world.html](http://www.fullstackoptimization.com/box2d-jquery/hello-world.html)
 
@@ -151,9 +159,9 @@ yip, they are back! you can define static, shape, density, restitution and frict
 
 
   ```html
-    <div box2d-static='true' style="widht:200px; height:200px;"></div>
-    <div box2d-shape='circle' style="widht:200px; height:200px;"></div>
-    <div box2d-density="1.5" box2d-restitution="0.4" box2d-friction="0.3" style="widht:200px; height:200px;"></div>
+    <div data-box2d-static='true' style="widht:200px; height:200px;"></div>
+    <div data-box2d-shape='circle' style="widht:200px; height:200px;"></div>
+    <div data-box2d-density="1.5" box2d-restitution="0.4" box2d-friction="0.3" style="widht:200px; height:200px;"></div>
   ```
 note: these are just inital box2d object creation values, changing these attribute later (i.e. via jquery) has (currently) no effect.
 

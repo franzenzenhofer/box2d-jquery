@@ -41,7 +41,7 @@ values</div>
   {
     var s = '';
     for (var i = 0; i < 101; i++) {
-    s = s + '<div class="circle" style="background-color:'+randomColor()+';" box2d-density="'+randomBetween(0.1,2)+'" box2d-restitution="'+randomBetween(0,1)+'" box2d-friction="'+randomBetween(0,1)+'"></div>';
+    s = s + '<div class="circle" style="background-color:'+randomColor()+';" data-box2d-density="'+randomBetween(0.1,2)+'" data-box2d-restitution="'+randomBetween(0,1)+'" data-box2d-friction="'+randomBetween(0,1)+'"></div>';
     }
     $('body').append($(s));
   }

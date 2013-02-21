@@ -2,9 +2,9 @@
 
 ##BUILD
 
-box2d-jquery is written mostly in coffee-script, with some dependencies in javas-script.
+box2d-jquery is written mostly in coffee-script, with some dependencies in javascript.
 
-the build system is based on grunt@0.4.0rc8. grunt v4 is cutting edge, please follow these install instructions carefully. 
+the build system is based on grunt@0.4.0rc8. grunt v4 is cutting edge, please follow these install instructions carefully (otherwise you will get really really confused, gront@0.3 != grunt@0.4)
 
     npm install -g grunt-cli
 
@@ -95,7 +95,6 @@ the startWorld, draw and update cycle
 
 ### [js/src/jquerywrapper.coffee](js/src/jquerywrapper.coffee)
 the jquery wrapper and some default options
-
 
 
 ### [js/vendor/box2dweb/Box2dWeb-2.1.a.3.min.js](js/vendor/box2dweb/Box2dWeb-2.1.a.3.min.js)

@@ -270,13 +270,13 @@
       height = full_height / 2;
       x = domPos.left + width;
       y = domPos.top + height;
-      make_shape = (domObj.attr('box2d-shape') ? domObj.attr('box2d-shape') : shape);
-      make_density = parseFloat((domObj.attr('box2d-density') ? domObj.attr('box2d-density') : density));
-      make_restitution = parseFloat((domObj.attr('box2d-restitution') ? domObj.attr('box2d-restitution') : restitution));
-      make_friction = parseFloat((domObj.attr('box2d-friction') ? domObj.attr('box2d-friction') : friction));
-      if (domObj.attr('box2d-static') === "true") {
+      make_shape = (domObj.attr('data-box2d-shape') ? domObj.attr('data-box2d-shape') : shape);
+      make_density = parseFloat((domObj.attr('data-box2d-density') ? domObj.attr('data-box2d-density') : density));
+      make_restitution = parseFloat((domObj.attr('data-box2d-restitution') ? domObj.attr('data-box2d-restitution') : restitution));
+      make_friction = parseFloat((domObj.attr('data-box2d-friction') ? domObj.attr('data-box2d-friction') : friction));
+      if (domObj.attr('data-box2d-static') === "true") {
         make_static = true;
-      } else if (domObj.attr('box2d-static') === "false") {
+      } else if (domObj.attr('data-box2d-static') === "false") {
         make_static = false;
       } else {
         make_static = static_;

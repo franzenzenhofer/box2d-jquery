@@ -1,4 +1,4 @@
-# /*! box2d-jquery - v0.7.2 - last build: 2013-02-20 18:13:59 */
+# /*! box2d-jquery - v0.7.2 - last build: 2013-02-21 14:21:01 */
 b2Vec2 = Box2D.Common.Math.b2Vec2
 b2AABB = Box2D.Collision.b2AABB
 b2BodyDef = Box2D.Dynamics.b2BodyDef
@@ -180,6 +180,7 @@ updateMouseDrag = ->
       world.DestroyJoint mouseJoint
       mouseJoint = null
 
+
 createDOMObjects = (jquery_selector, shape = default_shape, static_ = default_static, density = default_density, restitution = default_restitution, friction=default_friction) ->
   #iterate all div elements and create them in the Box2D system
   #$("#container div").each (a, b) ->
@@ -219,21 +220,21 @@ createDOMObjects = (jquery_selector, shape = default_shape, static_ = default_st
 
     #element attributes with box2d- overwrite the other argument
 
-    #if domObj.attr('box2d-shape')
-    #  make_shape = domObj.attr('box2d-shape')
+    #if domObj.attr('data-box2d-shape')
+    #  make_shape = domObj.attr('data-box2d-shape')
     #else
     #  make_shape = shape
-    make_shape = (if domObj.attr('box2d-shape') then domObj.attr('box2d-shape') else shape)
+    make_shape = (if domObj.attr('data-box2d-shape') then domObj.attr('data-box2d-shape') else shape)
     #TODO TEST
-    make_density = parseFloat((if domObj.attr('box2d-density') then domObj.attr('box2d-density') else density))
+    make_density = parseFloat((if domObj.attr('data-box2d-density') then domObj.attr('data-box2d-density') else density))
     #TODO TEST
-    make_restitution = parseFloat((if domObj.attr('box2d-restitution') then domObj.attr('box2d-restitution') else restitution))
+    make_restitution = parseFloat((if domObj.attr('data-box2d-restitution') then domObj.attr('data-box2d-restitution') else restitution))
     #TODO TEST
-    make_friction = parseFloat((if domObj.attr('box2d-friction') then domObj.attr('box2d-friction') else friction))
+    make_friction = parseFloat((if domObj.attr('data-box2d-friction') then domObj.attr('data-box2d-friction') else friction))
     #TODO TEST
-    if domObj.attr('box2d-static') is "true" 
+    if domObj.attr('data-box2d-static') is "true" 
       make_static = true 
-    else if domObj.attr('box2d-static') is "false"
+    else if domObj.attr('data-box2d-static') is "false"
       make_static = false
     else 
       make_static = static_ 
@@ -266,6 +267,7 @@ createDOMObjects = (jquery_selector, shape = default_shape, static_ = default_st
 
     return true
 
+#throws a DOM object as 
 createBox = (x, y, width, height, static_ = default_static, density = default_density, restitution = default_restitution, friction=default_friction ) ->
   #console.log('in create box')
   bodyDef = new b2BodyDef
