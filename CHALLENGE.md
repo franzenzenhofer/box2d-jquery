@@ -38,12 +38,18 @@ then
  6. change world boundaries with window resize (without letting stuff fall out of the page)
  7. changes in the box2d "data-" HTML attributes later should change the behavior of the objects in the box2d world, too
  8. make elements keyboard controllable
- 9. resizing / moving / removing an HTML element should resize/move/remove the box2d world element, too
+ 9. a) resizing b) moving c)removing an HTML element should resize/move/remove the box2d world element, too
  10. make it work with whatever microsoft browser is currently relevant
  11. make an awesome game with box2d-jquery
  12. [support combined objects](http://blog.sethladd.com/2011/09/box2d-with-complex-and-concave-objects.html) 
  13. support SVG objects
  14. make the whole [box2d](http://www.box2d.org/manual.html) object with all methods available, in a sensemaking way
+
+some other cool ideas would be
+
+ * testing, testing, testing (framework like)
+ * performance improvements
+ * other stuff i haven't thought up
 
 you can open a ticket in github and ["call dibs"](http://en.wikipedia.org/wiki/Dibs) on one of the challenges. but hey, if somebody else want to fix the same stuff - or write the awesome feature -  then there is nothing i or anyone else will do about it. it's ok. hey, coding is fun, competitive coding even more fun (maybe).
 
