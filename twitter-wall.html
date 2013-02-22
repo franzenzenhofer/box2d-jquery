@@ -2,49 +2,52 @@
 <html>
 <head>
     <title>twitter wall for #jqeu13</title>
-</head>
-<style>
-    body {
-        font-family: Helvetica, Arial, sans-serif;
-    }
-    .tweet {
-        width: 200px;
-        border: 1px solid #333333;
-        padding: 15px;
-        float: left;
-    }
-    .tweeter {
-        font-weight: bold;
-    }
-    .text {
+    <meta charset="UTF-8"/>
 
-    }
-</style>
+    <style type="text/css">
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 12px;
+        }
+        .tweet {
+            width: 250px;
+            border: 1px solid #333333;
+            padding: 10px;
+            margin: 1px;
+            box-model: border-box;
+        }
+        .tweeter {
+            font-weight: bold;
+        }
+        .text {
+
+        }
+    </style>
+</head>
 <body>
 
-<div id="twitterwall">
-
-</div>
+<div id="twitterwall"></div>
 
 <script src="./js/vendor/jquery.min.js"></script>
 <script src="./js/lib/jquery.box2d.min.js"></script>
-
 
 <script type="text/javascript">
     (function () {
         var $myTwitterWall = $('#twitterwall'),
             ajaxTimeout = 30000,
-            updateInterval = 60000,
-            lastId = null,
+            updateInterval = 15000,
             query = 'jqeu13',
             apiUrl = 'http://search.twitter.com/search.json?callback=?',
-            tweetCache = [];
+            tweetCache = [],
+            maxTweets = 5,
+            since_id = 0;
 
         function addElements(data) {
             $.each(data, function (i, e) {
                 var twid = e.id_str;
 
                 if( $.inArray(twid, tweetCache) === -1) {
+                    console.log('Adding new: ' + twid);
                     tweetCache.push(twid);
 
                     var myTweetElement = $([
@@ -57,34 +60,32 @@
                         '</div>',
                     '</div>'].join(''));
 
-                    myTweetElement.appendTo($myTwitterWall);
-                    myTweetElement.box2d({
-                        'y-velocity': 5,
-                        'x-velocity': 5,
-                        density: 1.2,
-                        restitution: 0.6,
-                        friction: 0.5
-                    });
+                    myTweetElement.prependTo($myTwitterWall);
+                    myTweetElement.box2d();
+                } else {
+                    console.log('Skipping: ' + twid)
                 }
             });
         }
 
         function checkTweets() {
-
-            console.log('Refreshing...');
-
             $.ajax({
                 url: apiUrl,
                 timeout: ajaxTimeout,
                 data: {
-                    q: query
-                    //since_id: lastId
+                    q: query,
+                    rpp: maxTweets,
+                    since_id: since_id
                 },
                 dataType: 'json'
             })
                 .success(function (data) {
-                    console.log(data);
-                    addElements(data.results);
+                    since_id = data.max_id;
+
+                    if(data.results) {
+                        addElements(data.results);
+                    }
+
                     setTimeout(function() { checkTweets(); }, updateInterval);
                 })
                 .fail(function (data) {
@@ -92,8 +93,15 @@
                 });
         }
 
-        checkTweets();
+        $myTwitterWall.box2d({
+            'y-velocity': 5,
+            'x-velocity': 5,
+            density: 1.2,
+            restitution: 0.6,
+            friction: 0.5
+        });
 
+        checkTweets();
     })();
 </script>
 </body>
