@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+<head>
+    <title>twitter wall for #jqeu13</title>
+</head>
+<style>
+    body {
+        font-family: Helvetica, Arial, sans-serif;
+    }
+    .tweet {
+        width: 200px;
+        border: 1px solid #333333;
+        padding: 15px;
+        float: left;
+    }
+    .tweeter {
+        font-weight: bold;
+    }
+    .text {
+
+    }
+</style>
+<body>
+
+<div id="twitterwall">
+
+</div>
+
+<script src="./js/vendor/jquery.min.js"></script>
+<script src="./js/lib/jquery.box2d.min.js"></script>
+
+
+<script type="text/javascript">
+    (function () {
+        var $myTwitterWall = $('#twitterwall'),
+            ajaxTimeout = 30000,
+            updateInterval = 60000,
+            lastId = null,
+            query = 'jqeu13',
+            apiUrl = 'http://search.twitter.com/search.json?callback=?',
+            tweetCache = [];
+
+        function addElements(data) {
+            $.each(data, function (i, e) {
+                var twid = e.id_str;
+
+                if( $.inArray(twid, tweetCache) === -1) {
+                    tweetCache.push(twid);
+
+                    var myTweetElement = $([
+                    '<div class="tweet">',
+                        '<div class="tweeter">',
+                            e.from_user_name,
+                        '</div>',
+                        '<div class="text">',
+                            e.text,
+                        '</div>',
+                    '</div>'].join(''));
+
+                    myTweetElement.appendTo($myTwitterWall);
+                    myTweetElement.box2d({
+                        'y-velocity': 5,
+                        'x-velocity': 5,
+                        density: 1.2,
+                        restitution: 0.6,
+                        friction: 0.5
+                    });
+                }
+            });
+        }
+
+        function checkTweets() {
+
+            console.log('Refreshing...');
+
+            $.ajax({
+                url: apiUrl,
+                timeout: ajaxTimeout,
+                data: {
+                    q: query
+                    //since_id: lastId
+                },
+                dataType: 'json'
+            })
+                .success(function (data) {
+                    console.log(data);
+                    addElements(data.results);
+                    setTimeout(function() { checkTweets(); }, updateInterval);
+                })
+                .fail(function (data) {
+                    console.log('sad :(')
+                });
+        }
+
+        checkTweets();
+
+    })();
+</script>
+</body>
+</html>
