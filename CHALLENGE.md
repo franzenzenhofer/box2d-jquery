@@ -1,4 +1,4 @@
-#box2d-jquery challenge
+#box2d-jquery challenge for jquery europe 2013
 
 hi, welcome to the box2d-jquery challenge. the idea is simple: contribute to box2d-jquery, get one of ~~15~~ 14 RaspberryPis.
 
