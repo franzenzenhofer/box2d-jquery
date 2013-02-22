@@ -2,6 +2,8 @@
 
 (something to do after the afterparty and during the breaks)
 
+update: yes, i realized now that the wifi sucks and this challenge is kinda hard offline .... you will find a way.
+
 
 hi, welcome to the box2d-jquery challenge. the idea is simple: contribute to box2d-jquery, get one of ~~15~~ 14 RaspberryPis.
 
