@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+<head><title>2d Box editable with Aloha Editor</title>
+
+	<style>
+	  h1.box {background-color: lightgray; width: 500px;}
+	  div.box {width: 500px; background-color: lightgray;}
+	</style>
+
+	<!-- load the Aloha Editor CSS styles -->
+	<link href="http://cdn.aloha-editor.org/latest/css/aloha.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<div class="box">
+
+<h1 class="box editable">all anchor elements get selected and made physical</h1>
+
+
+
+<div class="editable" style="width:150px;height:150px; background-color: pink;">View the source! The image above is linked, strangeness happens. <a style="width:100px;height:100px; background-color: yellow;" href="http://www.f19n.com/"><span class="editable">This link has a much too</span></a> big box2d box, don't know why.</div>
+
+<div class="editable"><a class="editable" style="width:200px;height:200px; background-color: red;"><img src="http://placekitten.com/200/200" width="200px" height="200px"></a></div>
+
+<a href="http://aloha-editor.org"><span class="editable">Visit aloha-editor.org</span></a>
+
+<a href="http://aloha-editor.org/postamt"><span class="editable">Create an Aloha Editor postcard</span></a>
+
+</div>
+
+<!-- load the jQuery and require.js libraries -->
+<script type="text/javascript" src="http://cdn.aloha-editor.org/latest/lib/require.js"></script>
+<script type="text/javascript" src="http://cdn.aloha-editor.org/latest/lib/vendor/jquery-1.7.2.js"></script>
+
+<!-- script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script -->
+<script src="./js/lib/jquery.box2d.min.js"></script>
+
+
+<!-- load the Aloha Editor core and some plugins -->
+<script src="http://cdn.aloha-editor.org/latest/lib/aloha.js"
+                     data-aloha-plugins="common/ui,
+                                          common/format,
+                                          common/list,
+                                          common/link,
+                                          common/highlighteditables">
+</script>
+
+
+<!-- make all elements with class="editable" editable with Aloha Editor -->
+<script type="text/javascript">
+       Aloha.ready( function() {
+              //var $ = Aloha.jQuery;
+              $('.editable').aloha();
+       });
+
+	Aloha.bind('aloha-editable-deactivated', function(){
+		$("a").box2d({'y-velocity':5, 'debug':true});
+	})
+</script>
+
+
+<script> 
+  $(document).ready(function() {  
+    //$("a").box2d({'y-velocity':5, 'debug':true});
+  });
+</script>
+
+
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-34880400-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+</body>
+</html>
