@@ -34,6 +34,7 @@ then
 
 ##the challenges
 
+ 0. make a twitter wall for #jqeu13 using box2d-jquery
  1. better touch handling (currently scroll and links are not useable on touch devices) - for this we will have to completely rewirte the touch/mouse event stuff (it must be applied to each DOM element, not globally, i think)
  2. better google chrome android support
  3. [selecting anchor elements](linkstrangeness.html) sometimes leads to strange results, fix it
