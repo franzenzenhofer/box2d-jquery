@@ -57,6 +57,7 @@ some other cool ideas would be
  * testing, testing, testing (framework like)
  * performance improvements
  * other stuff i haven't thought up
+ * __or jsut create something elese aweomse or usefull for/with box2d-jquery__
 
 you can open a ticket in github and ["call dibs"](http://en.wikipedia.org/wiki/Dibs) on one of the challenges. but hey, if somebody else want to fix the same stuff - or write the awesome feature -  then there is nothing i or anyone else will do about it. it's ok. hey, coding is fun, competitive coding even more fun (maybe).
 
