@@ -1,8 +1,12 @@
 #box2d-jquery challenge for jquery europe 2013
 
+(something to do after the afterparty and during the breaks)
+
+
 hi, welcome to the box2d-jquery challenge. the idea is simple: contribute to box2d-jquery, get one of ~~15~~ 14 RaspberryPis.
 
 ![14 Raspberry Pis](http://replycam.com/i/jqeu13-20130221-213230.png)
+
 
 
 ###how does the challenge work
