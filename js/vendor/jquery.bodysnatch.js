@@ -38,6 +38,12 @@
                 //console.log(collection)
                 return collection.each(function(a,b) {
                     var element = $(this);
+
+                    //Proper width and height calculation for anchor elements 
+                    if(element.prop("tagName").toUpperCase() == 'A' && element.css('display') != 'inline-block') {
+                         element.css({ display:'inline-block', 'white-space':'nowrap'});
+                    }
+
                     var clone = element.clone();
                     
                     w = element.width()
