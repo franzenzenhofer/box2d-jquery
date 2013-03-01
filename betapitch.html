@@ -84,12 +84,13 @@
        },500);
       });
 
-      var bullshit = ['<h1>Google</h1>','<span>Crawling</span>', '<strong>Indexing</strong', '<h2>Links</h2>', '<h2>Ranking</h2>', '<h2>Keywords</h2>', '<h1>PageRank</h1>', '<img src="http://replycam.com/i/linkjuice-20130301-110458.png" height="250px">', '<h1>nofollow</h1>', '<h1>paid links</h1>', '<span>social media</span>', '<img src="http://replycam.com/i/pinguin-20130301-110244.png">', '<img src="http://replycam.com/i/panda-20130301-110359.png">', '<img src="http://replycam.com/i/mayday_-_Google_Search-20130301-110842.png">', '<span>Trust</span>', '<img src="http://replycam.com/i/unicorn-20130301-111134.png">' ];
+      var bullshit = ['<h1>Google</h1>','<span>Crawling</span>', '<strong>Indexing</strong', '<h2>Links</h2>', '<h2>Ranking</h2>', '<h2>Keywords</h2>', '<h1>PageRank</h1>', '<img src="http://replycam.com/i/linkjuice-20130301-110458.png" height="250px">', '<h1>nofollow</h1>', '<h1>paid links</h1>', '<span>social media</span>', '<img src="http://replycam.com/i/pinguin-20130301-110244.png">', '<img src="http://replycam.com/i/panda-20130301-110359.png">', '<img src="http://replycam.com/i/mayday_-_Google_Search-20130301-110842.png">', '<span>Trust</span>', '<img src="http://replycam.com/i/caffein-20130301-120342.png">', '<img src="http://replycam.com/i/unicorn-20130301-111134.png">' ];
      var i = 0;
                     $("body").click(function() {
                       var e = $(bullshit[i++])
   $('#center').prepend(e);
   e.box2d();
+  if (i > bullshit.length) {i = 0;}
    //$("h1, h2,div,img").box2d({'y-velocity':9.8, 'x-velocity':-0.05, 'debug':true});
 
 });
