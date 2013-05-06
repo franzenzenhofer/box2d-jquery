@@ -490,7 +490,7 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
                     w = element.width()
                     h = element.height()
                     //otherwise not loaded image will be stuck with zero width/height
-                    if ( w && h)
+                    if (this.offsetWidth > 0 && this.offsetHeight > 0)
                     {
                         //cssText returns "" on FF!!!
                         if ( window.getComputedStyle && window.getComputedStyle.cssText )
