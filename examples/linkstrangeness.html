@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+  <title>linkedimagestrangeness</title>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+  <script src="../js/lib/jquery.box2d.min.js"></script>
+  <script> 
+    $(document).ready(function() {  
+      $("a").box2d({'y-velocity':5, 'debug':true});
+    });
+  </script>
+  <style>
+    h1 { 
+      background-color: lightgray; 
+      width: 500px;
+    }
+    
+    div {
+      width: 500px; 
+      background-color: lightgray;
+    }
+
+    div.row {
+      float: left;
+      width: 40%;
+      margin-right: 5%;
+    }
+
+    a img {
+      width: 200px;
+      height: 200px;
+    }
+
+    .fixed  a {
+      display: inline-block;
+      white-space: nowrap;
+    }
+
+  </style>
+</head>
+
+<body>
+<div class="row">
+  <h1>all anchor elements get selected and made physical</h1>
+  <a href="#">
+    <img src="http://placekitten.com/200/200">
+  </a>
+
+  <div>
+    View the source! The image above is linked, strangeness happens. <a href="http://www.f19n.com/">This link has a much too</a>big box2d box, don't know why
+  </div>
+</div>
+<div class="row fixed">
+  <h1>all anchor elements get selected and made physical</h1>
+  <a href="#">
+    <img src="http://placekitten.com/200/200">
+  </a>
+
+  <div>
+    View the source! The image above is linked, strangeness happens. <a href="http://www.f19n.com/">This link has a much too</a>big box2d box, don't know why
+  </div>
+</div>
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-34880400-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+</body>
+</html>

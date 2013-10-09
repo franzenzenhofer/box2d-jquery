@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head><title>101 bouncing balls - box2d-jquery example</title></head>
+<style>
+      body {overflow:hidden;}
+      h1 {width: 200px; background-color: yellow; border: 2px solid black;}
+      #intro {width: 300px; background-color: lightyellow; border: 2px solid black;}
+      .circle {
+      border-radius: 50%;
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      /*background: yellow;*/
+      border:2px solid black !important;
+      }
+</style>
+<body>
+<h1>101 bouncing balls</h1>
+
+<script src="../js/vendor/jquery.min.js"></script>
+<script src="../js/lib/jquery.box2d.min.js"></script>
+<script> 
+  randomColor = function() {
+    return 'rgb('+(Math.floor(Math.random()*256))+','+(Math.floor(Math.random()*256))+','+(Math.floor(Math.random()*256))+')';
+
+  }
+
+
+  function makeBalls()
+  {
+    var s = '';
+    for (var i = 0; i < 101; i++) {
+    s = s + '<div class="circle" style="background-color:'+randomColor()+';"></div>';
+    }
+    $('body').append($(s))
+  }
+
+  $(document).ready(function() {  
+    $("h1, div").box2d({'y-velocity':10, 'density':2});
+    makeBalls();
+    $(".circle").box2d({'shape':'circle','density':0.1, 'restitution':0.8, 'friction':0.2});
+  });
+</script>
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-34880400-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+</body>

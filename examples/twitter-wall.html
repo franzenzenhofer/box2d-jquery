@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+<head>
+    <title>twitter wall for #jqeu13</title>
+    <meta charset="UTF-8"/>
+
+    <style type="text/css">
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 12px;
+        }
+        .tweet {
+            width: 250px;
+            border: 1px solid #333333;
+            padding: 10px;
+            margin: 1px;
+            box-model: border-box;
+        }
+        .tweeter {
+            font-weight: bold;
+        }
+        .text {
+
+        }
+    </style>
+</head>
+<body>
+
+<div id="twitterwall"></div>
+
+<script src="../js/vendor/jquery.min.js"></script>
+<script src="../js/lib/jquery.box2d.min.js"></script>
+
+<script type="text/javascript">
+    (function () {
+        var $myTwitterWall = $('#twitterwall'),
+            ajaxTimeout = 30000,
+            updateInterval = 15000,
+            query = 'jqeu13',
+            apiUrl = 'http://search.twitter.com/search.json?callback=?',
+            tweetCache = [],
+            maxTweets = 5,
+            since_id = 0;
+
+        function addElements(data) {
+            $.each(data, function (i, e) {
+                var twid = e.id_str;
+
+                if( $.inArray(twid, tweetCache) === -1) {
+                    console.log('Adding new: ' + twid);
+                    tweetCache.push(twid);
+
+                    var myTweetElement = $([
+                    '<div class="tweet">',
+                        '<div class="tweeter">',
+                            e.from_user_name,
+                        '</div>',
+                        '<div class="text">',
+                            e.text,
+                        '</div>',
+                    '</div>'].join(''));
+
+                    myTweetElement.prependTo($myTwitterWall);
+                    myTweetElement.box2d();
+                } else {
+                    console.log('Skipping: ' + twid)
+                }
+            });
+        }
+
+        function checkTweets() {
+            $.ajax({
+                url: apiUrl,
+                timeout: ajaxTimeout,
+                data: {
+                    q: query,
+                    rpp: maxTweets,
+                    since_id: since_id
+                },
+                dataType: 'json'
+            })
+                .success(function (data) {
+                    since_id = data.max_id;
+
+                    if(data.results) {
+                        addElements(data.results);
+                    }
+
+                    setTimeout(function() { checkTweets(); }, updateInterval);
+                })
+                .fail(function (data) {
+                    console.log('sad :(')
+                });
+        }
+
+        $myTwitterWall.box2d({
+            'y-velocity': 5,
+            'x-velocity': 5,
+            density: 1.2,
+            restitution: 0.6,
+            friction: 0.5
+        });
+
+        checkTweets();
+    })();
+</script>
+</body>
+</html>
