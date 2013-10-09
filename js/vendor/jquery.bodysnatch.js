@@ -40,8 +40,8 @@
                     var element = $(this);
                     var clone = element.clone();
                     
-                    w = element.width()
-                    h = element.height()
+                    var w = element.width(),
+                        h = element.height();
                     //otherwise not loaded image will be stuck with zero width/height
                     if ( w && h)
                     {
