@@ -8,6 +8,7 @@ b2World = Box2D.Dynamics.b2World
 b2MassData = Box2D.Collision.Shapes.b2MassData
 b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape
 b2CircleShape = Box2D.Collision.Shapes.b2CircleShape
+b2ContactListener = Box2D.Dynamics.b2ContactListener
 b2DebugDraw = Box2D.Dynamics.b2DebugDraw
 b2RevoluteJointDef = Box2D.Dynamics.Joints.b2RevoluteJointDef
 b2MouseJointDef =  Box2D.Dynamics.Joints.b2MouseJointDef
