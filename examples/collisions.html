@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+<head><title>Collision example box2d-jquery</title></head>
+<style>
+  h1 {background-color: lightgray; width: 500px;}
+  div { width: 100px; height:100px; background-color: lightgray; }
+  .collides { background-color: red !important; }
+</style>
+<body>
+<h1>Hello World Lorem Ipsum Collisium</h1>
+<img src="http://placekitten.com/400/300" width="400px" height="300px">
+<div>Let's colide!</div>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script src="../js/lib/jquery.box2d.min.js"></script>
+<script> 
+  $(document).ready(function() {  
+    $("h1, div, img")
+      .box2d({'y-velocity':5 })
+      .on("collisionStart", function(evt, collisionData) {
+        if (collisionData.collisionType === 'active') {
+          $(this).addClass('collides');
+          collisionData.collisionWith.addClass('collides');
+        }
+      })
+      .on("collisionEnd", function(evt, collisionData) {
+        if (collisionData.collisionType === 'active') {
+          $(this).removeClass('collides');
+          collisionData.collisionWith.removeClass('collides');
+        }
+      });
+  });
+</script>
+</body>
+</html>

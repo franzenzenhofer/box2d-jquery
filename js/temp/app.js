@@ -44,7 +44,7 @@
   };
 
   startWorld = function(jquery_selector, density, restitution, friction) {
-    var S_T_A_R_T_E_D, canvas, debugDraw, h, mouse, w, world;
+    var S_T_A_R_T_E_D, canvas, contactListener, debugDraw, h, mouse, w, world;
     if (density == null) {
       density = default_density;
     }
@@ -63,6 +63,38 @@
     createBox(-1, 0, 1, $(window.document).height(), true, density, restitution, friction);
     createBox(0, $(window.document).height() + 1, $(window).width(), 1, true, density, restitution, friction);
     mouse = MouseAndTouch(document, downHandler, upHandler, moveHandler);
+    contactListener = new b2ContactListener;
+    contactListener.BeginContact = function(contact) {
+      var node0, node1, _ref, _ref1;
+      node0 = (_ref = contact.GetFixtureA().GetUserData()) != null ? _ref.domObj : void 0;
+      node1 = (_ref1 = contact.GetFixtureB().GetUserData()) != null ? _ref1.domObj : void 0;
+      if ((node0 != null) && (node1 != null)) {
+        node0.trigger('collisionStart', {
+          collisionType: 'active',
+          collisionWith: node1
+        });
+        return node1.trigger('collisionStart', {
+          collisionType: 'passive',
+          collidesWith: node0
+        });
+      }
+    };
+    contactListener.EndContact = function(contact) {
+      var node0, node1, _ref, _ref1;
+      node0 = (_ref = contact.GetFixtureA().GetUserData()) != null ? _ref.domObj : void 0;
+      node1 = (_ref1 = contact.GetFixtureB().GetUserData()) != null ? _ref1.domObj : void 0;
+      if ((node0 != null) && (node1 != null)) {
+        node0.trigger('collisionEnd', {
+          collisionType: 'active',
+          collisionWith: node1
+        });
+        return node1.trigger('collisionEnd', {
+          collisionType: 'passive',
+          collisionWith: node0
+        });
+      }
+    };
+    world.SetContactListener(contactListener);
     if (D_E_B_U_G) {
       debugDraw = new b2DebugDraw();
       canvas = $('<canvas></canvas>');
