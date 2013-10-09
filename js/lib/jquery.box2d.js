@@ -1,4 +1,4 @@
-/*! box2d-jquery - v0.8 - last build: 2013-02-21 21:36:54 */
+/*! box2d-jquery - v0.8.0 - last build: 2013-10-10 00:32:22 */
 var Box2D={};
 (function(F,G){function K(){}if(!(Object.prototype.defineProperty instanceof Function)&&Object.prototype.__defineGetter__ instanceof Function&&Object.prototype.__defineSetter__ instanceof Function)Object.defineProperty=function(y,w,A){A.get instanceof Function&&y.__defineGetter__(w,A.get);A.set instanceof Function&&y.__defineSetter__(w,A.set)};F.inherit=function(y,w){K.prototype=w.prototype;y.prototype=new K;y.prototype.constructor=y};F.generateCallback=function(y,w){return function(){w.apply(y,arguments)}};
 F.NVector=function(y){if(y===G)y=0;for(var w=Array(y||0),A=0;A<y;++A)w[A]=0;return w};F.is=function(y,w){if(y===null)return false;if(w instanceof Function&&y instanceof w)return true;if(y.constructor.__implements!=G&&y.constructor.__implements[w])return true;return false};F.parseUInt=function(y){return Math.abs(parseInt(y))}})(Box2D);var Vector=Array,Vector_a2j_Number=Box2D.NVector;if(typeof Box2D==="undefined")Box2D={};if(typeof Box2D.Collision==="undefined")Box2D.Collision={};
@@ -475,9 +475,6 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
 })(jQuery);
 
          (function($){
-            isString = function (obj) {
-            return toString.call(obj) == '[object String]';
-            };
             
             $.fn.bodysnatch = function() {
                 //rA = [];
@@ -487,8 +484,8 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
                     var element = $(this);
                     var clone = element.clone();
                     
-                    w = element.width()
-                    h = element.height()
+                    var w = element.width(),
+                        h = element.height();
                     //otherwise not loaded image will be stuck with zero width/height
                     if ( w && h)
                     {
@@ -576,7 +573,7 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
         };
 }());
 (function() {
-  var $, D2R, D_E_B_U_G, MouseAndTouch, PI2, R2D, SCALE, S_T_A_R_T_E_D, b2AABB, b2Body, b2BodyDef, b2CircleShape, b2DebugDraw, b2Fixture, b2FixtureDef, b2MassData, b2MouseJointDef, b2PolygonShape, b2RevoluteJointDef, b2Vec2, b2World, createBox, createCircle, createDOMObjects, default_density, default_friction, default_restitution, default_shape, default_static, downHandler, drawDOMObjects, getBodyAtMouse, getBodyCB, getElementPosition, hw, interval, isMouseDown, mouseJoint, mousePVec, mouseX, mouseY, moveHandler, selectedBody, startWorld, upHandler, update, updateMouseDrag, world, x_velocity, y_velocity;
+  var $, D2R, D_E_B_U_G, MouseAndTouch, PI2, R2D, SCALE, S_T_A_R_T_E_D, b2AABB, b2Body, b2BodyDef, b2CircleShape, b2ContactListener, b2DebugDraw, b2Fixture, b2FixtureDef, b2MassData, b2MouseJointDef, b2PolygonShape, b2RevoluteJointDef, b2Vec2, b2World, createBox, createCircle, createDOMObjects, default_density, default_friction, default_restitution, default_shape, default_static, downHandler, drawDOMObjects, getBodyAtMouse, getBodyCB, getElementPosition, hw, interval, isMouseDown, mouseJoint, mousePVec, mouseX, mouseY, moveHandler, selectedBody, startWorld, upHandler, update, updateMouseDrag, world, x_velocity, y_velocity;
 
   b2Vec2 = Box2D.Common.Math.b2Vec2;
 
@@ -597,6 +594,8 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
   b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape;
 
   b2CircleShape = Box2D.Collision.Shapes.b2CircleShape;
+
+  b2ContactListener = Box2D.Dynamics.b2ContactListener;
 
   b2DebugDraw = Box2D.Dynamics.b2DebugDraw;
 
@@ -994,7 +993,7 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
   };
 
   startWorld = function(jquery_selector, density, restitution, friction) {
-    var canvas, debugDraw, h, mouse, w;
+    var canvas, contactListener, debugDraw, h, mouse, w;
     if (density == null) {
       density = default_density;
     }
@@ -1013,6 +1012,38 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
     createBox(-1, 0, 1, $(window.document).height(), true, density, restitution, friction);
     createBox(0, $(window.document).height() + 1, $(window).width(), 1, true, density, restitution, friction);
     mouse = MouseAndTouch(document, downHandler, upHandler, moveHandler);
+    contactListener = new b2ContactListener;
+    contactListener.BeginContact = function(contact) {
+      var node0, node1, _ref, _ref1;
+      node0 = (_ref = contact.GetFixtureA().GetUserData()) != null ? _ref.domObj : void 0;
+      node1 = (_ref1 = contact.GetFixtureB().GetUserData()) != null ? _ref1.domObj : void 0;
+      if ((node0 != null) && (node1 != null)) {
+        node0.trigger('collisionStart', {
+          collisionType: 'active',
+          collisionWith: node1
+        });
+        return node1.trigger('collisionStart', {
+          collisionType: 'passive',
+          collidesWith: node0
+        });
+      }
+    };
+    contactListener.EndContact = function(contact) {
+      var node0, node1, _ref, _ref1;
+      node0 = (_ref = contact.GetFixtureA().GetUserData()) != null ? _ref.domObj : void 0;
+      node1 = (_ref1 = contact.GetFixtureB().GetUserData()) != null ? _ref1.domObj : void 0;
+      if ((node0 != null) && (node1 != null)) {
+        node0.trigger('collisionEnd', {
+          collisionType: 'active',
+          collisionWith: node1
+        });
+        return node1.trigger('collisionEnd', {
+          collisionType: 'passive',
+          collisionWith: node0
+        });
+      }
+    };
+    world.SetContactListener(contactListener);
     if (D_E_B_U_G) {
       debugDraw = new b2DebugDraw();
       canvas = $('<canvas></canvas>');

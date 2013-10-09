@@ -1,5 +1,5 @@
 (function() {
-  var $, D2R, D_E_B_U_G, PI2, R2D, SCALE, S_T_A_R_T_E_D, b2AABB, b2Body, b2BodyDef, b2CircleShape, b2DebugDraw, b2Fixture, b2FixtureDef, b2MassData, b2MouseJointDef, b2PolygonShape, b2RevoluteJointDef, b2Vec2, b2World, default_density, default_friction, default_restitution, default_shape, default_static, hw, interval, isMouseDown, mouseJoint, mousePVec, mouseX, mouseY, selectedBody, world, x_velocity, y_velocity;
+  var $, D2R, D_E_B_U_G, PI2, R2D, SCALE, S_T_A_R_T_E_D, b2AABB, b2Body, b2BodyDef, b2CircleShape, b2ContactListener, b2DebugDraw, b2Fixture, b2FixtureDef, b2MassData, b2MouseJointDef, b2PolygonShape, b2RevoluteJointDef, b2Vec2, b2World, default_density, default_friction, default_restitution, default_shape, default_static, hw, interval, isMouseDown, mouseJoint, mousePVec, mouseX, mouseY, selectedBody, world, x_velocity, y_velocity;
 
   b2Vec2 = Box2D.Common.Math.b2Vec2;
 
@@ -20,6 +20,8 @@
   b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape;
 
   b2CircleShape = Box2D.Collision.Shapes.b2CircleShape;
+
+  b2ContactListener = Box2D.Dynamics.b2ContactListener;
 
   b2DebugDraw = Box2D.Dynamics.b2DebugDraw;
 

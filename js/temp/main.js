@@ -1,5 +1,5 @@
 (function() {
-  var $, D2R, D_E_B_U_G, MouseAndTouch, PI2, R2D, SCALE, S_T_A_R_T_E_D, b2AABB, b2Body, b2BodyDef, b2CircleShape, b2DebugDraw, b2Fixture, b2FixtureDef, b2MassData, b2MouseJointDef, b2PolygonShape, b2RevoluteJointDef, b2Vec2, b2World, createBox, createCircle, createDOMObjects, default_density, default_friction, default_restitution, default_shape, default_static, downHandler, drawDOMObjects, getBodyAtMouse, getBodyCB, getElementPosition, hw, interval, isMouseDown, mouseJoint, mousePVec, mouseX, mouseY, moveHandler, selectedBody, startWorld, upHandler, update, updateMouseDrag, world, x_velocity, y_velocity;
+  var $, D2R, D_E_B_U_G, MouseAndTouch, PI2, R2D, SCALE, S_T_A_R_T_E_D, b2AABB, b2Body, b2BodyDef, b2CircleShape, b2ContactListener, b2DebugDraw, b2Fixture, b2FixtureDef, b2MassData, b2MouseJointDef, b2PolygonShape, b2RevoluteJointDef, b2Vec2, b2World, createBox, createCircle, createDOMObjects, default_density, default_friction, default_restitution, default_shape, default_static, downHandler, drawDOMObjects, getBodyAtMouse, getBodyCB, getElementPosition, hw, interval, isMouseDown, mouseJoint, mousePVec, mouseX, mouseY, moveHandler, selectedBody, startWorld, upHandler, update, updateMouseDrag, world, x_velocity, y_velocity;
 
   b2Vec2 = Box2D.Common.Math.b2Vec2;
 
@@ -20,6 +20,8 @@
   b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape;
 
   b2CircleShape = Box2D.Collision.Shapes.b2CircleShape;
+
+  b2ContactListener = Box2D.Dynamics.b2ContactListener;
 
   b2DebugDraw = Box2D.Dynamics.b2DebugDraw;
 
@@ -417,7 +419,7 @@
   };
 
   startWorld = function(jquery_selector, density, restitution, friction) {
-    var canvas, debugDraw, h, mouse, w;
+    var canvas, contactListener, debugDraw, h, mouse, w;
     if (density == null) {
       density = default_density;
     }
@@ -436,6 +438,38 @@
     createBox(-1, 0, 1, $(window.document).height(), true, density, restitution, friction);
     createBox(0, $(window.document).height() + 1, $(window).width(), 1, true, density, restitution, friction);
     mouse = MouseAndTouch(document, downHandler, upHandler, moveHandler);
+    contactListener = new b2ContactListener;
+    contactListener.BeginContact = function(contact) {
+      var node0, node1, _ref, _ref1;
+      node0 = (_ref = contact.GetFixtureA().GetUserData()) != null ? _ref.domObj : void 0;
+      node1 = (_ref1 = contact.GetFixtureB().GetUserData()) != null ? _ref1.domObj : void 0;
+      if ((node0 != null) && (node1 != null)) {
+        node0.trigger('collisionStart', {
+          collisionType: 'active',
+          collisionWith: node1
+        });
+        return node1.trigger('collisionStart', {
+          collisionType: 'passive',
+          collidesWith: node0
+        });
+      }
+    };
+    contactListener.EndContact = function(contact) {
+      var node0, node1, _ref, _ref1;
+      node0 = (_ref = contact.GetFixtureA().GetUserData()) != null ? _ref.domObj : void 0;
+      node1 = (_ref1 = contact.GetFixtureB().GetUserData()) != null ? _ref1.domObj : void 0;
+      if ((node0 != null) && (node1 != null)) {
+        node0.trigger('collisionEnd', {
+          collisionType: 'active',
+          collisionWith: node1
+        });
+        return node1.trigger('collisionEnd', {
+          collisionType: 'passive',
+          collisionWith: node0
+        });
+      }
+    };
+    world.SetContactListener(contactListener);
     if (D_E_B_U_G) {
       debugDraw = new b2DebugDraw();
       canvas = $('<canvas></canvas>');
