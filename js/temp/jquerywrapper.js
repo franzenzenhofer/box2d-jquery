@@ -1,5 +1,4 @@
 (function() {
-
   $.fn.extend({
     box2d: function(options) {
       var D_E_B_U_G, absolute_elements, debug, density, friction, opts, restitution, self, shape, static_, x_velocity, y_velocity;

@@ -65,6 +65,39 @@ startWorld = (jquery_selector, density = default_density, restitution = default_
   createBox(0, $(window.document).height()+1, $(window).width(), 1, true, density, restitution, friction);
   mouse = MouseAndTouch(document, downHandler, upHandler, moveHandler)
 
+  # listen for collisions
+  contactListener = new b2ContactListener
+  contactListener.BeginContact = (contact) ->
+    node0 = contact.GetFixtureA().GetUserData()?.domObj
+    node1 = contact.GetFixtureB().GetUserData()?.domObj 
+    # if node1 is not set it's a collision with the world's boundaries
+    if node0? and node1?
+      node0.trigger('collisionStart', {
+        collisionType: 'active', 
+        collisionWith: node1
+      })
+      node1.trigger('collisionStart', {
+        collisionType: 'passive', 
+        collidesWith: node0
+      })
+    
+
+  contactListener.EndContact = (contact) ->
+    node0 = contact.GetFixtureA().GetUserData()?.domObj
+    node1 = contact.GetFixtureB().GetUserData()?.domObj
+    # if node1 is not set it's a collision with the world's boundaries
+    if node0? and node1?
+      node0.trigger('collisionEnd', {
+        collisionType: 'active', 
+        collisionWith: node1
+      })
+      node1.trigger('collisionEnd',{
+        collisionType: 'passive', 
+        collisionWith: node0
+      })
+
+  world.SetContactListener(contactListener);
+
   #debug
   if D_E_B_U_G
     debugDraw = new b2DebugDraw();
