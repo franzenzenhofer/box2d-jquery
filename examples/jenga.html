@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+<head><title>jenga box2d-jquery example</title></head>
+<style>
+  @import url(http://fonts.googleapis.com/css?family=Open+Sans:400);
+
+  h1 {
+    font-family: "Open Sans"; text-align: center; font-size: 34px; color:darkgray;
+  }
+
+  #tower {
+    position: absolute; text-align: center; bottom:15px; left:50%; margin-left:-115px; width: 230px;
+  }
+  #ground {
+    background:darkgray; position: absolute; bottom:0px; height: 15px; width: 400px; left: 50%; margin-left: -200px;
+  }
+
+  .block {
+    display: inline-block; height: 40px; width: 40px; background: lightgray; outline:1px solid gray; cursor:move; margin-left:5px; float:left;
+  }
+  .block:hover {
+    background: pink!important;
+  }
+  .long {
+    width: 220px;
+  }
+
+</style>
+<body>
+
+<h1>Jenga</h1><div id="tower"></div><div id="ground"></div>
+
+<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script> -->
+<script src="../js/vendor/jquery.min.js"></script>
+<script src="../js/lib/jquery.box2d.js"></script>
+
+<script> 
+  $(document).ready(function() {
+
+    var builtTower = function(rows, cols) {
+      var towerMarkup = ''; 
+      for(var r = 1; r <= rows; r++) {
+        towerMarkup += '<div class="block long"></div>';
+        for(var c = 1; c <= cols; c++) {
+          towerMarkup += '<div class="block"></div>';
+        }
+      }
+      $(towerMarkup).appendTo($('#tower'));
+    }
+
+    builtTower(6,5);
+    
+    $(".block").box2d({'y-velocity':25});
+    $("#ground").box2d({'y-velocity':0});
+  });
+</script>
+
+</body>

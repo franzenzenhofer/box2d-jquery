@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+  <head>
+    <!-- change this so that scrolling on ipad i unecessary -->
+    <meta name="viewport" content="height=device-height,width=device-width,initial-scale=0.8,maximum-scale=1.0" />
+    <title>betapitch</title>
+    <link href='http://fonts.googleapis.com/css?family=Rokkitt' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:200,300' rel='stylesheet' type='text/css'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="robots" content="noindex, nofollow, noimageindex">
+    <style>
+      @import url(http://fonts.googleapis.com/css?family=Open+Sans:300);
+      @import url(http://fonts.googleapis.com/css?family=Open+Sans:400);
+      @import url(http://fonts.googleapis.com/css?family=Open+Sans:700);
+      body {border: 0px solid red;}
+      body{
+        background:#323232;
+        color:#859900;
+        text-decoration:none;
+        text-align:center;
+        font-family: "Open Sans";
+        font.size:16px;
+      }
+
+      a {
+        color:#859900;
+        text-decoration:underline;
+      }
+      a:hover, a:visited, a:active{
+        color:#859900;
+        text-decoration:underline;
+
+      }
+      [onclick] {        color:#859900; text-decoration:underline; }
+      h2 {
+        font-size: 44px;
+        font-weight: 700;
+        line-height: 24px;
+        margin-top: 24px;
+        width: 220px;
+        text-decoration:none !important;
+      }
+      h2 a { text-decoration:none !important; }
+      div, img, h2, h1, hr, span, code {
+        max-width: 320px;
+        margin: 0 auto;
+        border: none;
+      }
+      .normal {
+        font-weight: 300;
+        text-transform: uppercase;
+        letter-spacing: 4px;
+        font-size: 22px;
+        line-height: 12px;
+        text-decoration:none !important;
+      }
+
+      #europe { font-size: 42px; font-family: 'RokkittLight','Rokkitt',sans-serif;}
+      .github {
+        width: 64px;
+        border-radius: 50%;
+        position:absolute;
+        top:100px;
+        right:40px;
+        border-radius: 50%;
+        border:2px solid #859900 !important;
+      }
+      .box2d, h1, code {cursor: hand; cursor: pointer; }
+      code { font-family: 'Source Code Pro', sans-serif; font-size: 15px; }
+    </style>
+  </head>
+  <body style="width:95%;height:99%;">
+    <center><h1>SEO</h1></center>
+    <center id="center" >
+        
+    </center>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="../js/lib/jquery.box2d.min.js"></script>
+    <script> 
+
+      $('div').ready(function(){
+        window.setTimeout(function(){
+       $("img").box2d({'y-velocity':9.8, 'x-velocity':-1, 'debug':false});
+       },500);
+      });
+
+      var bullshit = ['<h1>Google</h1>','<span>Crawling</span>', '<strong>Indexing</strong', '<h2>Links</h2>', '<h2>Ranking</h2>', '<h2>Keywords</h2>', '<h1>PageRank</h1>', '<img src="http://replycam.com/i/linkjuice-20130301-110458.png" height="250px">', '<h1>nofollow</h1>', '<h1>paid links</h1>', '<span>social media</span>', '<img src="http://replycam.com/i/pinguin-20130301-110244.png">', '<img src="http://replycam.com/i/panda-20130301-110359.png">', '<img src="http://replycam.com/i/mayday_-_Google_Search-20130301-110842.png">', '<span>Trust</span>', '<img src="http://replycam.com/i/caffein-20130301-120342.png">', '<img src="http://replycam.com/i/unicorn-20130301-111134.png">' ];
+     var i = 0;
+                    $("body").click(function() {
+                      var e = $(bullshit[i++])
+  $('#center').prepend(e);
+  e.box2d();
+  if (i > bullshit.length) {i = 0;}
+   //$("h1, h2,div,img").box2d({'y-velocity':9.8, 'x-velocity':-0.05, 'debug':true});
+
+});
+
+     //
+    </script>
+      <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-34880400-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  </body>
+</html>

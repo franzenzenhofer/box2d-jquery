@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Countdown</title>
+		<style>
+			div { border:1px solid red;}
+			span { border:1px solid green;}
+			body {background-color: lightgray;}
+			.circle {
+			border-radius: 50%;
+			display: inline-block;
+			width: 100px;
+			height: 100px;
+			background: green;
+			border:5px solid red !important;
+			}
+		
+
+		</style>
+	</head>
+	<body>
+		<h1>This is a Test H1</h1><br><br>
+		<h2>a very simple test H2</h2>
+		<div>a tiny DIV</div>
+		<span style="width:150px;height:50px;">SPAN me!</span>
+		<h1 style='width:250px'>an H1 with width</h1>
+	  <img src="./img/f19n.png">
+		<img src="./img/f19n.png">
+		<img src="./img/f19n.png">
+		<img src="./img/f19n.png">
+		<img src="./img/f19n.png">
+		<img src="./img/f19n.png">
+		<div  class="circle" data-box2d-shape="circle"></div>
+		<img src="./img/f19n.png">
+		<img src="./img/f19n.png">
+		<img src="./img/f19n.png">
+		<img src="./img/f19n.png">
+		<img src="./img/f19n.png">
+		<img src="./img/f19n.png" width="200px" height="200px">
+		<img src="http://www.fullstackoptimization.com/img/fullstackoptimization-logo-114.png">
+ 
+		<img src="http://chris.smith.name/assets/github.png" width="200px" height="200px" data-box2d-restitution="0" data-box2d-friction="0" data-box2d-shape="circle">
+
+		<video  id="barbapapa" controls="controls" style="" autobuffer width=400 height=200>
+<source src="http://www.barbafan.de/wp-content/ipad-ausmalbilder/tron.webm" type='video/webm; codecs="vp8, vorbis"'>
+<source src="http://www.barbafan.de/wp-content/ipad-ausmalbilder/tron.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+
+<source src="http://www.barbafan.de/wp-content/ipad-ausmalbilder/tron.ogv" type='video/ogg; codecs="theora, vorbis"'></video>
+
+		<script src="../js/vendor/box2dweb/Box2dWeb-2.1.a.3.min.js"></script>
+		<script src="../js/vendor/jquery.min.js"></script><!-- 1.8.3 -->
+		<script src="../js/vendor/jquery.bodysnatch.js"></script>
+		<script src="../js/vendor/RequestAnimationFrame.js"></script>
+		<script src="../js/temp/main.js"></script>
+		<!--<script src="./js/lib/jquery.box2d.min.js"></script>-->
+		<script>
+		$(document).ready(function() {
+			//$("img").each(function(index){s=$(this).attr('src');$(this).attr('src','').attr('src',s+'?'+Math.floor(Math.random()*100000000000));})
+
+			$("h1, h2, img, video, div, span").css('border-color','lightyellow').box2d({'x-velocity':0,'friction':null, 'density':null,'restitution':null, 'debug':true}).css('border','1px solid blue');
+		
+
+		});
+		</script>
+		  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-34880400-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+	</body>
+</html>
