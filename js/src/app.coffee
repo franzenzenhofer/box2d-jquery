@@ -72,14 +72,7 @@ startWorld = (jquery_selector, density = default_density, restitution = default_
     node1 = contact.GetFixtureB().GetUserData()?.domObj 
     # if node1 is not set it's a collision with the world's boundaries
     if node0? and node1?
-      node0.trigger('collisionStart', {
-        collisionType: 'active', 
-        collisionWith: node1
-      })
-      node1.trigger('collisionStart', {
-        collisionType: 'passive', 
-        collidesWith: node0
-      })
+      node0.trigger('collisionStart', node1);
     
 
   contactListener.EndContact = (contact) ->
@@ -87,14 +80,7 @@ startWorld = (jquery_selector, density = default_density, restitution = default_
     node1 = contact.GetFixtureB().GetUserData()?.domObj
     # if node1 is not set it's a collision with the world's boundaries
     if node0? and node1?
-      node0.trigger('collisionEnd', {
-        collisionType: 'active', 
-        collisionWith: node1
-      })
-      node1.trigger('collisionEnd',{
-        collisionType: 'passive', 
-        collisionWith: node0
-      })
+      node0.trigger('collisionEnd', node1);
 
   world.SetContactListener(contactListener);
 
