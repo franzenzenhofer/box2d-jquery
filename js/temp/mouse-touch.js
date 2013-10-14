@@ -103,7 +103,7 @@
 
   getBodyCB = function(fixture) {
     var selectedBody;
-    if (fixture.GetBody().GetType() !== b2Body.b2_staticBody) {
+    if (!(fixture.GetBody().GetType() === b2Body.b2_staticBody || fixture.GetUserData().isPassive)) {
       if (fixture.GetShape().TestPoint(fixture.GetBody().GetTransform(), mousePVec)) {
         selectedBody = fixture.GetBody();
         return false;

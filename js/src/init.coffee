@@ -37,6 +37,7 @@ default_density = 1.5
 default_friction = 0.3
 default_restitution = 0.4
 default_shape = 'box'
+default_passive = false
 #static_ = default_static, density = default_density, restitution = default_restitution, friction=default_friction 
 
 mouseX = 0

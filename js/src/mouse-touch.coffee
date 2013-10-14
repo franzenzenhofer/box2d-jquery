@@ -96,7 +96,7 @@ getBodyAtMouse = ->
   world.QueryAABB getBodyCB, aabb 
   selectedBody
 getBodyCB = (fixture) ->
-  unless fixture.GetBody().GetType() is b2Body.b2_staticBody
+  unless fixture.GetBody().GetType() is b2Body.b2_staticBody or fixture.GetUserData().isPassive
     if fixture.GetShape().TestPoint(fixture.GetBody().GetTransform(), mousePVec)
       selectedBody = fixture.GetBody()
       return false
