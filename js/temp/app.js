@@ -69,14 +69,7 @@
       node0 = (_ref = contact.GetFixtureA().GetUserData()) != null ? _ref.domObj : void 0;
       node1 = (_ref1 = contact.GetFixtureB().GetUserData()) != null ? _ref1.domObj : void 0;
       if ((node0 != null) && (node1 != null)) {
-        node0.trigger('collisionStart', {
-          collisionType: 'active',
-          collisionWith: node1
-        });
-        return node1.trigger('collisionStart', {
-          collisionType: 'passive',
-          collidesWith: node0
-        });
+        return node0.trigger('collisionStart', node1);
       }
     };
     contactListener.EndContact = function(contact) {
@@ -84,14 +77,7 @@
       node0 = (_ref = contact.GetFixtureA().GetUserData()) != null ? _ref.domObj : void 0;
       node1 = (_ref1 = contact.GetFixtureB().GetUserData()) != null ? _ref1.domObj : void 0;
       if ((node0 != null) && (node1 != null)) {
-        node0.trigger('collisionEnd', {
-          collisionType: 'active',
-          collisionWith: node1
-        });
-        return node1.trigger('collisionEnd', {
-          collisionType: 'passive',
-          collisionWith: node0
-        });
+        return node0.trigger('collisionEnd', node1);
       }
     };
     world.SetContactListener(contactListener);

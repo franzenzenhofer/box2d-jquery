@@ -1,4 +1,4 @@
-# /*! box2d-jquery - v0.8.0 - last build: 2013-10-10 00:32:22 */
+# /*! box2d-jquery - v0.8.0 - last build: 2013-10-14 17:41:33 */
 b2Vec2 = Box2D.Common.Math.b2Vec2
 b2AABB = Box2D.Collision.b2AABB
 b2BodyDef = Box2D.Dynamics.b2BodyDef
@@ -38,6 +38,7 @@ default_density = 1.5
 default_friction = 0.3
 default_restitution = 0.4
 default_shape = 'box'
+default_passive = false
 #static_ = default_static, density = default_density, restitution = default_restitution, friction=default_friction 
 
 mouseX = 0
@@ -144,7 +145,7 @@ getBodyAtMouse = ->
   world.QueryAABB getBodyCB, aabb 
   selectedBody
 getBodyCB = (fixture) ->
-  unless fixture.GetBody().GetType() is b2Body.b2_staticBody
+  unless fixture.GetBody().GetType() is b2Body.b2_staticBody or fixture.GetUserData().isPassive
     if fixture.GetShape().TestPoint(fixture.GetBody().GetTransform(), mousePVec)
       selectedBody = fixture.GetBody()
       return false
@@ -182,7 +183,7 @@ updateMouseDrag = ->
       mouseJoint = null
 
 
-createDOMObjects = (jquery_selector, shape = default_shape, static_ = default_static, density = default_density, restitution = default_restitution, friction=default_friction) ->
+createDOMObjects = (jquery_selector, shape = default_shape, static_ = default_static, density = default_density, restitution = default_restitution, friction=default_friction, passive = default_passive) ->
   #iterate all div elements and create them in the Box2D system
   #$("#container div").each (a, b) ->
   #console.log(jquery_selector)
@@ -233,12 +234,19 @@ createDOMObjects = (jquery_selector, shape = default_shape, static_ = default_st
     #TODO TEST
     make_friction = parseFloat((if domObj.attr('data-box2d-friction') then domObj.attr('data-box2d-friction') else friction))
     #TODO TEST
-    if domObj.attr('data-box2d-static') is "true" 
+    if domObj.attr('data-box2d-static') is "true"
       make_static = true 
     else if domObj.attr('data-box2d-static') is "false"
       make_static = false
     else 
       make_static = static_ 
+
+    if domObj.attr('data-box2d-passive') is "true"
+      make_passive = true
+    else if domObj.attr('data-box2d-passive') is "false"
+      make_passive = false
+    else
+      make_passive = passive
 
     if make_shape and make_shape isnt 'circle'
       body = createBox(x, y, width, height, make_static, make_density, make_restitution, make_friction )
@@ -246,12 +254,13 @@ createDOMObjects = (jquery_selector, shape = default_shape, static_ = default_st
       r = (if width > height then width else height)
       #console.log('radius '+r)
       body = createCircle(x, y, r, make_static, make_density, make_restitution, make_friction )
+    
     body.m_userData = {
       domObj: domObj
       width: width
       height: height
-      }
-
+      isPassive: make_passive
+    }
     #Reset DOM object position for use with CSS3 positioning
     #domObj.absolutize()#.css({left: "0px",top: "0px"})
     
@@ -395,14 +404,7 @@ startWorld = (jquery_selector, density = default_density, restitution = default_
     node1 = contact.GetFixtureB().GetUserData()?.domObj 
     # if node1 is not set it's a collision with the world's boundaries
     if node0? and node1?
-      node0.trigger('collisionStart', {
-        collisionType: 'active', 
-        collisionWith: node1
-      })
-      node1.trigger('collisionStart', {
-        collisionType: 'passive', 
-        collidesWith: node0
-      })
+      node0.trigger('collisionStart', node1);
     
 
   contactListener.EndContact = (contact) ->
@@ -410,14 +412,7 @@ startWorld = (jquery_selector, density = default_density, restitution = default_
     node1 = contact.GetFixtureB().GetUserData()?.domObj
     # if node1 is not set it's a collision with the world's boundaries
     if node0? and node1?
-      node0.trigger('collisionEnd', {
-        collisionType: 'active', 
-        collisionWith: node1
-      })
-      node1.trigger('collisionEnd',{
-        collisionType: 'passive', 
-        collisionWith: node0
-      })
+      node0.trigger('collisionEnd', node1);
 
   world.SetContactListener(contactListener);
 

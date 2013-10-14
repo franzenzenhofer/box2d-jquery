@@ -1,5 +1,5 @@
 
-createDOMObjects = (jquery_selector, shape = default_shape, static_ = default_static, density = default_density, restitution = default_restitution, friction=default_friction) ->
+createDOMObjects = (jquery_selector, shape = default_shape, static_ = default_static, density = default_density, restitution = default_restitution, friction=default_friction, passive = default_passive) ->
   #iterate all div elements and create them in the Box2D system
   #$("#container div").each (a, b) ->
   #console.log(jquery_selector)
@@ -50,12 +50,19 @@ createDOMObjects = (jquery_selector, shape = default_shape, static_ = default_st
     #TODO TEST
     make_friction = parseFloat((if domObj.attr('data-box2d-friction') then domObj.attr('data-box2d-friction') else friction))
     #TODO TEST
-    if domObj.attr('data-box2d-static') is "true" 
+    if domObj.attr('data-box2d-static') is "true"
       make_static = true 
     else if domObj.attr('data-box2d-static') is "false"
       make_static = false
     else 
       make_static = static_ 
+
+    if domObj.attr('data-box2d-passive') is "true"
+      make_passive = true
+    else if domObj.attr('data-box2d-passive') is "false"
+      make_passive = false
+    else
+      make_passive = passive
 
     if make_shape and make_shape isnt 'circle'
       body = createBox(x, y, width, height, make_static, make_density, make_restitution, make_friction )
@@ -63,12 +70,13 @@ createDOMObjects = (jquery_selector, shape = default_shape, static_ = default_st
       r = (if width > height then width else height)
       #console.log('radius '+r)
       body = createCircle(x, y, r, make_static, make_density, make_restitution, make_friction )
+    
     body.m_userData = {
       domObj: domObj
       width: width
       height: height
-      }
-
+      isPassive: make_passive
+    }
     #Reset DOM object position for use with CSS3 positioning
     #domObj.absolutize()#.css({left: "0px",top: "0px"})
     
