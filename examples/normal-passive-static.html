@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head><title>Collision example box2d-jquery</title></head>
+<style>
+  h1 {width: 800px; font-size:50px;}
+  div { width: 200px; height:200px; font-size:30px; color:white; background-color: black; border:5px solid red; float:left; margin-left:30px; text-align:center; line-height:40px; cursor:pointer; }
+</style>
+<body>
+<h1 data-box2d-passive="true">Normal, Passive and Static Elements</h1>
+<div>I'm normal. <br />Feel free to drag me around</div>
+<div data-box2d-passive="true">I'm passive <br />You can't tell me what to do!</div>
+<div data-box2d-static="true">I'm static. <br />I'll stand my ground.</div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script src="../js/lib/jquery.box2d.min.js"></script>
+<script> 
+  $(document).ready(function() {  
+    $("h1, div")
+      .box2d({'y-velocity':0 });
+  });
+</script>
+</body>
+</html>
