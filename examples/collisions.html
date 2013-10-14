@@ -17,17 +17,13 @@
   $(document).ready(function() {  
     $("h1, div, img")
       .box2d({'y-velocity':5 })
-      .on("collisionStart", function(evt, collisionData) {
-        if (collisionData.collisionType === 'active') {
+      .on("collisionStart", function(evt, collisionNode) {
           $(this).addClass('collides');
-          collisionData.collisionWith.addClass('collides');
-        }
+          $(collisionNode).addClass('collides');
       })
-      .on("collisionEnd", function(evt, collisionData) {
-        if (collisionData.collisionType === 'active') {
-          $(this).removeClass('collides');
-          collisionData.collisionWith.removeClass('collides');
-        }
+      .on("collisionEnd", function(evt, collisionNode) {
+         $(this).removeClass('collides');
+         $(collisionNode).removeClass('collides');
       });
   });
 </script>
