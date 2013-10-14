@@ -1,7 +1,7 @@
 (function() {
   var createBox, createCircle, createDOMObjects;
 
-  createDOMObjects = function(jquery_selector, shape, static_, density, restitution, friction) {
+  createDOMObjects = function(jquery_selector, shape, static_, density, restitution, friction, passive) {
     if (shape == null) {
       shape = default_shape;
     }
@@ -17,8 +17,11 @@
     if (friction == null) {
       friction = default_friction;
     }
+    if (passive == null) {
+      passive = default_passive;
+    }
     return $(jquery_selector).each(function(a, b) {
-      var body, domObj, domPos, full_height, full_width, height, make_density, make_friction, make_restitution, make_shape, make_static, origin_values, r, width, x, y;
+      var body, domObj, domPos, full_height, full_width, height, make_density, make_friction, make_passive, make_restitution, make_shape, make_static, origin_values, r, width, x, y;
       domObj = $(b);
       full_width = domObj.width();
       full_height = domObj.height();
@@ -49,6 +52,13 @@
       } else {
         make_static = static_;
       }
+      if (domObj.attr('data-box2d-passive') === "true") {
+        make_passive = true;
+      } else if (domObj.attr('data-box2d-passive') === "false") {
+        make_passive = false;
+      } else {
+        make_passive = passive;
+      }
       if (make_shape && make_shape !== 'circle') {
         body = createBox(x, y, width, height, make_static, make_density, make_restitution, make_friction);
       } else {
@@ -58,7 +68,8 @@
       body.m_userData = {
         domObj: domObj,
         width: width,
-        height: height
+        height: height,
+        isPassive: make_passive
       };
       origin_values = '50% 50% 0';
       domObj.css({
