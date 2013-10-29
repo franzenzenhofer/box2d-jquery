@@ -89,8 +89,11 @@ createDOMObjects = (jquery_selector, shape = default_shape, static_ = default_st
       "-ms-transform-origin": origin_values 
       "-o-transform-origin": origin_values 
       "transform-origin": origin_values 
-      )  
+    )
 
+    # set an id to domObj for list identification
+    domObj.attr('data-box2d-bodykey', a);
+    bodySet[a] = body;
     return true
 
 #throws a DOM object as 
