@@ -46,3 +46,12 @@ mousePVec = undefined
 isMouseDown = false
 selectedBody = undefined
 mouseJoint = undefined
+
+MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
+mutationObserver = undefined
+mutationConfig = 
+  attributes: false
+  childList: true
+  characterData: false
+bodySet = {}
+graveyard = []

@@ -1,5 +1,5 @@
 (function() {
-  var $, D2R, D_E_B_U_G, MouseAndTouch, PI2, R2D, SCALE, S_T_A_R_T_E_D, b2AABB, b2Body, b2BodyDef, b2CircleShape, b2ContactListener, b2DebugDraw, b2Fixture, b2FixtureDef, b2MassData, b2MouseJointDef, b2PolygonShape, b2RevoluteJointDef, b2Vec2, b2World, createBox, createCircle, createDOMObjects, default_density, default_friction, default_passive, default_restitution, default_shape, default_static, downHandler, drawDOMObjects, getBodyAtMouse, getBodyCB, getElementPosition, hw, interval, isMouseDown, mouseJoint, mousePVec, mouseX, mouseY, moveHandler, selectedBody, startWorld, upHandler, update, updateMouseDrag, world, x_velocity, y_velocity;
+  var $, D2R, D_E_B_U_G, MouseAndTouch, MutationObserver, PI2, R2D, SCALE, S_T_A_R_T_E_D, b2AABB, b2Body, b2BodyDef, b2CircleShape, b2ContactListener, b2DebugDraw, b2Fixture, b2FixtureDef, b2MassData, b2MouseJointDef, b2PolygonShape, b2RevoluteJointDef, b2Vec2, b2World, bodySet, cleanGraveyard, createBox, createCircle, createDOMObjects, default_density, default_friction, default_passive, default_restitution, default_shape, default_static, downHandler, drawDOMObjects, getBodyAtMouse, getBodyCB, getElementPosition, graveyard, hw, interval, isMouseDown, mouseJoint, mousePVec, mouseX, mouseY, moveHandler, mutationConfig, mutationHandler, mutationObserver, selectedBody, startWorld, upHandler, update, updateMouseDrag, world, x_velocity, y_velocity;
 
   b2Vec2 = Box2D.Common.Math.b2Vec2;
 
@@ -81,6 +81,20 @@
   selectedBody = void 0;
 
   mouseJoint = void 0;
+
+  MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
+
+  mutationObserver = void 0;
+
+  mutationConfig = {
+    attributes: false,
+    childList: true,
+    characterData: false
+  };
+
+  bodySet = {};
+
+  graveyard = [];
 
   MouseAndTouch = function(dom, down, up, move) {
     var canvas, isDown, mouseDownHandler, mouseMoveHandler, mouseUpHandler, ret, startX, startY, touchDownHandler, touchUpHandler, updateFromEvent;
@@ -315,6 +329,8 @@
         "-o-transform-origin": origin_values,
         "transform-origin": origin_values
       });
+      domObj.attr('data-box2d-bodykey', a);
+      bodySet[a] = body;
       return true;
     });
   };
@@ -390,7 +406,7 @@
 
 
   drawDOMObjects = function() {
-    var b, css, f, i, r, translate_values, x, y, _results;
+    var angle, b, css, domObj, f, i, l, lastRotation, lastX, lastY, r, t, translate_values, values, x, y, _results;
     i = 0;
     b = world.m_bodyList;
     _results = [];
@@ -398,8 +414,21 @@
       f = b.m_fixtureList;
       while (f) {
         if (f.m_userData) {
-          x = Math.floor((f.m_body.m_xf.position.x * SCALE) - f.m_userData.width);
-          y = Math.floor((f.m_body.m_xf.position.y * SCALE) - f.m_userData.height);
+          domObj = f.m_userData.domObj;
+          lastX = domObj.css('left');
+          lastY = domObj.css('top');
+          lastRotation = domObj.css('transform');
+          if (lastRotation !== 'none') {
+            values = lastRotation.split('(')[1];
+            values = values.split(')')[0];
+            values = values.split(',');
+            t = values[0];
+            l = values[1];
+            angle = Math.round(Math.atan2(l, t) * (180 / Math.PI));
+            lastRotation = angle;
+          }
+          x = Math.floor((f.m_body.m_xf.position.x * SCALE) - f.m_userData.width) + 'px';
+          y = Math.floor((f.m_body.m_xf.position.y * SCALE) - f.m_userData.height) + 'px';
           r = Math.round(((f.m_body.m_sweep.a + PI2) % PI2) * R2D * 100) / 100;
           translate_values = "rotate(" + r + "deg)";
           css = {
@@ -408,10 +437,12 @@
             "-ms-transform": translate_values,
             "-o-transform": translate_values,
             "transform": translate_values,
-            "left": x + "px",
-            "top": y + "px"
+            "left": x,
+            "top": y
           };
-          f.m_userData.domObj.css(css);
+          if (!(lastX === x && lastY === y && lastRotation === r)) {
+            f.m_userData.domObj.css(css);
+          }
         }
         f = f.m_next;
       }
@@ -421,6 +452,7 @@
   };
 
   update = function() {
+    cleanGraveyard();
     updateMouseDrag();
     world.Step(2 / 60, 8, 3);
     drawDOMObjects();
@@ -429,6 +461,39 @@
     }
     world.ClearForces();
     return window.setTimeout(update, 1000 / 30);
+  };
+
+  mutationHandler = function(mutations) {
+    return mutations.forEach(function(mutation) {
+      var node, _i, _len, _ref, _results;
+      if (mutation.removedNodes.length > 0) {
+        _ref = mutation.removedNodes;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          node = _ref[_i];
+          _results.push((function(node) {
+            var index;
+            index = $(node).attr('data-box2d-bodykey');
+            if (bodySet[index] != null) {
+              return graveyard.push([index, bodySet[index]]);
+            }
+          })(node));
+        }
+        return _results;
+      }
+    });
+  };
+
+  cleanGraveyard = function() {
+    var zombie, _results;
+    _results = [];
+    while (graveyard.length > 0) {
+      zombie = graveyard.pop();
+      zombie[1].GetBody().SetUserData(null);
+      world.DestroyBody(zombie[1].GetBody());
+      _results.push(delete bodySet[zombie[0]]);
+    }
+    return _results;
   };
 
   startWorld = function(jquery_selector, density, restitution, friction) {
@@ -469,6 +534,8 @@
       }
     };
     world.SetContactListener(contactListener);
+    mutationObserver = new MutationObserver(mutationHandler);
+    mutationObserver.observe(document.body, mutationConfig);
     if (D_E_B_U_G) {
       debugDraw = new b2DebugDraw();
       canvas = $('<canvas></canvas>');

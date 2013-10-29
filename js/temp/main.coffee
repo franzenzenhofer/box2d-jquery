@@ -1,4 +1,4 @@
-# /*! box2d-jquery - v0.8.0 - last build: 2013-10-14 17:41:33 */
+# /*! box2d-jquery - v0.8.0 - last build: 2013-10-29 17:56:07 */
 b2Vec2 = Box2D.Common.Math.b2Vec2
 b2AABB = Box2D.Collision.b2AABB
 b2BodyDef = Box2D.Dynamics.b2BodyDef
@@ -47,6 +47,15 @@ mousePVec = undefined
 isMouseDown = false
 selectedBody = undefined
 mouseJoint = undefined
+
+MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
+mutationObserver = undefined
+mutationConfig = 
+  attributes: false
+  childList: true
+  characterData: false
+bodySet = {}
+graveyard = []
 #mouse-and-touch-stuff
 
 MouseAndTouch = (dom, down, up, move) ->
@@ -273,8 +282,11 @@ createDOMObjects = (jquery_selector, shape = default_shape, static_ = default_st
       "-ms-transform-origin": origin_values 
       "-o-transform-origin": origin_values 
       "transform-origin": origin_values 
-      )  
+    )
 
+    # set an id to domObj for list identification
+    domObj.attr('data-box2d-bodykey', a);
+    bodySet[a] = body;
     return true
 
 #throws a DOM object as 
@@ -339,10 +351,25 @@ drawDOMObjects = ->
 
     while f
       if f.m_userData
-        
+        domObj = f.m_userData.domObj
+        lastX = domObj.css('left')
+        lastY = domObj.css('top')
+        lastRotation = domObj.css('transform')
+
+        unless lastRotation is 'none'
+          values = lastRotation.split('(')[1];
+          values = values.split(')')[0];
+          values = values.split(',');
+          t = values[0];
+          l = values[1];
+
+
+          angle = Math.round(Math.atan2(l, t) * (180/Math.PI))
+          lastRotation = angle;
+
         #Retrieve positions and rotations from the Box2d world
-        x = Math.floor((f.m_body.m_xf.position.x * SCALE) - f.m_userData.width)
-        y = Math.floor((f.m_body.m_xf.position.y * SCALE) - f.m_userData.height)
+        x = Math.floor((f.m_body.m_xf.position.x * SCALE) - f.m_userData.width) + 'px'
+        y = Math.floor((f.m_body.m_xf.position.y * SCALE) - f.m_userData.height) + 'px'
         
         #CSS3 transform does not like negative values or infitate decimals
         r = Math.round(((f.m_body.m_sweep.a + PI2) % PI2) * R2D * 100) / 100
@@ -354,14 +381,15 @@ drawDOMObjects = ->
           "-ms-transform": translate_values 
           "-o-transform": translate_values 
           "transform": translate_values  
-          "left": x+"px"
-          "top": y+"px"  
-        f.m_userData.domObj.css css
+          "left": x
+          "top": y
+        unless lastX is x and  lastY is y and lastRotation is r
+          f.m_userData.domObj.css css
       f = f.m_next
     b = b.m_next
 
 update = ->
-
+  cleanGraveyard()
   updateMouseDrag()
   #frame-rate
   #velocity iterations
@@ -375,6 +403,21 @@ update = ->
   #requestAnimationFrame(update);
   window.setTimeout(update, 1000 / 30)
 
+mutationHandler = (mutations) ->
+  mutations.forEach (mutation) ->
+    if mutation.removedNodes.length > 0
+      for node in mutation.removedNodes
+        do (node) ->
+          index = $(node).attr('data-box2d-bodykey')
+          if bodySet[index]?
+            graveyard.push([index, bodySet[index]])
+
+cleanGraveyard = ->
+  while graveyard.length > 0
+    zombie = graveyard.pop()
+    zombie[1].GetBody().SetUserData(null)
+    world.DestroyBody(zombie[1].GetBody())
+    delete bodySet[zombie[0]]
 
 startWorld = (jquery_selector, density = default_density, restitution = default_restitution, friction=default_friction) ->
   S_T_A_R_T_E_D = true
@@ -415,6 +458,10 @@ startWorld = (jquery_selector, density = default_density, restitution = default_
       node0.trigger('collisionEnd', node1);
 
   world.SetContactListener(contactListener);
+
+  # observe mutations
+  mutationObserver = new MutationObserver(mutationHandler);
+  mutationObserver.observe(document.body, mutationConfig)
 
   #debug
   if D_E_B_U_G

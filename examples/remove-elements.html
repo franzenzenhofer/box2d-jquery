@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head><title>Remove Elements</title></head>
+<style>
+  h1 {width: 800px; font-size:50px;}
+  div { width: 200px; height:200px; font-size:30px; color:white; background-color: black; border:5px solid red; float:left; margin-left:10px; text-align:center; line-height:40px; cursor:pointer; }
+</style>
+<body>
+<h1 data-box2d-passive="true">Remove Elements</h1>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script src="../js/lib/jquery.box2d.min.js"></script>
+<script> 
+
+  $(document).ready(function() {  
+
+  	// generate 30 elements 
+  	
+  	for(var i = 0; i<30; i++) {
+  		$('body').append($('<div>Click me</div>'));
+  	}
+
+    $("h1, div")
+      .box2d({'y-velocity': 10 });
+
+
+    $('div').click(function() {
+  		$(this).remove();
+  	});
+  });
+</script>
+</body>
+</html>

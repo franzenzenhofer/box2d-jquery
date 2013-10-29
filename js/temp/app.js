@@ -1,8 +1,8 @@
 (function() {
-  var drawDOMObjects, startWorld, update;
+  var cleanGraveyard, drawDOMObjects, mutationHandler, startWorld, update;
 
   drawDOMObjects = function() {
-    var b, css, f, i, r, translate_values, x, y, _results;
+    var angle, b, css, domObj, f, i, l, lastRotation, lastX, lastY, r, t, translate_values, values, x, y, _results;
     i = 0;
     b = world.m_bodyList;
     _results = [];
@@ -10,8 +10,21 @@
       f = b.m_fixtureList;
       while (f) {
         if (f.m_userData) {
-          x = Math.floor((f.m_body.m_xf.position.x * SCALE) - f.m_userData.width);
-          y = Math.floor((f.m_body.m_xf.position.y * SCALE) - f.m_userData.height);
+          domObj = f.m_userData.domObj;
+          lastX = domObj.css('left');
+          lastY = domObj.css('top');
+          lastRotation = domObj.css('transform');
+          if (lastRotation !== 'none') {
+            values = lastRotation.split('(')[1];
+            values = values.split(')')[0];
+            values = values.split(',');
+            t = values[0];
+            l = values[1];
+            angle = Math.round(Math.atan2(l, t) * (180 / Math.PI));
+            lastRotation = angle;
+          }
+          x = Math.floor((f.m_body.m_xf.position.x * SCALE) - f.m_userData.width) + 'px';
+          y = Math.floor((f.m_body.m_xf.position.y * SCALE) - f.m_userData.height) + 'px';
           r = Math.round(((f.m_body.m_sweep.a + PI2) % PI2) * R2D * 100) / 100;
           translate_values = "rotate(" + r + "deg)";
           css = {
@@ -20,10 +33,12 @@
             "-ms-transform": translate_values,
             "-o-transform": translate_values,
             "transform": translate_values,
-            "left": x + "px",
-            "top": y + "px"
+            "left": x,
+            "top": y
           };
-          f.m_userData.domObj.css(css);
+          if (!(lastX === x && lastY === y && lastRotation === r)) {
+            f.m_userData.domObj.css(css);
+          }
         }
         f = f.m_next;
       }
@@ -33,6 +48,7 @@
   };
 
   update = function() {
+    cleanGraveyard();
     updateMouseDrag();
     world.Step(2 / 60, 8, 3);
     drawDOMObjects();
@@ -43,8 +59,41 @@
     return window.setTimeout(update, 1000 / 30);
   };
 
+  mutationHandler = function(mutations) {
+    return mutations.forEach(function(mutation) {
+      var node, _i, _len, _ref, _results;
+      if (mutation.removedNodes.length > 0) {
+        _ref = mutation.removedNodes;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          node = _ref[_i];
+          _results.push((function(node) {
+            var index;
+            index = $(node).attr('data-box2d-bodykey');
+            if (bodySet[index] != null) {
+              return graveyard.push([index, bodySet[index]]);
+            }
+          })(node));
+        }
+        return _results;
+      }
+    });
+  };
+
+  cleanGraveyard = function() {
+    var zombie, _results;
+    _results = [];
+    while (graveyard.length > 0) {
+      zombie = graveyard.pop();
+      zombie[1].GetBody().SetUserData(null);
+      world.DestroyBody(zombie[1].GetBody());
+      _results.push(delete bodySet[zombie[0]]);
+    }
+    return _results;
+  };
+
   startWorld = function(jquery_selector, density, restitution, friction) {
-    var S_T_A_R_T_E_D, canvas, contactListener, debugDraw, h, mouse, w, world;
+    var S_T_A_R_T_E_D, canvas, contactListener, debugDraw, h, mouse, mutationObserver, w, world;
     if (density == null) {
       density = default_density;
     }
@@ -81,6 +130,8 @@
       }
     };
     world.SetContactListener(contactListener);
+    mutationObserver = new MutationObserver(mutationHandler);
+    mutationObserver.observe(document.body, mutationConfig);
     if (D_E_B_U_G) {
       debugDraw = new b2DebugDraw();
       canvas = $('<canvas></canvas>');
