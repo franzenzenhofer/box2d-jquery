@@ -79,6 +79,8 @@
         "-o-transform-origin": origin_values,
         "transform-origin": origin_values
       });
+      domObj.attr('data-box2d-bodykey', a);
+      bodySet[a] = body;
       return true;
     });
   };
