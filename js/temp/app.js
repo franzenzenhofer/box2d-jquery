@@ -49,7 +49,7 @@
 
   update = function() {
     cleanGraveyard();
-    updateMouseDrag();
+    DragHandler.updateMouseDrag();
     world.Step(2 / 60, 8, 3);
     drawDOMObjects();
     if (D_E_B_U_G) {
@@ -93,7 +93,7 @@
   };
 
   startWorld = function(jquery_selector, density, restitution, friction) {
-    var S_T_A_R_T_E_D, canvas, contactListener, debugDraw, h, mouse, mutationObserver, w, world;
+    var S_T_A_R_T_E_D, canvas, contactListener, debugDraw, h, mutationObserver, w, world;
     if (density == null) {
       density = default_density;
     }
@@ -111,7 +111,6 @@
     createBox($(window).width() + 1, 0, 1, $(window.document).height(), true, density, restitution, friction);
     createBox(-1, 0, 1, $(window.document).height(), true, density, restitution, friction);
     createBox(0, $(window.document).height() + 1, $(window).width(), 1, true, density, restitution, friction);
-    mouse = MouseAndTouch(document, downHandler, upHandler, moveHandler);
     contactListener = new b2ContactListener;
     contactListener.BeginContact = function(contact) {
       var node0, node1, _ref, _ref1;

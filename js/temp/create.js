@@ -79,8 +79,10 @@
         "-o-transform-origin": origin_values,
         "transform-origin": origin_values
       });
-      domObj.attr('data-box2d-bodykey', a);
-      bodySet[a] = body;
+      domObj.attr('data-box2d-bodykey', bodyKey);
+      DragHandler.register(domObj);
+      bodySet[bodyKey] = body;
+      bodyKey++;
       return true;
     });
   };

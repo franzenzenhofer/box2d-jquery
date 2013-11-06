@@ -1,5 +1,5 @@
 (function() {
-  var $, D2R, D_E_B_U_G, MouseAndTouch, MutationObserver, PI2, R2D, SCALE, S_T_A_R_T_E_D, b2AABB, b2Body, b2BodyDef, b2CircleShape, b2ContactListener, b2DebugDraw, b2Fixture, b2FixtureDef, b2MassData, b2MouseJointDef, b2PolygonShape, b2RevoluteJointDef, b2Vec2, b2World, bodySet, cleanGraveyard, createBox, createCircle, createDOMObjects, default_density, default_friction, default_passive, default_restitution, default_shape, default_static, downHandler, drawDOMObjects, getBodyAtMouse, getBodyCB, getElementPosition, graveyard, hw, interval, isMouseDown, mouseJoint, mousePVec, mouseX, mouseY, moveHandler, mutationConfig, mutationHandler, mutationObserver, selectedBody, startWorld, upHandler, update, updateMouseDrag, world, x_velocity, y_velocity;
+  var $, D2R, D_E_B_U_G, DragHandler, MutationObserver, PI2, R2D, SCALE, S_T_A_R_T_E_D, b2AABB, b2Body, b2BodyDef, b2CircleShape, b2ContactListener, b2DebugDraw, b2Fixture, b2FixtureDef, b2MassData, b2MouseJointDef, b2PolygonShape, b2RevoluteJointDef, b2Vec2, b2World, bodyKey, bodySet, cleanGraveyard, createBox, createCircle, createDOMObjects, default_density, default_friction, default_passive, default_restitution, default_shape, default_static, drawDOMObjects, graveyard, hw, interval, isMouseDown, mouseJoint, mousePVec, mouseX, mouseY, mutationConfig, mutationHandler, mutationObserver, selectedBody, startWorld, update, world, x_velocity, y_velocity;
 
   b2Vec2 = Box2D.Common.Math.b2Vec2;
 
@@ -94,162 +94,82 @@
 
   bodySet = {};
 
+  bodyKey = 0;
+
   graveyard = [];
 
-  MouseAndTouch = function(dom, down, up, move) {
-    var canvas, isDown, mouseDownHandler, mouseMoveHandler, mouseUpHandler, ret, startX, startY, touchDownHandler, touchUpHandler, updateFromEvent;
-    canvas = dom;
+  DragHandler = (function() {
+    var downHandler, moveHandler, upHandler, updateFromEvent;
+    selectedBody = void 0;
+    mouseJoint = false;
     mouseX = void 0;
     mouseY = void 0;
-    startX = void 0;
-    startY = void 0;
-    isDown = false;
-    mouseMoveHandler = function(e) {
-      updateFromEvent(e);
-      return move(mouseX, mouseY);
+    upHandler = function() {
+      if (selectedBody) {
+        mouseX = null;
+        mouseY = null;
+        return selectedBody = null;
+      }
     };
+    moveHandler = function(e) {
+      if (selectedBody) {
+        return updateFromEvent(e);
+      }
+    };
+    downHandler = function(domEl, e) {
+      selectedBody = bodySet[domEl.attr('data-box2d-bodykey')].GetBody();
+      return updateFromEvent(e);
+    };
+    $(document).mouseup(upHandler);
+    $(document).mousemove(moveHandler);
     updateFromEvent = function(e) {
       var touch;
       e.preventDefault();
       touch = e.originalEvent;
       if (touch && touch.touches && touch.touches.length === 1) {
-        touch.preventDefault();
         mouseX = touch.touches[0].pageX;
-        return mouseY = touch.touches[0].pageY;
+        mouseY = touch.touches[0].pageY;
       } else {
         mouseX = e.pageX;
-        return mouseY = e.pageY;
+        mouseY = e.pageY;
       }
+      mouseX = mouseX / 30;
+      return mouseY = mouseY / 30;
     };
-    mouseUpHandler = function(e) {
-      canvas.addEventListener("mousedown", mouseDownHandler, true);
-      canvas.removeEventListener("mousemove", mouseMoveHandler, true);
-      isDown = false;
-      updateFromEvent(e);
-      return up(mouseX, mouseY);
-    };
-    touchUpHandler = function(e) {
-      canvas.addEventListener("touchstart", touchDownHandler, true);
-      canvas.removeEventListener("touchmove", mouseMoveHandler, true);
-      isDown = false;
-      updateFromEvent(e);
-      return up(mouseX, mouseY);
-    };
-    mouseDownHandler = function(e) {
-      canvas.removeEventListener("mousedown", mouseDownHandler, true);
-      canvas.addEventListener("mouseup", mouseUpHandler, true);
-      canvas.addEventListener("mousemove", mouseMoveHandler, true);
-      isDown = true;
-      updateFromEvent(e);
-      return down(mouseX, mouseY);
-    };
-    touchDownHandler = function(e) {
-      canvas.removeEventListener("touchstart", touchDownHandler, true);
-      canvas.addEventListener("touchend", touchUpHandler, true);
-      canvas.addEventListener("touchmove", mouseMoveHandler, true);
-      isDown = true;
-      updateFromEvent(e);
-      return down(mouseX, mouseY);
-    };
-    canvas.addEventListener("mousedown", mouseDownHandler, true);
-    canvas.addEventListener("touchstart", touchDownHandler, true);
-    ret = {};
-    ret.mouseX = function() {
-      return mouseX;
-    };
-    ret.mouseY = function() {
-      return mouseY;
-    };
-    ret.isDown = function() {
-      return isDown;
-    };
-    return ret;
-  };
-
-  downHandler = function(x, y) {
-    isMouseDown = true;
-    return moveHandler(x, y);
-  };
-
-  upHandler = function(x, y) {
-    isMouseDown = false;
-    mouseX = null;
-    return mouseY = null;
-  };
-
-  moveHandler = function(x, y) {
-    mouseX = x / 30;
-    return mouseY = y / 30;
-  };
-
-  getBodyAtMouse = function() {
-    var aabb;
-    mousePVec = new b2Vec2(mouseX, mouseY);
-    aabb = new b2AABB();
-    aabb.lowerBound.Set(mouseX - 0.001, mouseY - 0.001);
-    aabb.upperBound.Set(mouseX + 0.001, mouseY + 0.001);
-    selectedBody = null;
-    world.QueryAABB(getBodyCB, aabb);
-    return selectedBody;
-  };
-
-  getBodyCB = function(fixture) {
-    if (!(fixture.GetBody().GetType() === b2Body.b2_staticBody || fixture.GetUserData().isPassive)) {
-      if (fixture.GetShape().TestPoint(fixture.GetBody().GetTransform(), mousePVec)) {
-        selectedBody = fixture.GetBody();
-        return false;
-      }
-    }
-    return true;
-  };
-
-  getElementPosition = function(element) {
-    var elem, tagname, x, y;
-    elem = element;
-    tagname = "";
-    x = 0;
-    y = 0;
-    while ((typeof elem === "object") && (typeof elem.tagName !== "undefined")) {
-      y += elem.offsetTop;
-      x += elem.offsetLeft;
-      tagname = elem.tagName.toUpperCase();
-      if (tagname === "BODY") {
-        elem = 0;
-      }
-      if (typeof elem === "object" ? typeof elem.offsetParent === "object" : void 0) {
-        elem = elem.offsetParent;
-      }
-    }
     return {
-      x: x,
-      y: y
+      register: function(domEl) {
+        domEl.mousedown(function(e) {
+          return downHandler(domEl, e);
+        });
+        domEl.bind('touchstart', function(e) {
+          return downHandler(domEl, e);
+        });
+        domEl.bind('touchend', upHandler);
+        return domEl.bind('touchmove', moveHandler);
+      },
+      updateMouseDrag: function() {
+        var md;
+        if (selectedBody && (!mouseJoint)) {
+          md = new b2MouseJointDef();
+          md.bodyA = world.GetGroundBody();
+          md.bodyB = selectedBody;
+          md.target.Set(mouseX, mouseY);
+          md.collideConnected = true;
+          md.maxForce = 300.0 * selectedBody.GetMass();
+          mouseJoint = world.CreateJoint(md);
+          selectedBody.SetAwake(true);
+        }
+        if (mouseJoint) {
+          if (selectedBody) {
+            return mouseJoint.SetTarget(new b2Vec2(mouseX, mouseY));
+          } else {
+            world.DestroyJoint(mouseJoint);
+            return mouseJoint = null;
+          }
+        }
+      }
     };
-  };
-
-  updateMouseDrag = function() {
-    var body, md;
-    if (isMouseDown && (!mouseJoint)) {
-      body = getBodyAtMouse();
-      if (body) {
-        md = new b2MouseJointDef();
-        md.bodyA = world.GetGroundBody();
-        md.bodyB = body;
-        md.target.Set(mouseX, mouseY);
-        md.collideConnected = true;
-        md.maxForce = 300.0 * body.GetMass();
-        mouseJoint = world.CreateJoint(md);
-        body.SetAwake(true);
-      }
-    }
-    if (mouseJoint) {
-      if (isMouseDown) {
-        return mouseJoint.SetTarget(new b2Vec2(mouseX, mouseY));
-      } else {
-        world.DestroyJoint(mouseJoint);
-        return mouseJoint = null;
-      }
-    }
-  };
+  })();
 
   createDOMObjects = function(jquery_selector, shape, static_, density, restitution, friction, passive) {
     if (shape == null) {
@@ -329,8 +249,10 @@
         "-o-transform-origin": origin_values,
         "transform-origin": origin_values
       });
-      domObj.attr('data-box2d-bodykey', a);
-      bodySet[a] = body;
+      domObj.attr('data-box2d-bodykey', bodyKey);
+      DragHandler.register(domObj);
+      bodySet[bodyKey] = body;
+      bodyKey++;
       return true;
     });
   };
@@ -453,7 +375,7 @@
 
   update = function() {
     cleanGraveyard();
-    updateMouseDrag();
+    DragHandler.updateMouseDrag();
     world.Step(2 / 60, 8, 3);
     drawDOMObjects();
     if (D_E_B_U_G) {
@@ -497,7 +419,7 @@
   };
 
   startWorld = function(jquery_selector, density, restitution, friction) {
-    var canvas, contactListener, debugDraw, h, mouse, w;
+    var canvas, contactListener, debugDraw, h, w;
     if (density == null) {
       density = default_density;
     }
@@ -515,7 +437,6 @@
     createBox($(window).width() + 1, 0, 1, $(window.document).height(), true, density, restitution, friction);
     createBox(-1, 0, 1, $(window.document).height(), true, density, restitution, friction);
     createBox(0, $(window.document).height() + 1, $(window).width(), 1, true, density, restitution, friction);
-    mouse = MouseAndTouch(document, downHandler, upHandler, moveHandler);
     contactListener = new b2ContactListener;
     contactListener.BeginContact = function(contact) {
       var node0, node1, _ref, _ref1;
