@@ -26,7 +26,7 @@ DragHandler = do ->
     touch = e.originalEvent
     if touch and touch.touches and touch.touches.length is 1
       #Prevent the default action for the touch event; scrolling
-      #touch.preventDefault()
+      touch.preventDefault()
       mouseX = touch.touches[0].pageX
       mouseY = touch.touches[0].pageY
     else
