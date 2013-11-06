@@ -1,4 +1,4 @@
-# /*! box2d-jquery - v0.8.0 - last build: 2013-11-06 02:14:06 */
+# /*! box2d-jquery - v0.8.0 - last build: 2013-11-06 02:38:27 */
 b2Vec2 = Box2D.Common.Math.b2Vec2
 b2AABB = Box2D.Collision.b2AABB
 b2BodyDef = Box2D.Dynamics.b2BodyDef
@@ -86,7 +86,7 @@ DragHandler = do ->
     touch = e.originalEvent
     if touch and touch.touches and touch.touches.length is 1
       #Prevent the default action for the touch event; scrolling
-      #touch.preventDefault()
+      touch.preventDefault()
       mouseX = touch.touches[0].pageX
       mouseY = touch.touches[0].pageY
     else
