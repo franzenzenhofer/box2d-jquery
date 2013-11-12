@@ -46,7 +46,7 @@ drawDOMObjects = ->
 
 update = ->
   cleanGraveyard()
-  updateMouseDrag()
+  DragHandler.updateMouseDrag()
   #frame-rate
   #velocity iterations
   #world.Step 1 / 60, 10, 10 #position iterations
@@ -94,7 +94,6 @@ startWorld = (jquery_selector, density = default_density, restitution = default_
   #console.log($(window).height())
   #bottom box
   createBox(0, $(window.document).height()+1, $(window).width(), 1, true, density, restitution, friction);
-  mouse = MouseAndTouch(document, downHandler, upHandler, moveHandler)
 
   # listen for collisions
   contactListener = new b2ContactListener

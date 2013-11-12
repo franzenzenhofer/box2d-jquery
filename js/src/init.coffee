@@ -47,6 +47,7 @@ isMouseDown = false
 selectedBody = undefined
 mouseJoint = undefined
 
+
 MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
 mutationObserver = undefined
 mutationConfig = 
@@ -54,4 +55,5 @@ mutationConfig =
   childList: true
   characterData: false
 bodySet = {}
+bodyKey = 0;
 graveyard = []

@@ -3,6 +3,8 @@ createDOMObjects = (jquery_selector, shape = default_shape, static_ = default_st
   #iterate all div elements and create them in the Box2D system
   #$("#container div").each (a, b) ->
   #console.log(jquery_selector)
+
+
   $(jquery_selector).each (a, b) -> 
     #console.log(a)
     #console.log(b)
@@ -92,8 +94,11 @@ createDOMObjects = (jquery_selector, shape = default_shape, static_ = default_st
     )
 
     # set an id to domObj for list identification
-    domObj.attr('data-box2d-bodykey', a);
-    bodySet[a] = body;
+    domObj.attr('data-box2d-bodykey', bodyKey);
+    # make it draggable
+    DragHandler.register(domObj);
+    bodySet[bodyKey] = body;
+    bodyKey++;
     return true
 
 #throws a DOM object as 
