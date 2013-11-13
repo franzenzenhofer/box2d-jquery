@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+<head><title>Forces and Impulse</title></head>
+<style>
+  h1 {background-color: }
+  #player { width: 80px; height:100px; background-color: black; color:white; font-size:80px; text-align:center;}
+  .obstacle { position:absolute; bottom:0; background:green; color:white;}
+</style>
+<body>
+<h1>Forces and Impulse</h1>
+<h2>Use the force, Luke! (Spacebar = jump, a = left, d = right)</h2>
+
+<div id="player">&#9786;</div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script src="../js/lib/jquery.box2d.min.js"></script>
+<script> 
+  $(document).ready(function() {
+    var random = function(max) {
+      return (Math.random()*max) >> 0;
+    }; 
+    for(var i = 0; i < 10; i++) {
+      $('body').append($('<div class="obstacle" data-box2d-static="true"></div>').css('height',random(300)).css('width', random(300)).css('left', random(1000)));
+    }
+    
+    $("div")
+      .box2d({'y-velocity':5 });
+    var player = $("#player");
+    var moveLeft = function() {
+      $.Physics.applyForce(player, {x: -200, y: 0});
+    };
+    var moveRight = function() {
+      $.Physics.applyForce(player, {x: 200, y: 0});
+    };
+    $('body').keydown(function(evt){
+      evt.preventDefault();
+      switch(evt.which) {
+        case 68:
+          moveRight();
+          break;
+        case 65:
+          moveLeft();
+          break;
+        case 37:
+          moveLeft();
+          break;
+        case 39:
+          moveRight();
+          break;
+      }
+
+    });
+    $('body').keyup(function(evt) {
+      evt.preventDefault();
+      if (evt.which === 32) {
+        $.Physics.applyImpulse(player, {x: 0, y: -100});
+      }
+    });
+  });
+</script>
+</body>
+</html>
