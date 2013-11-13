@@ -1,4 +1,4 @@
-# /*! box2d-jquery - v0.8.0 - last build: 2013-11-13 01:55:42 */
+# /*! box2d-jquery - v0.8.0 - last build: 2013-11-13 02:28:53 */
 b2Vec2 = Box2D.Common.Math.b2Vec2
 b2AABB = Box2D.Collision.b2AABB
 b2BodyDef = Box2D.Dynamics.b2BodyDef
@@ -440,11 +440,11 @@ $.Physics = do ->
     return new b2Vec2(force.x, force.y)
 
   return {
-    applyForce: (force, el) ->
+    applyForce: (el, force) ->
       body = getBodyFromEl(el)
       body.ApplyForce(getVectorFromForceInput(force), body.GetWorldCenter())
 
-    applyImpulse: (force, el) ->
+    applyImpulse: (el, force) ->
       body = getBodyFromEl(el)
       body.ApplyImpulse(getVectorFromForceInput(force), body.GetWorldCenter())
   }

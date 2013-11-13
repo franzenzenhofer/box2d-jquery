@@ -14,12 +14,12 @@
       return new b2Vec2(force.x, force.y);
     };
     return {
-      applyForce: function(force, el) {
+      applyForce: function(el, force) {
         var body;
         body = getBodyFromEl(el);
         return body.ApplyForce(getVectorFromForceInput(force), body.GetWorldCenter());
       },
-      applyImpulse: function(force, el) {
+      applyImpulse: function(el, force) {
         var body;
         body = getBodyFromEl(el);
         return body.ApplyImpulse(getVectorFromForceInput(force), body.GetWorldCenter());

@@ -1,4 +1,4 @@
-/*! box2d-jquery - v0.8.0 - last build: 2013-11-13 01:55:42 */
+/*! box2d-jquery - v0.8.0 - last build: 2013-11-13 02:28:53 */
 var Box2D={};
 (function(F,G){function K(){}if(!(Object.prototype.defineProperty instanceof Function)&&Object.prototype.__defineGetter__ instanceof Function&&Object.prototype.__defineSetter__ instanceof Function)Object.defineProperty=function(y,w,A){A.get instanceof Function&&y.__defineGetter__(w,A.get);A.set instanceof Function&&y.__defineSetter__(w,A.set)};F.inherit=function(y,w){K.prototype=w.prototype;y.prototype=new K;y.prototype.constructor=y};F.generateCallback=function(y,w){return function(){w.apply(y,arguments)}};
 F.NVector=function(y){if(y===G)y=0;for(var w=Array(y||0),A=0;A<y;++A)w[A]=0;return w};F.is=function(y,w){if(y===null)return false;if(w instanceof Function&&y instanceof w)return true;if(y.constructor.__implements!=G&&y.constructor.__implements[w])return true;return false};F.parseUInt=function(y){return Math.abs(parseInt(y))}})(Box2D);var Vector=Array,Vector_a2j_Number=Box2D.NVector;if(typeof Box2D==="undefined")Box2D={};if(typeof Box2D.Collision==="undefined")Box2D.Collision={};
@@ -1066,12 +1066,12 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
       return new b2Vec2(force.x, force.y);
     };
     return {
-      applyForce: function(force, el) {
+      applyForce: function(el, force) {
         var body;
         body = getBodyFromEl(el);
         return body.ApplyForce(getVectorFromForceInput(force), body.GetWorldCenter());
       },
-      applyImpulse: function(force, el) {
+      applyImpulse: function(el, force) {
         var body;
         body = getBodyFromEl(el);
         return body.ApplyImpulse(getVectorFromForceInput(force), body.GetWorldCenter());
