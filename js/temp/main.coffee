@@ -1,4 +1,4 @@
-# /*! box2d-jquery - v0.8.0 - last build: 2013-11-06 02:38:27 */
+# /*! box2d-jquery - v0.8.0 - last build: 2013-11-13 01:55:42 */
 b2Vec2 = Box2D.Common.Math.b2Vec2
 b2AABB = Box2D.Collision.b2AABB
 b2BodyDef = Box2D.Dynamics.b2BodyDef
@@ -431,6 +431,24 @@ startWorld = (jquery_selector, density = default_density, restitution = default_
  
 
 
+$.Physics = do ->
+  getBodyFromEl = (el) ->
+    bodyKey = el.attr('data-box2d-bodykey')
+    return bodySet[bodyKey] && bodySet[bodyKey].GetBody()
+  getVectorFromForceInput = (force) ->
+    force = $.extend {}, { x: 0, y: 0}, force
+    return new b2Vec2(force.x, force.y)
+
+  return {
+    applyForce: (force, el) ->
+      body = getBodyFromEl(el)
+      body.ApplyForce(getVectorFromForceInput(force), body.GetWorldCenter())
+
+    applyImpulse: (force, el) ->
+      body = getBodyFromEl(el)
+      body.ApplyImpulse(getVectorFromForceInput(force), body.GetWorldCenter())
+  }
+
 $.fn.extend
   box2d: (options) ->
     self = $.fn.box2d
@@ -459,7 +477,7 @@ $.fn.extend
     #  self.startWorld el, opts
     #  self.log el if opts.log
 
-$.extend $.fn.physics,
+$.extend $.Physics,
   default_options:
     'x-velocity': 0
     'y-velocity': 0

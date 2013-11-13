@@ -26,7 +26,7 @@ $.fn.extend
     #  self.startWorld el, opts
     #  self.log el if opts.log
 
-$.extend $.fn.physics,
+$.extend $.Physics,
   default_options:
     'x-velocity': 0
     'y-velocity': 0

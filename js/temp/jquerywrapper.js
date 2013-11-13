@@ -24,7 +24,7 @@
     }
   });
 
-  $.extend($.fn.physics, {
+  $.extend($.Physics, {
     default_options: {
       'x-velocity': 0,
       'y-velocity': 0,
