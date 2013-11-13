@@ -45,6 +45,7 @@
     "js/src/mouse-touch.coffee",
     "js/src/create.coffee",
     "js/src/app.coffee",
+    "js/src/physics.coffee",
     "js/src/jquerywrapper.coffee"
   ],
   "coffetemp": "js/temp/main.coffee",
