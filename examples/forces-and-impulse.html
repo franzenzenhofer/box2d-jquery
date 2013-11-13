@@ -26,10 +26,10 @@
       .box2d({'y-velocity':5 });
     var player = $("#player");
     var moveLeft = function() {
-      $.Physics.applyForce({x: -200, y: 0}, player);
+      $.Physics.applyForce(player, {x: -200, y: 0});
     };
     var moveRight = function() {
-      $.Physics.applyForce({x: 200, y: 0}, player);
+      $.Physics.applyForce(player, {x: 200, y: 0});
     };
     $('body').keydown(function(evt){
       evt.preventDefault();
@@ -52,7 +52,7 @@
     $('body').keyup(function(evt) {
       evt.preventDefault();
       if (evt.which === 32) {
-        $.Physics.applyImpulse({x: 0, y: -100}, player);
+        $.Physics.applyImpulse(player, {x: 0, y: -100});
       }
     });
   });

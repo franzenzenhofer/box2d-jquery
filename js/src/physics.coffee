@@ -7,11 +7,11 @@ $.Physics = do ->
     return new b2Vec2(force.x, force.y)
 
   return {
-    applyForce: (force, el) ->
+    applyForce: (el, force) ->
       body = getBodyFromEl(el)
       body.ApplyForce(getVectorFromForceInput(force), body.GetWorldCenter())
 
-    applyImpulse: (force, el) ->
+    applyImpulse: (el, force) ->
       body = getBodyFromEl(el)
       body.ApplyImpulse(getVectorFromForceInput(force), body.GetWorldCenter())
   }
