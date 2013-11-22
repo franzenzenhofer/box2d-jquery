@@ -1,5 +1,5 @@
 (function() {
-  var $, D2R, D_E_B_U_G, DragHandler, MutationObserver, PI2, R2D, SCALE, S_T_A_R_T_E_D, b2AABB, b2Body, b2BodyDef, b2CircleShape, b2ContactListener, b2DebugDraw, b2Fixture, b2FixtureDef, b2MassData, b2MouseJointDef, b2PolygonShape, b2RevoluteJointDef, b2Vec2, b2World, bodyKey, bodySet, cleanGraveyard, createBox, createCircle, createDOMObjects, default_density, default_friction, default_passive, default_restitution, default_shape, default_static, drawDOMObjects, graveyard, hw, interval, isMouseDown, mouseJoint, mousePVec, mouseX, mouseY, mutationConfig, mutationHandler, mutationObserver, selectedBody, startWorld, update, world, x_velocity, y_velocity;
+  var $, D2R, D_E_B_U_G, DragHandler, MutationObserver, PI2, R2D, SCALE, S_T_A_R_T_E_D, applyCustomGravity, b2AABB, b2Body, b2BodyDef, b2CircleShape, b2ContactListener, b2DebugDraw, b2Fixture, b2FixtureDef, b2MassData, b2MouseJointDef, b2PolygonShape, b2RevoluteJointDef, b2Vec2, b2World, bodyKey, bodySet, cleanGraveyard, createBox, createCircle, createDOMObjects, default_density, default_friction, default_passive, default_restitution, default_shape, default_static, drawDOMObjects, graveyard, hw, interval, isMouseDown, mouseJoint, mousePVec, mouseX, mouseY, mutationConfig, mutationHandler, mutationObserver, selectedBody, startWorld, update, world, x_velocity, y_velocity;
 
   b2Vec2 = Box2D.Common.Math.b2Vec2;
 
@@ -374,9 +374,28 @@
     return _results;
   };
 
+  applyCustomGravity = function() {
+    var b, f, force, _results;
+    b = world.m_bodyList;
+    _results = [];
+    while (b) {
+      f = b.m_fixtureList;
+      while (f) {
+        if (f.m_userData && f.m_userData.gravity) {
+          force = f.GetUserData().gravity;
+          f.GetBody().ApplyForce(force, f.GetBody().GetWorldCenter());
+        }
+        f = f.m_next;
+      }
+      _results.push(b = b.m_next);
+    }
+    return _results;
+  };
+
   update = function() {
     cleanGraveyard();
     DragHandler.updateMouseDrag();
+    applyCustomGravity();
     world.Step(2 / 60, 8, 3);
     drawDOMObjects();
     if (D_E_B_U_G) {
@@ -431,7 +450,7 @@
       friction = default_friction;
     }
     S_T_A_R_T_E_D = true;
-    world = new b2World(new b2Vec2(x_velocity, y_velocity), true);
+    world = new b2World(new b2Vec2(x_velocity, y_velocity), false);
     w = $(window).width();
     h = $(window).height();
     createBox(0, -1, $(window).width(), 1, true, density, restitution, friction);
@@ -479,10 +498,15 @@
   };
 
   $.Physics = (function() {
-    var getBodyFromEl, getVectorFromForceInput;
-    getBodyFromEl = function(el) {
+    var getBodyFromEl, getFixtureFromEl, getVectorFromForceInput;
+    getFixtureFromEl = function(el) {
       bodyKey = el.attr('data-box2d-bodykey');
-      return bodySet[bodyKey] && bodySet[bodyKey].GetBody();
+      return bodySet[bodyKey];
+    };
+    getBodyFromEl = function(el) {
+      var fixture;
+      fixture = getFixtureFromEl(el);
+      return fixture && fixture.GetBody();
     };
     getVectorFromForceInput = function(force) {
       force = $.extend({}, {
@@ -501,6 +525,14 @@
         var body;
         body = getBodyFromEl(el);
         return body.ApplyImpulse(getVectorFromForceInput(force), body.GetWorldCenter());
+      },
+      setWorldGravity: function(force) {
+        return world.SetGravity(new b2Vec2(force['x-velocity'], force['y-velocity']));
+      },
+      setElementGravity: function(el, force) {
+        var fixture;
+        fixture = getFixtureFromEl(el);
+        return fixture.m_userData.gravity = getVectorFromForceInput(force);
       }
     };
   })();

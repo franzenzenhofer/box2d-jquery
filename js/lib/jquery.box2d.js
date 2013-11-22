@@ -1,4 +1,4 @@
-/*! box2d-jquery - v0.8.0 - last build: 2013-11-13 02:28:53 */
+/*! box2d-jquery - v0.8.0 - last build: 2013-11-22 04:56:35 */
 var Box2D={};
 (function(F,G){function K(){}if(!(Object.prototype.defineProperty instanceof Function)&&Object.prototype.__defineGetter__ instanceof Function&&Object.prototype.__defineSetter__ instanceof Function)Object.defineProperty=function(y,w,A){A.get instanceof Function&&y.__defineGetter__(w,A.get);A.set instanceof Function&&y.__defineSetter__(w,A.set)};F.inherit=function(y,w){K.prototype=w.prototype;y.prototype=new K;y.prototype.constructor=y};F.generateCallback=function(y,w){return function(){w.apply(y,arguments)}};
 F.NVector=function(y){if(y===G)y=0;for(var w=Array(y||0),A=0;A<y;++A)w[A]=0;return w};F.is=function(y,w){if(y===null)return false;if(w instanceof Function&&y instanceof w)return true;if(y.constructor.__implements!=G&&y.constructor.__implements[w])return true;return false};F.parseUInt=function(y){return Math.abs(parseInt(y))}})(Box2D);var Vector=Array,Vector_a2j_Number=Box2D.NVector;if(typeof Box2D==="undefined")Box2D={};if(typeof Box2D.Collision==="undefined")Box2D.Collision={};
@@ -573,7 +573,7 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
         };
 }());
 (function() {
-  var $, D2R, D_E_B_U_G, DragHandler, MutationObserver, PI2, R2D, SCALE, S_T_A_R_T_E_D, b2AABB, b2Body, b2BodyDef, b2CircleShape, b2ContactListener, b2DebugDraw, b2Fixture, b2FixtureDef, b2MassData, b2MouseJointDef, b2PolygonShape, b2RevoluteJointDef, b2Vec2, b2World, bodyKey, bodySet, cleanGraveyard, createBox, createCircle, createDOMObjects, default_density, default_friction, default_passive, default_restitution, default_shape, default_static, drawDOMObjects, graveyard, hw, interval, isMouseDown, mouseJoint, mousePVec, mouseX, mouseY, mutationConfig, mutationHandler, mutationObserver, selectedBody, startWorld, update, world, x_velocity, y_velocity;
+  var $, D2R, D_E_B_U_G, DragHandler, MutationObserver, PI2, R2D, SCALE, S_T_A_R_T_E_D, applyCustomGravity, b2AABB, b2Body, b2BodyDef, b2CircleShape, b2ContactListener, b2DebugDraw, b2Fixture, b2FixtureDef, b2MassData, b2MouseJointDef, b2PolygonShape, b2RevoluteJointDef, b2Vec2, b2World, bodyKey, bodySet, cleanGraveyard, createBox, createCircle, createDOMObjects, default_density, default_friction, default_passive, default_restitution, default_shape, default_static, drawDOMObjects, graveyard, hw, interval, isMouseDown, mouseJoint, mousePVec, mouseX, mouseY, mutationConfig, mutationHandler, mutationObserver, selectedBody, startWorld, update, world, x_velocity, y_velocity;
 
   b2Vec2 = Box2D.Common.Math.b2Vec2;
 
@@ -948,9 +948,28 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
     return _results;
   };
 
+  applyCustomGravity = function() {
+    var b, f, force, _results;
+    b = world.m_bodyList;
+    _results = [];
+    while (b) {
+      f = b.m_fixtureList;
+      while (f) {
+        if (f.m_userData && f.m_userData.gravity) {
+          force = f.GetUserData().gravity;
+          f.GetBody().ApplyForce(force, f.GetBody().GetWorldCenter());
+        }
+        f = f.m_next;
+      }
+      _results.push(b = b.m_next);
+    }
+    return _results;
+  };
+
   update = function() {
     cleanGraveyard();
     DragHandler.updateMouseDrag();
+    applyCustomGravity();
     world.Step(2 / 60, 8, 3);
     drawDOMObjects();
     if (D_E_B_U_G) {
@@ -1005,7 +1024,7 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
       friction = default_friction;
     }
     S_T_A_R_T_E_D = true;
-    world = new b2World(new b2Vec2(x_velocity, y_velocity), true);
+    world = new b2World(new b2Vec2(x_velocity, y_velocity), false);
     w = $(window).width();
     h = $(window).height();
     createBox(0, -1, $(window).width(), 1, true, density, restitution, friction);
@@ -1053,10 +1072,15 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
   };
 
   $.Physics = (function() {
-    var getBodyFromEl, getVectorFromForceInput;
-    getBodyFromEl = function(el) {
+    var getBodyFromEl, getFixtureFromEl, getVectorFromForceInput;
+    getFixtureFromEl = function(el) {
       bodyKey = el.attr('data-box2d-bodykey');
-      return bodySet[bodyKey] && bodySet[bodyKey].GetBody();
+      return bodySet[bodyKey];
+    };
+    getBodyFromEl = function(el) {
+      var fixture;
+      fixture = getFixtureFromEl(el);
+      return fixture && fixture.GetBody();
     };
     getVectorFromForceInput = function(force) {
       force = $.extend({}, {
@@ -1075,6 +1099,14 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
         var body;
         body = getBodyFromEl(el);
         return body.ApplyImpulse(getVectorFromForceInput(force), body.GetWorldCenter());
+      },
+      setWorldGravity: function(force) {
+        return world.SetGravity(new b2Vec2(force['x-velocity'], force['y-velocity']));
+      },
+      setElementGravity: function(el, force) {
+        var fixture;
+        fixture = getFixtureFromEl(el);
+        return fixture.m_userData.gravity = getVectorFromForceInput(force);
       }
     };
   })();

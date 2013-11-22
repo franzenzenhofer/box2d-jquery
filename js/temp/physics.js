@@ -1,10 +1,15 @@
 (function() {
   $.Physics = (function() {
-    var getBodyFromEl, getVectorFromForceInput;
-    getBodyFromEl = function(el) {
+    var getBodyFromEl, getFixtureFromEl, getVectorFromForceInput;
+    getFixtureFromEl = function(el) {
       var bodyKey;
       bodyKey = el.attr('data-box2d-bodykey');
-      return bodySet[bodyKey] && bodySet[bodyKey].GetBody();
+      return bodySet[bodyKey];
+    };
+    getBodyFromEl = function(el) {
+      var fixture;
+      fixture = getFixtureFromEl(el);
+      return fixture && fixture.GetBody();
     };
     getVectorFromForceInput = function(force) {
       force = $.extend({}, {
@@ -23,6 +28,14 @@
         var body;
         body = getBodyFromEl(el);
         return body.ApplyImpulse(getVectorFromForceInput(force), body.GetWorldCenter());
+      },
+      setWorldGravity: function(force) {
+        return world.SetGravity(new b2Vec2(force['x-velocity'], force['y-velocity']));
+      },
+      setElementGravity: function(el, force) {
+        var fixture;
+        fixture = getFixtureFromEl(el);
+        return fixture.m_userData.gravity = getVectorFromForceInput(force);
       }
     };
   })();
