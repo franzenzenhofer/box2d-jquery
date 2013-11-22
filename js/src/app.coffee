@@ -43,13 +43,23 @@ drawDOMObjects = ->
           f.m_userData.domObj.css css
       f = f.m_next
     b = b.m_next
+applyCustomGravity = ->
+  b = world.m_bodyList
+  while b
+    f = b.m_fixtureList
+    while f
+      if f.m_userData and f.m_userData.gravity 
+        force = f.GetUserData().gravity
+        f.GetBody().ApplyForce(force, f.GetBody().GetWorldCenter())
+      f = f.m_next
+    b = b.m_next
 
 update = ->
   cleanGraveyard()
   DragHandler.updateMouseDrag()
-  #frame-rate
-  #velocity iterations
-  #world.Step 1 / 60, 10, 10 #position iterations
+  
+  applyCustomGravity()
+
   world.Step 2 / 60, 8, 3 
   drawDOMObjects()
   if D_E_B_U_G
@@ -79,7 +89,8 @@ startWorld = (jquery_selector, density = default_density, restitution = default_
   S_T_A_R_T_E_D = true
   world = new b2World(
     new b2Vec2(x_velocity,y_velocity),
-    true
+    # setting the world not asleep in order to ensure gravity changes affect the world immediately
+    false
     )
   #createDOMObjects($(jquery_selector).bodysnatch())
   w = $(window).width(); 

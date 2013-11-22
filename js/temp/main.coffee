@@ -1,4 +1,4 @@
-# /*! box2d-jquery - v0.8.0 - last build: 2013-11-13 02:28:53 */
+# /*! box2d-jquery - v0.8.0 - last build: 2013-11-22 04:56:35 */
 b2Vec2 = Box2D.Common.Math.b2Vec2
 b2AABB = Box2D.Collision.b2AABB
 b2BodyDef = Box2D.Dynamics.b2BodyDef
@@ -324,13 +324,23 @@ drawDOMObjects = ->
           f.m_userData.domObj.css css
       f = f.m_next
     b = b.m_next
+applyCustomGravity = ->
+  b = world.m_bodyList
+  while b
+    f = b.m_fixtureList
+    while f
+      if f.m_userData and f.m_userData.gravity 
+        force = f.GetUserData().gravity
+        f.GetBody().ApplyForce(force, f.GetBody().GetWorldCenter())
+      f = f.m_next
+    b = b.m_next
 
 update = ->
   cleanGraveyard()
   DragHandler.updateMouseDrag()
-  #frame-rate
-  #velocity iterations
-  #world.Step 1 / 60, 10, 10 #position iterations
+  
+  applyCustomGravity()
+
   world.Step 2 / 60, 8, 3 
   drawDOMObjects()
   if D_E_B_U_G
@@ -360,7 +370,8 @@ startWorld = (jquery_selector, density = default_density, restitution = default_
   S_T_A_R_T_E_D = true
   world = new b2World(
     new b2Vec2(x_velocity,y_velocity),
-    true
+    # setting the world not asleep in order to ensure gravity changes affect the world immediately
+    false
     )
   #createDOMObjects($(jquery_selector).bodysnatch())
   w = $(window).width(); 
@@ -432,9 +443,12 @@ startWorld = (jquery_selector, density = default_density, restitution = default_
 
 
 $.Physics = do ->
-  getBodyFromEl = (el) ->
+  getFixtureFromEl = (el) ->
     bodyKey = el.attr('data-box2d-bodykey')
-    return bodySet[bodyKey] && bodySet[bodyKey].GetBody()
+    return bodySet[bodyKey]
+  getBodyFromEl = (el) ->
+    fixture = getFixtureFromEl(el)
+    return  fixture && fixture.GetBody()
   getVectorFromForceInput = (force) ->
     force = $.extend {}, { x: 0, y: 0}, force
     return new b2Vec2(force.x, force.y)
@@ -447,6 +461,12 @@ $.Physics = do ->
     applyImpulse: (el, force) ->
       body = getBodyFromEl(el)
       body.ApplyImpulse(getVectorFromForceInput(force), body.GetWorldCenter())
+
+    setWorldGravity: (force) ->
+      world.SetGravity(new b2Vec2(force['x-velocity'], force['y-velocity']));
+    setElementGravity: (el, force) ->
+      fixture = getFixtureFromEl(el)
+      fixture.m_userData.gravity = getVectorFromForceInput(force)
   }
 
 $.fn.extend
