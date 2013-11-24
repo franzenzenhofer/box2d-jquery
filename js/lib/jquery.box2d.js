@@ -1,4 +1,4 @@
-/*! box2d-jquery - v0.8.0 - last build: 2013-11-24 19:18:35 */
+/*! box2d-jquery - v0.8.0 - last build: 2013-11-24 22:44:20 */
 var Box2D={};
 (function(F,G){function K(){}if(!(Object.prototype.defineProperty instanceof Function)&&Object.prototype.__defineGetter__ instanceof Function&&Object.prototype.__defineSetter__ instanceof Function)Object.defineProperty=function(y,w,A){A.get instanceof Function&&y.__defineGetter__(w,A.get);A.set instanceof Function&&y.__defineSetter__(w,A.set)};F.inherit=function(y,w){K.prototype=w.prototype;y.prototype=new K;y.prototype.constructor=y};F.generateCallback=function(y,w){return function(){w.apply(y,arguments)}};
 F.NVector=function(y){if(y===G)y=0;for(var w=Array(y||0),A=0;A<y;++A)w[A]=0;return w};F.is=function(y,w){if(y===null)return false;if(w instanceof Function&&y instanceof w)return true;if(y.constructor.__implements!=G&&y.constructor.__implements[w])return true;return false};F.parseUInt=function(y){return Math.abs(parseInt(y))}})(Box2D);var Vector=Array,Vector_a2j_Number=Box2D.NVector;if(typeof Box2D==="undefined")Box2D={};if(typeof Box2D.Collision==="undefined")Box2D.Collision={};
@@ -486,6 +486,8 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
                     
                     var w = element.width(),
                         h = element.height();
+                    var translate_values = 'translateX(' + element.offset().left + 'px) translateY(' + element.offset().top +'px)';
+
                     //otherwise not loaded image will be stuck with zero width/height
                     if ( w && h)
                     {
@@ -498,30 +500,40 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
                         {
                             clone.css(element.getStyleObject());
                         }
+                        
                         clone.css({
                             position: 'absolute',
+                            left: 0,
+                            top: 0,
                             //hot fix for the 101 balls samplein FF and opera
                             //due to idiotic behaviour of 
                             //https://developer.mozilla.org/de/docs/DOM/window.getComputedStyle
                             //'background-color': element.css('background-color'),
-                            top: element.offset().top,
-                            left: element.offset().left,
                             width: element.width(),
                             height: element.height(),
                             margin:0,
+                            "-webkit-transform": translate_values,
+                            "-moz-transform": translate_values,
+                            "-ms-transform": translate_values, 
+                            "-o-transform": translate_values, 
+                            "transform": translate_values  
                             //padding: 0
-                            });
+                        });
                         clone.addClass('perfect');
                     }
                     else //probably images without a width and height yet
                     {
                         clone.css({
                             position: 'absolute',
-                            top: element.offset().top,
-                            left: element.offset().left,
                             margin:0,
-                            //padding: 0
-                            }); 
+                            left: 0,
+                            top: 0,
+                            "-webkit-transform": translate_values, 
+                            "-moz-transform": translate_values, 
+                            "-ms-transform": translate_values, 
+                            "-o-transform": translate_values, 
+                            "transform": translate_values  
+                        }); 
                         clone.addClass('imperfect');
                     }
                     //clone.hide();
@@ -573,7 +585,7 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
         };
 }());
 (function() {
-  var $, D2R, D_E_B_U_G, DragHandler, MutationObserver, PI2, R2D, SCALE, S_T_A_R_T_E_D, applyCustomGravity, areaDetection, areas, b2AABB, b2Body, b2BodyDef, b2CircleShape, b2ContactListener, b2DebugDraw, b2Fixture, b2FixtureDef, b2MassData, b2MouseJointDef, b2PolygonShape, b2RevoluteJointDef, b2Vec2, b2World, bodyKey, bodySet, cleanGraveyard, createBox, createCircle, createDOMObjects, default_density, default_friction, default_passive, default_restitution, default_shape, default_static, drawDOMObjects, graveyard, hw, interval, isMouseDown, mouseJoint, mousePVec, mouseX, mouseY, mutationConfig, mutationHandler, mutationObserver, selectedBody, startWorld, update, world, x_velocity, y_velocity;
+  var $, D2R, D_E_B_U_G, DragHandler, MutationObserver, PI2, R2D, SCALE, S_T_A_R_T_E_D, applyCustomGravity, areaDetection, areas, b2AABB, b2Body, b2BodyDef, b2CircleShape, b2ContactListener, b2DebugDraw, b2Fixture, b2FixtureDef, b2MassData, b2MouseJointDef, b2PolygonShape, b2RevoluteJointDef, b2Vec2, b2World, bodyKey, bodySet, cleanGraveyard, createBox, createCircle, createDOMObjects, default_density, default_friction, default_passive, default_restitution, default_shape, default_static, drawDOMObjects, fpsEl, graveyard, hw, interval, isMouseDown, measureTime, mouseJoint, mousePVec, mouseX, mouseY, mutationConfig, mutationHandler, mutationObserver, selectedBody, startWorld, time0, update, world, x_velocity, y_velocity;
 
   b2Vec2 = Box2D.Common.Math.b2Vec2;
 
@@ -670,9 +682,13 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
 
   bodyKey = 0;
 
-  areas = void 0;
+  areas = [];
 
   graveyard = [];
+
+  time0 = 0;
+
+  fpsEl = void 0;
 
   DragHandler = (function() {
     var downHandler, moveHandler, upHandler, updateFromEvent;
@@ -905,7 +921,7 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
 
 
   drawDOMObjects = function() {
-    var angle, b, css, domObj, f, i, l, lastRotation, lastX, lastY, r, t, translate_values, values, x, y, _results;
+    var b, css, domObj, f, i, r, translate_values, x, y, _results;
     i = 0;
     b = world.m_bodyList;
     _results = [];
@@ -914,34 +930,19 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
       while (f) {
         if (f.m_userData) {
           domObj = f.m_userData.domObj;
-          lastX = domObj.css('left');
-          lastY = domObj.css('top');
-          lastRotation = domObj.css('transform');
-          if (lastRotation !== 'none') {
-            values = lastRotation.split('(')[1];
-            values = values.split(')')[0];
-            values = values.split(',');
-            t = values[0];
-            l = values[1];
-            angle = Math.round(Math.atan2(l, t) * (180 / Math.PI));
-            lastRotation = angle;
-          }
           x = Math.floor((f.m_body.m_xf.position.x * SCALE) - f.m_userData.width) + 'px';
           y = Math.floor((f.m_body.m_xf.position.y * SCALE) - f.m_userData.height) + 'px';
           r = Math.round(((f.m_body.m_sweep.a + PI2) % PI2) * R2D * 100) / 100;
-          translate_values = "rotate(" + r + "deg)";
+          translate_values = ["translateX(", x, ') translateY(', y, ')'].join('');
+          translate_values += " rotate(" + r + "deg)";
           css = {
             "-webkit-transform": translate_values,
             "-moz-transform": translate_values,
             "-ms-transform": translate_values,
             "-o-transform": translate_values,
-            "transform": translate_values,
-            "left": x,
-            "top": y
+            "transform": translate_values
           };
-          if (!(lastX === x && lastY === y && lastRotation === r)) {
-            f.m_userData.domObj.css(css);
-          }
+          f.m_userData.domObj.css(css);
         }
         f = f.m_next;
       }
@@ -1019,6 +1020,14 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
     };
   })();
 
+  measureTime = function() {
+    var fps, now;
+    now = (performance && performance.now()) || +(new Date);
+    fps = 1000 / (now - time0);
+    fpsEl.text((fps >> 0) + ' fps');
+    return time0 = now;
+  };
+
   update = function() {
     cleanGraveyard();
     DragHandler.updateMouseDrag();
@@ -1030,6 +1039,7 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
     drawDOMObjects();
     if (D_E_B_U_G) {
       world.DrawDebugData();
+      measureTime();
     }
     world.ClearForces();
     return window.setTimeout(update, 1000 / 30);
@@ -1122,7 +1132,8 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
       canvas.attr('width', $(window).width());
       canvas.attr('height', $(document).height());
       world.SetDebugDraw(debugDraw);
-      $('body').append(canvas);
+      fpsEl = $('<div style="position:absolute;bottom:0;right:0;background:red;padding:5px;">0</div>');
+      $('body').append(canvas).append(fpsEl);
     }
     return update();
   };
@@ -1180,7 +1191,7 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
       shape = opts['shape'];
       static_ = opts['static'];
       debug = opts['debug'];
-      areas = opts['area-detection'];
+      areas = opts['area-detection'] || [];
       if (S_T_A_R_T_E_D === false) {
         if (debug === true) {
           D_E_B_U_G = true;

@@ -12,7 +12,7 @@
       shape = opts['shape'];
       static_ = opts['static'];
       debug = opts['debug'];
-      areas = opts['area-detection'];
+      areas = opts['area-detection'] || [];
       if (S_T_A_R_T_E_D === false) {
         if (debug === true) {
           D_E_B_U_G = true;

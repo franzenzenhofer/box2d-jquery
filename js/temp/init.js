@@ -1,5 +1,5 @@
 (function() {
-  var $, D2R, D_E_B_U_G, MutationObserver, PI2, R2D, SCALE, S_T_A_R_T_E_D, areas, b2AABB, b2Body, b2BodyDef, b2CircleShape, b2ContactListener, b2DebugDraw, b2Fixture, b2FixtureDef, b2MassData, b2MouseJointDef, b2PolygonShape, b2RevoluteJointDef, b2Vec2, b2World, bodyKey, bodySet, default_density, default_friction, default_passive, default_restitution, default_shape, default_static, graveyard, hw, interval, isMouseDown, mouseJoint, mousePVec, mouseX, mouseY, mutationConfig, mutationObserver, selectedBody, world, x_velocity, y_velocity;
+  var $, D2R, D_E_B_U_G, MutationObserver, PI2, R2D, SCALE, S_T_A_R_T_E_D, areas, b2AABB, b2Body, b2BodyDef, b2CircleShape, b2ContactListener, b2DebugDraw, b2Fixture, b2FixtureDef, b2MassData, b2MouseJointDef, b2PolygonShape, b2RevoluteJointDef, b2Vec2, b2World, bodyKey, bodySet, default_density, default_friction, default_passive, default_restitution, default_shape, default_static, fpsEl, graveyard, hw, interval, isMouseDown, mouseJoint, mousePVec, mouseX, mouseY, mutationConfig, mutationObserver, selectedBody, time0, world, x_velocity, y_velocity;
 
   b2Vec2 = Box2D.Common.Math.b2Vec2;
 
@@ -96,8 +96,12 @@
 
   bodyKey = 0;
 
-  areas = void 0;
+  areas = [];
 
   graveyard = [];
+
+  time0 = 0;
+
+  fpsEl = void 0;
 
 }).call(this);

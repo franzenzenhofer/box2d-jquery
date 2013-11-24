@@ -1,8 +1,8 @@
 (function() {
-  var applyCustomGravity, areaDetection, cleanGraveyard, drawDOMObjects, mutationHandler, startWorld, update;
+  var applyCustomGravity, areaDetection, cleanGraveyard, drawDOMObjects, measureTime, mutationHandler, startWorld, update;
 
   drawDOMObjects = function() {
-    var angle, b, css, domObj, f, i, l, lastRotation, lastX, lastY, r, t, translate_values, values, x, y, _results;
+    var b, css, domObj, f, i, r, translate_values, x, y, _results;
     i = 0;
     b = world.m_bodyList;
     _results = [];
@@ -11,34 +11,19 @@
       while (f) {
         if (f.m_userData) {
           domObj = f.m_userData.domObj;
-          lastX = domObj.css('left');
-          lastY = domObj.css('top');
-          lastRotation = domObj.css('transform');
-          if (lastRotation !== 'none') {
-            values = lastRotation.split('(')[1];
-            values = values.split(')')[0];
-            values = values.split(',');
-            t = values[0];
-            l = values[1];
-            angle = Math.round(Math.atan2(l, t) * (180 / Math.PI));
-            lastRotation = angle;
-          }
           x = Math.floor((f.m_body.m_xf.position.x * SCALE) - f.m_userData.width) + 'px';
           y = Math.floor((f.m_body.m_xf.position.y * SCALE) - f.m_userData.height) + 'px';
           r = Math.round(((f.m_body.m_sweep.a + PI2) % PI2) * R2D * 100) / 100;
-          translate_values = "rotate(" + r + "deg)";
+          translate_values = ["translateX(", x, ') translateY(', y, ')'].join('');
+          translate_values += " rotate(" + r + "deg)";
           css = {
             "-webkit-transform": translate_values,
             "-moz-transform": translate_values,
             "-ms-transform": translate_values,
             "-o-transform": translate_values,
-            "transform": translate_values,
-            "left": x,
-            "top": y
+            "transform": translate_values
           };
-          if (!(lastX === x && lastY === y && lastRotation === r)) {
-            f.m_userData.domObj.css(css);
-          }
+          f.m_userData.domObj.css(css);
         }
         f = f.m_next;
       }
@@ -116,6 +101,14 @@
     };
   })();
 
+  measureTime = function() {
+    var fps, now, time0;
+    now = (performance && performance.now()) || +(new Date);
+    fps = 1000 / (now - time0);
+    fpsEl.text((fps >> 0) + ' fps');
+    return time0 = now;
+  };
+
   update = function() {
     cleanGraveyard();
     DragHandler.updateMouseDrag();
@@ -127,6 +120,7 @@
     drawDOMObjects();
     if (D_E_B_U_G) {
       world.DrawDebugData();
+      measureTime();
     }
     world.ClearForces();
     return window.setTimeout(update, 1000 / 30);
@@ -166,7 +160,7 @@
   };
 
   startWorld = function(jquery_selector, density, restitution, friction) {
-    var S_T_A_R_T_E_D, canvas, contactListener, debugDraw, h, mutationObserver, w, world;
+    var S_T_A_R_T_E_D, canvas, contactListener, debugDraw, fpsEl, h, mutationObserver, w, world;
     if (density == null) {
       density = default_density;
     }
@@ -219,7 +213,8 @@
       canvas.attr('width', $(window).width());
       canvas.attr('height', $(document).height());
       world.SetDebugDraw(debugDraw);
-      $('body').append(canvas);
+      fpsEl = $('<div style="position:absolute;bottom:0;right:0;background:red;padding:5px;">0</div>');
+      $('body').append(canvas).append(fpsEl);
     }
     return update();
   };
