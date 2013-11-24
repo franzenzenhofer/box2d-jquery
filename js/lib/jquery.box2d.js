@@ -1,4 +1,4 @@
-/*! box2d-jquery - v0.8.0 - last build: 2013-11-22 04:56:35 */
+/*! box2d-jquery - v0.8.0 - last build: 2013-11-24 19:18:35 */
 var Box2D={};
 (function(F,G){function K(){}if(!(Object.prototype.defineProperty instanceof Function)&&Object.prototype.__defineGetter__ instanceof Function&&Object.prototype.__defineSetter__ instanceof Function)Object.defineProperty=function(y,w,A){A.get instanceof Function&&y.__defineGetter__(w,A.get);A.set instanceof Function&&y.__defineSetter__(w,A.set)};F.inherit=function(y,w){K.prototype=w.prototype;y.prototype=new K;y.prototype.constructor=y};F.generateCallback=function(y,w){return function(){w.apply(y,arguments)}};
 F.NVector=function(y){if(y===G)y=0;for(var w=Array(y||0),A=0;A<y;++A)w[A]=0;return w};F.is=function(y,w){if(y===null)return false;if(w instanceof Function&&y instanceof w)return true;if(y.constructor.__implements!=G&&y.constructor.__implements[w])return true;return false};F.parseUInt=function(y){return Math.abs(parseInt(y))}})(Box2D);var Vector=Array,Vector_a2j_Number=Box2D.NVector;if(typeof Box2D==="undefined")Box2D={};if(typeof Box2D.Collision==="undefined")Box2D.Collision={};
@@ -573,7 +573,7 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
         };
 }());
 (function() {
-  var $, D2R, D_E_B_U_G, DragHandler, MutationObserver, PI2, R2D, SCALE, S_T_A_R_T_E_D, applyCustomGravity, b2AABB, b2Body, b2BodyDef, b2CircleShape, b2ContactListener, b2DebugDraw, b2Fixture, b2FixtureDef, b2MassData, b2MouseJointDef, b2PolygonShape, b2RevoluteJointDef, b2Vec2, b2World, bodyKey, bodySet, cleanGraveyard, createBox, createCircle, createDOMObjects, default_density, default_friction, default_passive, default_restitution, default_shape, default_static, drawDOMObjects, graveyard, hw, interval, isMouseDown, mouseJoint, mousePVec, mouseX, mouseY, mutationConfig, mutationHandler, mutationObserver, selectedBody, startWorld, update, world, x_velocity, y_velocity;
+  var $, D2R, D_E_B_U_G, DragHandler, MutationObserver, PI2, R2D, SCALE, S_T_A_R_T_E_D, applyCustomGravity, areaDetection, areas, b2AABB, b2Body, b2BodyDef, b2CircleShape, b2ContactListener, b2DebugDraw, b2Fixture, b2FixtureDef, b2MassData, b2MouseJointDef, b2PolygonShape, b2RevoluteJointDef, b2Vec2, b2World, bodyKey, bodySet, cleanGraveyard, createBox, createCircle, createDOMObjects, default_density, default_friction, default_passive, default_restitution, default_shape, default_static, drawDOMObjects, graveyard, hw, interval, isMouseDown, mouseJoint, mousePVec, mouseX, mouseY, mutationConfig, mutationHandler, mutationObserver, selectedBody, startWorld, update, world, x_velocity, y_velocity;
 
   b2Vec2 = Box2D.Common.Math.b2Vec2;
 
@@ -669,6 +669,8 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
   bodySet = {};
 
   bodyKey = 0;
+
+  areas = void 0;
 
   graveyard = [];
 
@@ -966,10 +968,64 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
     return _results;
   };
 
+  areaDetection = (function() {
+    var _elementsInArea;
+    _elementsInArea = [];
+    return function() {
+      var aabb, area, elements, i, joined, left, shape, shapes, _i, _j, _len, _len1, _results;
+      _results = [];
+      for (i = _i = 0, _len = areas.length; _i < _len; i = ++_i) {
+        area = areas[i];
+        if (!_elementsInArea[i]) {
+          _elementsInArea[i] = [];
+        }
+        aabb = new b2AABB();
+        aabb.lowerBound = new b2Vec2(area[0] / SCALE, area[1] / SCALE);
+        aabb.upperBound = new b2Vec2(area[2] / SCALE, area[3] / SCALE);
+        shapes = [];
+        world.QueryAABB(function(shape) {
+          shapes.push(shape);
+          return true;
+        }, aabb);
+        elements = [];
+        for (_j = 0, _len1 = shapes.length; _j < _len1; _j++) {
+          shape = shapes[_j];
+          if (shape.GetUserData()) {
+            elements.push(shape.GetUserData().domObj);
+          }
+        }
+        joined = $(elements).not(_elementsInArea[i]);
+        left = $(_elementsInArea[i]).not(elements);
+        _elementsInArea[i] = elements;
+        if (joined.length !== 0) {
+          _results.push($(document).trigger('areajoined', {
+            areaIndex: i,
+            joinedEl: joined,
+            areaElements: _elementsInArea[i]
+          }));
+        } else {
+          if (left.length !== 0) {
+            _results.push($(document).trigger('arealeft', {
+              areaIndex: i,
+              leftEl: left,
+              areaElements: _elementsInArea[i]
+            }));
+          } else {
+            _results.push(void 0);
+          }
+        }
+      }
+      return _results;
+    };
+  })();
+
   update = function() {
     cleanGraveyard();
     DragHandler.updateMouseDrag();
     applyCustomGravity();
+    if (areas.length > 0) {
+      areaDetection();
+    }
     world.Step(2 / 60, 8, 3);
     drawDOMObjects();
     if (D_E_B_U_G) {
@@ -1124,6 +1180,7 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
       shape = opts['shape'];
       static_ = opts['static'];
       debug = opts['debug'];
+      areas = opts['area-detection'];
       if (S_T_A_R_T_E_D === false) {
         if (debug === true) {
           D_E_B_U_G = true;
@@ -1140,6 +1197,7 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
     default_options: {
       'x-velocity': 0,
       'y-velocity': 0,
+      'area-detection': [],
       'density': default_density,
       'restitution': default_restitution,
       'friction': default_friction,
