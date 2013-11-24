@@ -1,5 +1,5 @@
 (function() {
-  var applyCustomGravity, cleanGraveyard, drawDOMObjects, mutationHandler, startWorld, update;
+  var applyCustomGravity, areaDetection, cleanGraveyard, drawDOMObjects, mutationHandler, startWorld, update;
 
   drawDOMObjects = function() {
     var angle, b, css, domObj, f, i, l, lastRotation, lastX, lastY, r, t, translate_values, values, x, y, _results;
@@ -65,10 +65,64 @@
     return _results;
   };
 
+  areaDetection = (function() {
+    var _elementsInArea;
+    _elementsInArea = [];
+    return function() {
+      var aabb, area, elements, i, joined, left, shape, shapes, _i, _j, _len, _len1, _results;
+      _results = [];
+      for (i = _i = 0, _len = areas.length; _i < _len; i = ++_i) {
+        area = areas[i];
+        if (!_elementsInArea[i]) {
+          _elementsInArea[i] = [];
+        }
+        aabb = new b2AABB();
+        aabb.lowerBound = new b2Vec2(area[0] / SCALE, area[1] / SCALE);
+        aabb.upperBound = new b2Vec2(area[2] / SCALE, area[3] / SCALE);
+        shapes = [];
+        world.QueryAABB(function(shape) {
+          shapes.push(shape);
+          return true;
+        }, aabb);
+        elements = [];
+        for (_j = 0, _len1 = shapes.length; _j < _len1; _j++) {
+          shape = shapes[_j];
+          if (shape.GetUserData()) {
+            elements.push(shape.GetUserData().domObj);
+          }
+        }
+        joined = $(elements).not(_elementsInArea[i]);
+        left = $(_elementsInArea[i]).not(elements);
+        _elementsInArea[i] = elements;
+        if (joined.length !== 0) {
+          _results.push($(document).trigger('areajoined', {
+            areaIndex: i,
+            joinedEl: joined,
+            areaElements: _elementsInArea[i]
+          }));
+        } else {
+          if (left.length !== 0) {
+            _results.push($(document).trigger('arealeft', {
+              areaIndex: i,
+              leftEl: left,
+              areaElements: _elementsInArea[i]
+            }));
+          } else {
+            _results.push(void 0);
+          }
+        }
+      }
+      return _results;
+    };
+  })();
+
   update = function() {
     cleanGraveyard();
     DragHandler.updateMouseDrag();
     applyCustomGravity();
+    if (areas.length > 0) {
+      areaDetection();
+    }
     world.Step(2 / 60, 8, 3);
     drawDOMObjects();
     if (D_E_B_U_G) {

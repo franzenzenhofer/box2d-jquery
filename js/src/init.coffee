@@ -56,4 +56,5 @@ mutationConfig =
   characterData: false
 bodySet = {}
 bodyKey = 0;
+areas = undefined
 graveyard = []

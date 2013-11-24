@@ -1,4 +1,4 @@
-# /*! box2d-jquery - v0.8.0 - last build: 2013-11-22 04:56:35 */
+# /*! box2d-jquery - v0.8.0 - last build: 2013-11-24 19:18:35 */
 b2Vec2 = Box2D.Common.Math.b2Vec2
 b2AABB = Box2D.Collision.b2AABB
 b2BodyDef = Box2D.Dynamics.b2BodyDef
@@ -57,6 +57,7 @@ mutationConfig =
   characterData: false
 bodySet = {}
 bodyKey = 0;
+areas = undefined
 graveyard = []
 DragHandler = do ->
   selectedBody = undefined
@@ -335,11 +336,60 @@ applyCustomGravity = ->
       f = f.m_next
     b = b.m_next
 
+
+
+areaDetection = do ->
+  _elementsInArea = []
+  return ->
+    for area, i in areas
+      _elementsInArea[i] = [] unless _elementsInArea[i]
+      aabb = new b2AABB();
+
+      # * 0.02 because it has to be converted from pixels to metre
+      aabb.lowerBound = new b2Vec2(area[0]/SCALE, area[1]/SCALE)
+      aabb.upperBound = new b2Vec2(area[2]/SCALE, area[3]/SCALE)
+
+      shapes = []
+      world.QueryAABB( (shape) ->
+        shapes.push shape
+        true
+      , aabb)
+      elements = []
+
+      for shape in shapes
+        elements.push shape.GetUserData().domObj if shape.GetUserData()
+
+      joined = $(elements).not(_elementsInArea[i])
+      left = $(_elementsInArea[i]).not(elements)
+
+      _elementsInArea[i] = elements
+
+      unless joined.length is 0
+
+        $(document).trigger('areajoined', {
+          areaIndex: i,
+          joinedEl: joined
+          areaElements: _elementsInArea[i]
+        })
+      else
+        unless left.length is 0
+          $(document).trigger('arealeft', {
+            areaIndex: i,
+            leftEl: left,
+            areaElements: _elementsInArea[i]
+          })
+
+      
+
+
 update = ->
   cleanGraveyard()
   DragHandler.updateMouseDrag()
   
   applyCustomGravity()
+
+  if areas.length > 0
+    areaDetection()
 
   world.Step 2 / 60, 8, 3 
   drawDOMObjects()
@@ -430,7 +480,7 @@ startWorld = (jquery_selector, density = default_density, restitution = default_
 
   #trigger hardware acclearation
   #$('body').css(hw);
-  
+   
   update();
   
 #startWorld("#container div, img")
@@ -481,7 +531,8 @@ $.fn.extend
     shape = opts['shape']
     static_ = opts['static']
     debug = opts['debug']
-    #console.log(opts)
+    areas = opts['area-detection']
+
     if S_T_A_R_T_E_D is false
       if debug is true then D_E_B_U_G = true
       startWorld(@, density, restitution, friction)
@@ -501,6 +552,7 @@ $.extend $.Physics,
   default_options:
     'x-velocity': 0
     'y-velocity': 0
+    'area-detection': []
     'density': default_density
     'restitution': default_restitution
     'friction': default_friction 

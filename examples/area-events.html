@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head><title>Area Events</title></head>
+<style>
+	body, html {
+		margin:0;
+		padding:0;
+	}
+  h1 {  font-size:50px; text-align:center;}
+  div { width: 50px; height:50px; font-size:30px; color:white; background-color: black;  float:left; text-align:center; line-height:40px; cursor:pointer; margin:0;padding:0; margin-top:100px;}
+  p { background:rgba(0,0,0,.2); border:3px dashed black; text-align:center; line-height:40px;}
+  #area {
+  	position:absolute;
+  	top:0;
+  	left:0;
+  	width:200px;
+  	height:200px;
+  	padding:0;
+  	margin:0;
+  }
+  .vv {
+  	background:green;
+  }
+  .joinedArea {
+  	background:yellow;
+  }
+</style>
+</head>
+<body>
+<p id="area">
+	Rescue Area
+</p>
+<h1 data-box2d-passive="true">Area Events</h1>
+<div>&nbsp;</div>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script src="../js/lib/jquery.box2d.min.js"></script>
+<script> 
+  $(document).ready(function() {  
+    $("div")
+      .box2d({'y-velocity':0, 'area-detection': [[0, 0, 200, 200]]});
+
+    $(document).on('areajoined', function(ev, data) {
+    	data.joinedEl.addClass('joinedArea');
+    	$('#area').addClass('vv');
+    });
+    $(document).on('arealeft', function(ev, data) {
+    	data.leftEl.removeClass('joinedArea');
+    	$('#area').removeClass('vv');
+    });
+  });
+</script>
+</body>
+</html>

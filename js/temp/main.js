@@ -1,5 +1,5 @@
 (function() {
-  var $, D2R, D_E_B_U_G, DragHandler, MutationObserver, PI2, R2D, SCALE, S_T_A_R_T_E_D, applyCustomGravity, b2AABB, b2Body, b2BodyDef, b2CircleShape, b2ContactListener, b2DebugDraw, b2Fixture, b2FixtureDef, b2MassData, b2MouseJointDef, b2PolygonShape, b2RevoluteJointDef, b2Vec2, b2World, bodyKey, bodySet, cleanGraveyard, createBox, createCircle, createDOMObjects, default_density, default_friction, default_passive, default_restitution, default_shape, default_static, drawDOMObjects, graveyard, hw, interval, isMouseDown, mouseJoint, mousePVec, mouseX, mouseY, mutationConfig, mutationHandler, mutationObserver, selectedBody, startWorld, update, world, x_velocity, y_velocity;
+  var $, D2R, D_E_B_U_G, DragHandler, MutationObserver, PI2, R2D, SCALE, S_T_A_R_T_E_D, applyCustomGravity, areaDetection, areas, b2AABB, b2Body, b2BodyDef, b2CircleShape, b2ContactListener, b2DebugDraw, b2Fixture, b2FixtureDef, b2MassData, b2MouseJointDef, b2PolygonShape, b2RevoluteJointDef, b2Vec2, b2World, bodyKey, bodySet, cleanGraveyard, createBox, createCircle, createDOMObjects, default_density, default_friction, default_passive, default_restitution, default_shape, default_static, drawDOMObjects, graveyard, hw, interval, isMouseDown, mouseJoint, mousePVec, mouseX, mouseY, mutationConfig, mutationHandler, mutationObserver, selectedBody, startWorld, update, world, x_velocity, y_velocity;
 
   b2Vec2 = Box2D.Common.Math.b2Vec2;
 
@@ -95,6 +95,8 @@
   bodySet = {};
 
   bodyKey = 0;
+
+  areas = void 0;
 
   graveyard = [];
 
@@ -392,10 +394,64 @@
     return _results;
   };
 
+  areaDetection = (function() {
+    var _elementsInArea;
+    _elementsInArea = [];
+    return function() {
+      var aabb, area, elements, i, joined, left, shape, shapes, _i, _j, _len, _len1, _results;
+      _results = [];
+      for (i = _i = 0, _len = areas.length; _i < _len; i = ++_i) {
+        area = areas[i];
+        if (!_elementsInArea[i]) {
+          _elementsInArea[i] = [];
+        }
+        aabb = new b2AABB();
+        aabb.lowerBound = new b2Vec2(area[0] / SCALE, area[1] / SCALE);
+        aabb.upperBound = new b2Vec2(area[2] / SCALE, area[3] / SCALE);
+        shapes = [];
+        world.QueryAABB(function(shape) {
+          shapes.push(shape);
+          return true;
+        }, aabb);
+        elements = [];
+        for (_j = 0, _len1 = shapes.length; _j < _len1; _j++) {
+          shape = shapes[_j];
+          if (shape.GetUserData()) {
+            elements.push(shape.GetUserData().domObj);
+          }
+        }
+        joined = $(elements).not(_elementsInArea[i]);
+        left = $(_elementsInArea[i]).not(elements);
+        _elementsInArea[i] = elements;
+        if (joined.length !== 0) {
+          _results.push($(document).trigger('areajoined', {
+            areaIndex: i,
+            joinedEl: joined,
+            areaElements: _elementsInArea[i]
+          }));
+        } else {
+          if (left.length !== 0) {
+            _results.push($(document).trigger('arealeft', {
+              areaIndex: i,
+              leftEl: left,
+              areaElements: _elementsInArea[i]
+            }));
+          } else {
+            _results.push(void 0);
+          }
+        }
+      }
+      return _results;
+    };
+  })();
+
   update = function() {
     cleanGraveyard();
     DragHandler.updateMouseDrag();
     applyCustomGravity();
+    if (areas.length > 0) {
+      areaDetection();
+    }
     world.Step(2 / 60, 8, 3);
     drawDOMObjects();
     if (D_E_B_U_G) {
@@ -550,6 +606,7 @@
       shape = opts['shape'];
       static_ = opts['static'];
       debug = opts['debug'];
+      areas = opts['area-detection'];
       if (S_T_A_R_T_E_D === false) {
         if (debug === true) {
           D_E_B_U_G = true;
@@ -566,6 +623,7 @@
     default_options: {
       'x-velocity': 0,
       'y-velocity': 0,
+      'area-detection': [],
       'density': default_density,
       'restitution': default_restitution,
       'friction': default_friction,

@@ -54,11 +54,60 @@ applyCustomGravity = ->
       f = f.m_next
     b = b.m_next
 
+
+
+areaDetection = do ->
+  _elementsInArea = []
+  return ->
+    for area, i in areas
+      _elementsInArea[i] = [] unless _elementsInArea[i]
+      aabb = new b2AABB();
+
+      # * 0.02 because it has to be converted from pixels to metre
+      aabb.lowerBound = new b2Vec2(area[0]/SCALE, area[1]/SCALE)
+      aabb.upperBound = new b2Vec2(area[2]/SCALE, area[3]/SCALE)
+
+      shapes = []
+      world.QueryAABB( (shape) ->
+        shapes.push shape
+        true
+      , aabb)
+      elements = []
+
+      for shape in shapes
+        elements.push shape.GetUserData().domObj if shape.GetUserData()
+
+      joined = $(elements).not(_elementsInArea[i])
+      left = $(_elementsInArea[i]).not(elements)
+
+      _elementsInArea[i] = elements
+
+      unless joined.length is 0
+
+        $(document).trigger('areajoined', {
+          areaIndex: i,
+          joinedEl: joined
+          areaElements: _elementsInArea[i]
+        })
+      else
+        unless left.length is 0
+          $(document).trigger('arealeft', {
+            areaIndex: i,
+            leftEl: left,
+            areaElements: _elementsInArea[i]
+          })
+
+      
+
+
 update = ->
   cleanGraveyard()
   DragHandler.updateMouseDrag()
   
   applyCustomGravity()
+
+  if areas.length > 0
+    areaDetection()
 
   world.Step 2 / 60, 8, 3 
   drawDOMObjects()
@@ -149,7 +198,7 @@ startWorld = (jquery_selector, density = default_density, restitution = default_
 
   #trigger hardware acclearation
   #$('body').css(hw);
-  
+   
   update();
   
 #startWorld("#container div, img")
