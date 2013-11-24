@@ -1,4 +1,4 @@
-# /*! box2d-jquery - v0.8.0 - last build: 2013-11-24 19:18:35 */
+# /*! box2d-jquery - v0.8.0 - last build: 2013-11-24 22:44:20 */
 b2Vec2 = Box2D.Common.Math.b2Vec2
 b2AABB = Box2D.Collision.b2AABB
 b2BodyDef = Box2D.Dynamics.b2BodyDef
@@ -57,8 +57,10 @@ mutationConfig =
   characterData: false
 bodySet = {}
 bodyKey = 0;
-areas = undefined
+areas = []
 graveyard = []
+time0 = 0
+fpsEl = undefined
 DragHandler = do ->
   selectedBody = undefined
   mouseJoint = false
@@ -290,20 +292,6 @@ drawDOMObjects = ->
     while f
       if f.m_userData
         domObj = f.m_userData.domObj
-        lastX = domObj.css('left')
-        lastY = domObj.css('top')
-        lastRotation = domObj.css('transform')
-
-        unless lastRotation is 'none'
-          values = lastRotation.split('(')[1];
-          values = values.split(')')[0];
-          values = values.split(',');
-          t = values[0];
-          l = values[1];
-
-
-          angle = Math.round(Math.atan2(l, t) * (180/Math.PI))
-          lastRotation = angle;
 
         #Retrieve positions and rotations from the Box2d world
         x = Math.floor((f.m_body.m_xf.position.x * SCALE) - f.m_userData.width) + 'px'
@@ -312,17 +300,17 @@ drawDOMObjects = ->
         #CSS3 transform does not like negative values or infitate decimals
         r = Math.round(((f.m_body.m_sweep.a + PI2) % PI2) * R2D * 100) / 100
         #translate_values = "translate(" + x + "px," + y + "px) rotate(" + r + "deg)"
-        translate_values = "rotate(" + r + "deg)"
+        translate_values = ["translateX(", x, ') translateY(', y, ')'].join('')
+        translate_values += " rotate(" + r + "deg)"
+        
         css = 
           "-webkit-transform": translate_values 
           "-moz-transform": translate_values 
           "-ms-transform": translate_values 
           "-o-transform": translate_values 
           "transform": translate_values  
-          "left": x
-          "top": y
-        unless lastX is x and  lastY is y and lastRotation is r
-          f.m_userData.domObj.css css
+
+        f.m_userData.domObj.css css
       f = f.m_next
     b = b.m_next
 applyCustomGravity = ->
@@ -380,6 +368,11 @@ areaDetection = do ->
           })
 
       
+measureTime = ->
+  now = (performance && performance.now()) || +new Date
+  fps = 1000/(now - time0)
+  fpsEl.text((fps >> 0)+ ' fps');
+  time0 = now
 
 
 update = ->
@@ -395,9 +388,9 @@ update = ->
   drawDOMObjects()
   if D_E_B_U_G
     world.DrawDebugData()
+    measureTime()
   world.ClearForces()
-  #update()
-  #requestAnimationFrame(update);
+  
   window.setTimeout(update, 1000 / 30)
 
 mutationHandler = (mutations) ->
@@ -476,7 +469,10 @@ startWorld = (jquery_selector, density = default_density, restitution = default_
     canvas.attr('width', $(window).width());
     canvas.attr('height', $(document).height());
     world.SetDebugDraw(debugDraw);
-    $('body').append(canvas)
+    fpsEl = $('<div style="position:absolute;bottom:0;right:0;background:red;padding:5px;">0</div>');
+    $('body').append(canvas).append(fpsEl)
+
+
 
   #trigger hardware acclearation
   #$('body').css(hw);
@@ -531,7 +527,7 @@ $.fn.extend
     shape = opts['shape']
     static_ = opts['static']
     debug = opts['debug']
-    areas = opts['area-detection']
+    areas = opts['area-detection'] || []
 
     if S_T_A_R_T_E_D is false
       if debug is true then D_E_B_U_G = true

@@ -10,7 +10,7 @@ $.fn.extend
     shape = opts['shape']
     static_ = opts['static']
     debug = opts['debug']
-    areas = opts['area-detection']
+    areas = opts['area-detection'] || []
 
     if S_T_A_R_T_E_D is false
       if debug is true then D_E_B_U_G = true

@@ -1,5 +1,5 @@
 (function() {
-  var $, D2R, D_E_B_U_G, DragHandler, MutationObserver, PI2, R2D, SCALE, S_T_A_R_T_E_D, applyCustomGravity, areaDetection, areas, b2AABB, b2Body, b2BodyDef, b2CircleShape, b2ContactListener, b2DebugDraw, b2Fixture, b2FixtureDef, b2MassData, b2MouseJointDef, b2PolygonShape, b2RevoluteJointDef, b2Vec2, b2World, bodyKey, bodySet, cleanGraveyard, createBox, createCircle, createDOMObjects, default_density, default_friction, default_passive, default_restitution, default_shape, default_static, drawDOMObjects, graveyard, hw, interval, isMouseDown, mouseJoint, mousePVec, mouseX, mouseY, mutationConfig, mutationHandler, mutationObserver, selectedBody, startWorld, update, world, x_velocity, y_velocity;
+  var $, D2R, D_E_B_U_G, DragHandler, MutationObserver, PI2, R2D, SCALE, S_T_A_R_T_E_D, applyCustomGravity, areaDetection, areas, b2AABB, b2Body, b2BodyDef, b2CircleShape, b2ContactListener, b2DebugDraw, b2Fixture, b2FixtureDef, b2MassData, b2MouseJointDef, b2PolygonShape, b2RevoluteJointDef, b2Vec2, b2World, bodyKey, bodySet, cleanGraveyard, createBox, createCircle, createDOMObjects, default_density, default_friction, default_passive, default_restitution, default_shape, default_static, drawDOMObjects, fpsEl, graveyard, hw, interval, isMouseDown, measureTime, mouseJoint, mousePVec, mouseX, mouseY, mutationConfig, mutationHandler, mutationObserver, selectedBody, startWorld, time0, update, world, x_velocity, y_velocity;
 
   b2Vec2 = Box2D.Common.Math.b2Vec2;
 
@@ -96,9 +96,13 @@
 
   bodyKey = 0;
 
-  areas = void 0;
+  areas = [];
 
   graveyard = [];
+
+  time0 = 0;
+
+  fpsEl = void 0;
 
   DragHandler = (function() {
     var downHandler, moveHandler, upHandler, updateFromEvent;
@@ -331,7 +335,7 @@
 
 
   drawDOMObjects = function() {
-    var angle, b, css, domObj, f, i, l, lastRotation, lastX, lastY, r, t, translate_values, values, x, y, _results;
+    var b, css, domObj, f, i, r, translate_values, x, y, _results;
     i = 0;
     b = world.m_bodyList;
     _results = [];
@@ -340,34 +344,19 @@
       while (f) {
         if (f.m_userData) {
           domObj = f.m_userData.domObj;
-          lastX = domObj.css('left');
-          lastY = domObj.css('top');
-          lastRotation = domObj.css('transform');
-          if (lastRotation !== 'none') {
-            values = lastRotation.split('(')[1];
-            values = values.split(')')[0];
-            values = values.split(',');
-            t = values[0];
-            l = values[1];
-            angle = Math.round(Math.atan2(l, t) * (180 / Math.PI));
-            lastRotation = angle;
-          }
           x = Math.floor((f.m_body.m_xf.position.x * SCALE) - f.m_userData.width) + 'px';
           y = Math.floor((f.m_body.m_xf.position.y * SCALE) - f.m_userData.height) + 'px';
           r = Math.round(((f.m_body.m_sweep.a + PI2) % PI2) * R2D * 100) / 100;
-          translate_values = "rotate(" + r + "deg)";
+          translate_values = ["translateX(", x, ') translateY(', y, ')'].join('');
+          translate_values += " rotate(" + r + "deg)";
           css = {
             "-webkit-transform": translate_values,
             "-moz-transform": translate_values,
             "-ms-transform": translate_values,
             "-o-transform": translate_values,
-            "transform": translate_values,
-            "left": x,
-            "top": y
+            "transform": translate_values
           };
-          if (!(lastX === x && lastY === y && lastRotation === r)) {
-            f.m_userData.domObj.css(css);
-          }
+          f.m_userData.domObj.css(css);
         }
         f = f.m_next;
       }
@@ -445,6 +434,14 @@
     };
   })();
 
+  measureTime = function() {
+    var fps, now;
+    now = (performance && performance.now()) || +(new Date);
+    fps = 1000 / (now - time0);
+    fpsEl.text((fps >> 0) + ' fps');
+    return time0 = now;
+  };
+
   update = function() {
     cleanGraveyard();
     DragHandler.updateMouseDrag();
@@ -456,6 +453,7 @@
     drawDOMObjects();
     if (D_E_B_U_G) {
       world.DrawDebugData();
+      measureTime();
     }
     world.ClearForces();
     return window.setTimeout(update, 1000 / 30);
@@ -548,7 +546,8 @@
       canvas.attr('width', $(window).width());
       canvas.attr('height', $(document).height());
       world.SetDebugDraw(debugDraw);
-      $('body').append(canvas);
+      fpsEl = $('<div style="position:absolute;bottom:0;right:0;background:red;padding:5px;">0</div>');
+      $('body').append(canvas).append(fpsEl);
     }
     return update();
   };
@@ -606,7 +605,7 @@
       shape = opts['shape'];
       static_ = opts['static'];
       debug = opts['debug'];
-      areas = opts['area-detection'];
+      areas = opts['area-detection'] || [];
       if (S_T_A_R_T_E_D === false) {
         if (debug === true) {
           D_E_B_U_G = true;

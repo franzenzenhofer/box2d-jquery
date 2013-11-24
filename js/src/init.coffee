@@ -56,5 +56,7 @@ mutationConfig =
   characterData: false
 bodySet = {}
 bodyKey = 0;
-areas = undefined
+areas = []
 graveyard = []
+time0 = 0
+fpsEl = undefined
