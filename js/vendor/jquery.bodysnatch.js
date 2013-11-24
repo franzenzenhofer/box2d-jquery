@@ -39,6 +39,8 @@
                     
                     var w = element.width(),
                         h = element.height();
+                    var translate_values = 'translateX(' + element.offset().left + 'px) translateY(' + element.offset().top +'px)';
+
                     //otherwise not loaded image will be stuck with zero width/height
                     if ( w && h)
                     {
@@ -51,30 +53,40 @@
                         {
                             clone.css(element.getStyleObject());
                         }
+                        
                         clone.css({
                             position: 'absolute',
+                            left: 0,
+                            top: 0,
                             //hot fix for the 101 balls samplein FF and opera
                             //due to idiotic behaviour of 
                             //https://developer.mozilla.org/de/docs/DOM/window.getComputedStyle
                             //'background-color': element.css('background-color'),
-                            top: element.offset().top,
-                            left: element.offset().left,
                             width: element.width(),
                             height: element.height(),
                             margin:0,
+                            "-webkit-transform": translate_values,
+                            "-moz-transform": translate_values,
+                            "-ms-transform": translate_values, 
+                            "-o-transform": translate_values, 
+                            "transform": translate_values  
                             //padding: 0
-                            });
+                        });
                         clone.addClass('perfect');
                     }
                     else //probably images without a width and height yet
                     {
                         clone.css({
                             position: 'absolute',
-                            top: element.offset().top,
-                            left: element.offset().left,
                             margin:0,
-                            //padding: 0
-                            }); 
+                            left: 0,
+                            top: 0,
+                            "-webkit-transform": translate_values, 
+                            "-moz-transform": translate_values, 
+                            "-ms-transform": translate_values, 
+                            "-o-transform": translate_values, 
+                            "transform": translate_values  
+                        }); 
                         clone.addClass('imperfect');
                     }
                     //clone.hide();
