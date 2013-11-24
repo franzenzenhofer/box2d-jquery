@@ -63,8 +63,9 @@ areaDetection = do ->
       _elementsInArea[i] = [] unless _elementsInArea[i]
       aabb = new b2AABB();
 
-      aabb.lowerBound.Set(area[0], area[1]);
-      aabb.upperBound.Set(area[2], area[3]);
+      # * 0.02 because it has to be converted from pixels to metre
+      aabb.lowerBound = new b2Vec2(area[0]/SCALE, area[1]/SCALE)
+      aabb.upperBound = new b2Vec2(area[2]/SCALE, area[3]/SCALE)
 
       shapes = []
       world.QueryAABB( (shape) ->
@@ -76,12 +77,13 @@ areaDetection = do ->
       for shape in shapes
         elements.push shape.GetUserData().domObj if shape.GetUserData()
 
-      
       joined = $(elements).not(_elementsInArea[i])
       left = $(_elementsInArea[i]).not(elements)
+
       _elementsInArea[i] = elements
-      
+
       unless joined.length is 0
+
         $(document).trigger('areajoined', {
           areaIndex: i,
           joinedEl: joined
