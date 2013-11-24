@@ -123,8 +123,12 @@
       }
     };
     downHandler = function(domEl, e) {
-      selectedBody = bodySet[domEl.attr('data-box2d-bodykey')].GetBody();
-      return updateFromEvent(e);
+      var fixture;
+      fixture = bodySet[domEl.attr('data-box2d-bodykey')];
+      if (!fixture.GetUserData().isPassive) {
+        selectedBody = fixture.GetBody();
+        return updateFromEvent(e);
+      }
     };
     $(document).mouseup(upHandler);
     $(document).mousemove(moveHandler);

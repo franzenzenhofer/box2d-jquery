@@ -1,4 +1,4 @@
-# /*! box2d-jquery - v0.8.0 - last build: 2013-11-24 22:57:53 */
+# /*! box2d-jquery - v0.8.0 - last build: 2013-11-24 23:27:02 */
 b2Vec2 = Box2D.Common.Math.b2Vec2
 b2AABB = Box2D.Collision.b2AABB
 b2BodyDef = Box2D.Dynamics.b2BodyDef
@@ -77,8 +77,10 @@ DragHandler = do ->
       updateFromEvent e
 
   downHandler = (domEl, e) ->
-    selectedBody = bodySet[domEl.attr('data-box2d-bodykey')].GetBody()
-    updateFromEvent e
+    fixture = bodySet[domEl.attr('data-box2d-bodykey')]
+    unless fixture.GetUserData().isPassive
+      selectedBody = fixture.GetBody()
+      updateFromEvent e
 
   # initialize up and movehandler on document
   $(document).mouseup upHandler 

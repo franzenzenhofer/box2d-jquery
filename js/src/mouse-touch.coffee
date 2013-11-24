@@ -14,8 +14,10 @@ DragHandler = do ->
       updateFromEvent e
 
   downHandler = (domEl, e) ->
-    selectedBody = bodySet[domEl.attr('data-box2d-bodykey')].GetBody()
-    updateFromEvent e
+    fixture = bodySet[domEl.attr('data-box2d-bodykey')]
+    unless fixture.GetUserData().isPassive
+      selectedBody = fixture.GetBody()
+      updateFromEvent e
 
   # initialize up and movehandler on document
   $(document).mouseup upHandler 
