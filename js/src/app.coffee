@@ -98,6 +98,11 @@ areaDetection = do ->
           })
 
       
+measureTime = ->
+  now = (performance && performance.now()) || +new Date
+  fps = 1000/(now - time0)
+  fpsEl.text((fps >> 0)+ ' fps');
+  time0 = now
 
 
 update = ->
@@ -113,9 +118,9 @@ update = ->
   drawDOMObjects()
   if D_E_B_U_G
     world.DrawDebugData()
+    measureTime()
   world.ClearForces()
-  #update()
-  #requestAnimationFrame(update);
+  
   window.setTimeout(update, 1000 / 30)
 
 mutationHandler = (mutations) ->
@@ -194,7 +199,10 @@ startWorld = (jquery_selector, density = default_density, restitution = default_
     canvas.attr('width', $(window).width());
     canvas.attr('height', $(document).height());
     world.SetDebugDraw(debugDraw);
-    $('body').append(canvas)
+    fpsEl = $('<div style="position:absolute;bottom:0;right:0;background:red;padding:5px;">0</div>');
+    $('body').append(canvas).append(fpsEl)
+
+
 
   #trigger hardware acclearation
   #$('body').css(hw);
