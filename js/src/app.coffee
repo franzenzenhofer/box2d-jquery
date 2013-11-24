@@ -85,7 +85,7 @@ areaDetection = do ->
 
       
 measureTime = ->
-  now = (performance && performance.now()) || +new Date
+  now = (window['performance'] && performance.now()) || +new Date
   fps = 1000/(now - time0)
   fpsEl.text((fps >> 0)+ ' fps');
   time0 = now
