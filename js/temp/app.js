@@ -103,7 +103,7 @@
 
   measureTime = function() {
     var fps, now, time0;
-    now = (performance && performance.now()) || +(new Date);
+    now = (window['performance'] && performance.now()) || +(new Date);
     fps = 1000 / (now - time0);
     fpsEl.text((fps >> 0) + ' fps');
     return time0 = now;

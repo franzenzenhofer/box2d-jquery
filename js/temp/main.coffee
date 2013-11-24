@@ -1,4 +1,4 @@
-# /*! box2d-jquery - v0.8.0 - last build: 2013-11-24 22:44:20 */
+# /*! box2d-jquery - v0.8.0 - last build: 2013-11-24 22:57:53 */
 b2Vec2 = Box2D.Common.Math.b2Vec2
 b2AABB = Box2D.Collision.b2AABB
 b2BodyDef = Box2D.Dynamics.b2BodyDef
@@ -369,7 +369,7 @@ areaDetection = do ->
 
       
 measureTime = ->
-  now = (performance && performance.now()) || +new Date
+  now = (window['performance'] && performance.now()) || +new Date
   fps = 1000/(now - time0)
   fpsEl.text((fps >> 0)+ ' fps');
   time0 = now
