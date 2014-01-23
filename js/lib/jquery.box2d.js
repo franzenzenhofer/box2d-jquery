@@ -486,8 +486,8 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
                     
                     var w = element.width(),
                         h = element.height();
-                    var translate_values = 'translateX(' + element.offset().left + 'px) translateY(' + element.offset().top +'px)';
-
+                    //var translate_values = 'translateX(' + element.offset().left + 'px) translateY(' + element.offset().top +'px)';
+                    var translate_values = 'translate3d(' + (element.offset().left | 0) + 'px,' + (element.offset().top | 0) + 'px,0px)';
                     //otherwise not loaded image will be stuck with zero width/height
                     if ( w && h)
                     {
@@ -937,7 +937,9 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
           x = Math.floor((f.m_body.m_xf.position.x * SCALE) - f.m_userData.width) + 'px';
           y = Math.floor((f.m_body.m_xf.position.y * SCALE) - f.m_userData.height) + 'px';
           r = Math.round(((f.m_body.m_sweep.a + PI2) % PI2) * R2D * 100) / 100;
-          translate_values = ["translateX(", x, ') translateY(', y, ')'].join('');
+          
+          //translate_values = ["translateX(", x, ') translateY(', y, ')'].join('');
+          translate_values = 'translate3d(' + x + ',' + y + ',0px)';
           translate_values += " rotate(" + r + "deg)";
           css = {
             "-webkit-transform": translate_values,
@@ -1039,14 +1041,16 @@ K.moveTo(G.position.x*y,G.position.y*y);K.lineTo((G.position.x+this.m_xformScale
     if (areas.length > 0) {
       areaDetection();
     }
-    world.Step(2 / 60, 8, 3);
+    //world.Step(2 / 60, 8, 3);
+    world.Step(1 / 60, 8, 3);
     drawDOMObjects();
     if (D_E_B_U_G) {
       world.DrawDebugData();
       measureTime();
     }
     world.ClearForces();
-    return window.setTimeout(update, 1000 / 30);
+    //return window.setTimeout(update, 1000 / 30);
+    return requestAnimationFrame(update);
   };
 
   mutationHandler = function(mutations) {
