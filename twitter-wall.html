@@ -9,22 +9,32 @@
             font-family: Helvetica, Arial, sans-serif;
             font-size: 12px;
         }
-        .tweet {
-            width: 250px;
+        .tweet-wrap {
+            width: 220px;
             border: 1px solid #333333;
-            padding: 10px;
-            margin: 1px;
-            box-model: border-box;
+        }
+        .tweet {
+            margin: 10px;
+        }
+        .tweeter-pic {
+            float: left;
+            margin-right: 10px;
+            width: 48px;
+            height: 48px;
+        }
+        .tweet-pic img {
+            display: block;
+            width: 48px;
+            height: 48px;
         }
         .tweeter {
             font-weight: bold;
         }
-        .text {
-
-        }
     </style>
 </head>
 <body>
+
+<h1>#jqeu13 TwitterWall</h1>
 
 <div id="twitterwall"></div>
 
@@ -33,75 +43,110 @@
 
 <script type="text/javascript">
     (function () {
-        var $myTwitterWall = $('#twitterwall'),
-            ajaxTimeout = 30000,
-            updateInterval = 15000,
-            query = 'jqeu13',
-            apiUrl = 'http://search.twitter.com/search.json?callback=?',
-            tweetCache = [],
-            maxTweets = 5,
-            since_id = 0;
 
-        function addElements(data) {
-            $.each(data, function (i, e) {
-                var twid = e.id_str;
+        var TwitterWall = (function() {
 
-                if( $.inArray(twid, tweetCache) === -1) {
-                    console.log('Adding new: ' + twid);
-                    tweetCache.push(twid);
+            var defaults =  {
+                twitterWall: '#twitterwall',
+                ajaxTimeout : 30000,
+                updateInterval : 15000,
+                query : 'jqeu13',
+                apiUrl : 'http://search.twitter.com/search.json?callback=?',
+                maxTweets : 5
+            };
+
+            function Construct(_options) {
+                this.tweetCache = [];
+                this.options = $.extend({}, defaults, _options);
+                this.$twitterWall = $(this.options.twitterWall);
+                this.since_id = 0;
+
+                this.$twitterWall.box2d({
+                    'y-velocity': 5,
+                    'x-velocity': 5,
+                    density: 1.2,
+                    restitution: 0.6,
+                    friction: 0.5
+                });
+
+                this.checkTweets();
+            }
+
+            Construct.prototype = {
+                addTweets: function(tweets) {
+                    var that = this;
+
+                    $.each(tweets, function (i, tweet) {
+                        var tweetID = tweet.id_str;
+
+                        if( $.inArray(tweetID, that.tweetCache) === -1) {
+                            console.log('Adding new: ' + tweetID);
+                            that.tweetCache.push(tweetID);
+                            that.addTweet(tweet)
+                        } else {
+                            console.log('Skipping: ' + tweetID)
+                        }
+                    });
+                },
+
+                addTweet: function(tweet){
+                    console.log(tweet);
 
                     var myTweetElement = $([
-                    '<div class="tweet">',
-                        '<div class="tweeter">',
-                            e.from_user_name,
-                        '</div>',
-                        '<div class="text">',
-                            e.text,
-                        '</div>',
-                    '</div>'].join(''));
+                        '<div class="tweet-wrap">',
+                            '<div class="tweet">',
+                                '<div class="tweeter-pic">',
+                                    '<img src="' + tweet.profile_image_url +'" />',
+                                '</div> ',
+                                '<div class="tweeter">',
+                                    tweet.from_user_name,
+                                '</div>',
+                                '<div class="text">',
+                                    tweet.text,
+                                '</div>',
+                            '</div>',
+                        '</div>'
+                    ].join(''));
 
-                    myTweetElement.prependTo($myTwitterWall);
+                    myTweetElement.prependTo(this.$twitterWall);
                     myTweetElement.box2d();
-                } else {
-                    console.log('Skipping: ' + twid)
-                }
-            });
-        }
-
-        function checkTweets() {
-            $.ajax({
-                url: apiUrl,
-                timeout: ajaxTimeout,
-                data: {
-                    q: query,
-                    rpp: maxTweets,
-                    since_id: since_id
                 },
-                dataType: 'json'
-            })
-                .success(function (data) {
-                    since_id = data.max_id;
 
-                    if(data.results) {
-                        addElements(data.results);
-                    }
+                checkTweets: function() {
+                    var that = this;
 
-                    setTimeout(function() { checkTweets(); }, updateInterval);
-                })
-                .fail(function (data) {
-                    console.log('sad :(')
-                });
-        }
+                    $.ajax({
+                        url: this.options.apiUrl,
+                        timeout: this.options.ajaxTimeout,
+                        data: {
+                            q: this.options.query,
+                            rpp: this.options.maxTweets,
+                            since_id: this.since_id
+                        },
+                        dataType:'json'
+                    })
+                        .success(function(response) {
+                            that.since_id = response.max_id;
 
-        $myTwitterWall.box2d({
-            'y-velocity': 5,
-            'x-velocity': 5,
-            density: 1.2,
-            restitution: 0.6,
-            friction: 0.5
-        });
+                            if (response.results) {
+                                that.addTweets(response.results);
+                            }
+                        })
+                        .fail(function(response) {
+                            console.log('sad :(')
+                        })
+                        .always(function () {
+                            setTimeout(function () {
+                                that.checkTweets();
+                            }, that.options.updateInterval);
+                        });
+                }
+            };
 
-        checkTweets();
+            return Construct;
+        })();
+
+        var myTwitterWall = new TwitterWall();
     })();
 </script>
 </body>
