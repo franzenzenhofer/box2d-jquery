@@ -1,6 +1,6 @@
-#HOW TO BUILD box2d-jquery
+# HOW TO BUILD box2d-jquery
 
-##BUILD
+## BUILD
 
 box2d-jquery is written mostly in coffee-script, with some dependencies in javascript.
 
@@ -55,7 +55,7 @@ section of [package.json](package.json)
 
 ------------------------------
 
-##VIEW
+## VIEW
 
 to view your local version of box2d-jquery do something like this
 
@@ -69,7 +69,7 @@ then visit
 
 ------------------------------
 
-##CODE
+## CODE
 
 the important files are
 
