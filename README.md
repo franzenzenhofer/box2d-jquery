@@ -1,4 +1,4 @@
-#box2d-jQuery
+# box2d-jQuery
 
 
 `v0.8`
@@ -18,7 +18,7 @@ and start to **KICK STUFF AROUND** (with your mouse/touchpad pointer - or using 
 
 oh, and before i forget, stop by the jquery conference, it will be cool (i promise), and use the [voucher code 'fullstackoptimization'](http://jquery-eu-2013.eventbrite.com/?discount=fullstackoptimization) for 5% off.
 
-##acknowledgements
+## acknowledgements
 
 thx to box2dweb [http://code.google.com/p/box2dweb/](http://code.google.com/p/box2dweb/) which is the engine that works in the background.
 
@@ -27,13 +27,13 @@ thx to
 
 if you have questions, bug-reports and/or feature requests, please use the github-issue tracker and/or ping me at twitter ([@enzenhofer](https://twitter.com/enzenhofer))
 
-##how to contribute to box2d-jquery
+## how to contribute to box2d-jquery
 
 please see [BUILD.md](BUILD.md)
 
 also there is currently a [RaspberryPi4PullRequests Challenge](CHALLENGE.md)
 
-##how to use jquery.box2d.js
+## how to use jquery.box2d.js
 
 that's simple
 
@@ -169,7 +169,7 @@ HTML attributes > jquery options assignment, nuff said!
 
 ok, that's bascally it. any question? bugs (there are some, especially on non-newest-stuff browsers (i.e.: ipad 1))? other stuff? please use the issue tracker, i'm collectiong bugs right now.
 
-##in a nutshell, how does it work?
+## in a nutshell, how does it work?
 ok, you want the itty-gritty technical details well, look at the [source](https://github.com/franzenzenhofer/box2d-jquery/blob/master/js/src/main.coffee), that's the only real way. but in short
  * we clone the selected DOM elements into absolute possitioned ... well ... clones.
  * we animate them via dynamically (javascript styly) set CSS3 transforms / translate / rotate combos
@@ -188,7 +188,7 @@ ok, you want the itty-gritty technical details well, look at the [source](https:
  * change world boundaries with window resize
  * changes in the box2d HTML attributes should change the objects
 
-##license
+## license
   Copyright (C) 2012 - 305678 Franz Enzenhofer
   (see in source code licenses for other copyright holders)
 

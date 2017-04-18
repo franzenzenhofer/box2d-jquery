@@ -1,4 +1,4 @@
-#box2d-jquery challenge for jquery europe 2013
+# box2d-jquery challenge for jquery europe 2013
 
 (something to do after the afterparty and during the breaks)
 
@@ -11,7 +11,7 @@ hi, welcome to the box2d-jquery challenge. the idea is simple: contribute to box
 
 
 
-###how does the challenge work
+### how does the challenge work
 
   * fork box2d-jquery
   * read [BUILD.md](BUILD.md) to understand how box2d-jquery is structured
@@ -34,7 +34,7 @@ then
 
 **all pull-requests must be compatible with the zlib license of box2d-jquery and box2dWeb**. no strings attached.
 
-##the challenges
+## the challenges
 
  0. make a twitter wall for #jqeu13 using box2d-jquery update: or [make it even cooler](http://www.fullstackoptimization.com/box2d-jquery/twitter-wall.html) 
  1. better touch handling (currently scroll and links are not useable on touch devices) - for this we will have to completely rewirte the touch/mouse event stuff (it must be applied to each DOM element, not globally, i think)
@@ -67,11 +67,11 @@ if i can't get rid of all RaspberryPis during the conference weekend (which is q
 
 
 
-##Q:"i think XYZ would be great (even though it's not in the challenges), look, here is the pull-request""
+## Q:"i think XYZ would be great (even though it's not in the challenges), look, here is the pull-request""
 
 A: cool! thx! contribute, talk to me, if it's the awesomeness of awesomeness and i still have one of the RaspberryPis you will probably get one.
 
-##Q:"i wanted to contribute, but hey man your code makes my eyes bleed"
+## Q:"i wanted to contribute, but hey man your code makes my eyes bleed"
 
 A: live with it, i'm a recreational coder. but i invite you to improve the code, the lib, everything. 
 
